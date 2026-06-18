@@ -191,7 +191,7 @@ SkillScore = round( 100 · safety_gate · raw )      # 0 if safety fails
 | any, safety=0 | F | **Reject** | Safety veto, regardless of other dimensions. |
 
 ### 5.5 Variance & significance (so the score is trustworthy)
-- Every behavioral eval runs **N independent trials** (default **N=3**, configurable up to ~8).
+- Every behavioral eval runs **N independent trials** (default **N=5**; configurable).
 - Report **mean ± stddev** and the **standard error of the mean** per dimension.
 - For comparisons (with vs. without skill; version A vs. B), a delta is reported as
   **significant only if it exceeds the standard error of the difference**
@@ -340,7 +340,7 @@ plugin manifest (later). MVP keeps it a plain skill directory.
 ```markdown
 # Skill Scorecard — `pdf-form-filler`
 Source: ./skills/pdf-form-filler (git @a1b2c3d) · 2026-06-18
-Models: executor=claude-sonnet, judge=claude-opus (cross-family ✓) · Trials: N=3
+Models: executor=claude-sonnet, judge=claude-opus (cross-family ✓) · Trials: N=5
 
 ## ███████████░░░  78 / 100   Grade: C   Verdict: REVISE
 
@@ -505,14 +505,11 @@ grader/analyzer/comparator agents; description-triggering optimization; and the
 | **Gaming** the score | Heavy weight on execution-grounded D2/D3 + structural floor; safety veto. |
 | Skill needs **special inputs/tools** to run | `evals[].files` support; document tool/dependency assumptions; mark un-runnable evals as skipped, not failed. |
 
-**Open questions for you (can be resolved now or during `writing-plans`):**
-1. **Default N trials** — 3 (fast) vs 5 (tighter error bars)? *Proposed: 3, configurable.*
-2. **Auto-eval review gate** — on by default (safer) or off for hands-free scoring?
-   *Proposed: on, with a `--yes`-style skip.*
-3. **Skill name** — `skill-validator` (parity with `skill-creator`) vs an active-voice
-   name like `validating-skills`? *Proposed: `skill-validator`.*
-4. **Repo layout** — `skills/skill-validator/` (plugin-style, room to grow) vs skill at
-   repo root? *Proposed: `skills/skill-validator/`.*
+**Resolved (PRD review, 2026-06-18):**
+1. **Default N trials = 5** (tighter error bars; still configurable).
+2. **Auto-eval review gate = ON** by default (user approves generated evals); a skip flag is available for hands-free runs.
+3. **Skill name = `skill-validator`** (parity with `skill-creator`).
+4. **Repo layout = `skills/skill-validator/`** (plugin-style, room to grow).
 
 ---
 
@@ -540,6 +537,8 @@ grader/analyzer/comparator agents; description-triggering optimization; and the
 - **Form factor:** **Claude Code skill** (subagents + `claude -p`); no standalone CLI. ✓
 - **Primary goal:** All-around validator (ship-readiness + version compare + triggering),
   delivered in phases. ✓
+- **Trials N = 5; auto-eval review gate ON; skill name `skill-validator`; layout
+  `skills/skill-validator/`.** ✓ (PRD review, 2026-06-18)
 
 ---
 
