@@ -36,3 +36,8 @@ Would you consult this skill? Answer exactly YES or NO." --model <session-model>
 `dimensions.d5_triggering` uses `f1` (or computes it from tp/fp/fn). If `claude -p` is
 unavailable, skip D5 — the scorer renormalizes over the remaining dimensions and the
 scorecard notes D5 as skipped.
+
+## Robustness
+`claude -p` treats any argument **beginning with `-`** as a flag, so a prompt that starts
+with `-` (or with a skill's `---` frontmatter) errors out and returns nothing. Pass the
+prompt on stdin, or make sure it starts with ordinary text — the templates above do.

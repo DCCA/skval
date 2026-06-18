@@ -25,3 +25,8 @@ Run one eval, once, in one configuration. Dispatch this as a **fresh subagent** 
 - Don't grade yourself; just produce the outputs and an honest transcript.
 - Capture timing/tokens from the task-completion notification into `run_dir/timing.json`
   if the harness provides them.
+
+## Headless fallback
+Without subagents, run each configuration with `claude -p` instead. Inject the skill by
+**stripping its `---` frontmatter** and prefixing plain text — never start a `claude -p`
+prompt with `-`/`---`, which the CLI parses as a flag (it errors and returns nothing).
