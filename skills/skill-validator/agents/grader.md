@@ -12,7 +12,10 @@ subagent (or run inline) per run. Adapted from Anthropic skill-creator's grader.
 
 ## Process
 1. Read the transcript and **examine the output files themselves** — don't trust the
-   transcript's claims about what it produced.
+   transcript's claims about what it produced. For spreadsheet/binary deliverables,
+   **evaluate computed values** (load with the right library; recalculate formulas if
+   needed) — a good skill often emits formulas like `=SUM(...)`, so a raw value scan can
+   miss a correct answer.
 2. For each expectation, decide **PASS/FAIL** with **cited evidence** (quote the file
    content or transcript line). No partial credit; no holistic score.
    - PASS only when the evidence reflects genuine task completion, not surface compliance
