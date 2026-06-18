@@ -18,6 +18,11 @@ the skill's own evals; only synthesize when they're missing.
    write **discriminating expectations**: assertions that *fail* for a wrong or
    superficial output (check content/correctness, not just that a file exists). A good
    expectation passes only when the skill genuinely did the work.
+   - **Create input fixtures when the task needs one.** File-transform skills (pdf, xlsx,
+     docx, …) only show their effect on a real input. Write a small, realistic fixture to
+     `workspace/fixtures/eval-<id>/` — for binary formats, write and run a short script to
+     generate it — and list its workspace-relative path in the eval's `files`. Every path
+     in `files` must exist (verify with `scripts/eval_fixtures.py check <workspace>`).
 4. **Generate the triggering query set** for D5: 8–10 **should-trigger** queries (varied
    phrasings, some not naming the skill explicitly) and 8–10 **should-not-trigger**
    near-misses (share keywords but need something else). Write to
@@ -36,10 +41,12 @@ Write **only raw JSON** to each file below — no Markdown ` ``` ` fences and no
   "skill_name": "the-skill",
   "evals": [
     {"id": 0, "prompt": "concrete task...", "expected_output": "what success looks like",
-     "files": [], "expectations": ["Output includes X computed from the input", "Used script Y"]}
+     "files": ["fixtures/eval-0/input.xlsx"], "expectations": ["Output includes X computed from the input"]}
   ]
 }
 ```
+`files` lists **workspace-relative fixture paths** to stage into each run (use `[]` when the
+task needs no input file).
 
 `workspace/triggering_queries.json`:
 ```json

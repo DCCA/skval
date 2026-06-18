@@ -126,11 +126,13 @@ browse an actual eval set and every per-trial result:
 commit-conventions/
 ├── evals/evals.json                      ← the eval set (the tasks + expectations)
 └── workspace/
+    ├── fixtures/eval-<id>/                ← input files for file-transform skills (pdf/xlsx/…)
     ├── scorecard.md / scorecard.json     ← the headline result
     ├── artifact_judgment.json            ← D4 rubric detail
     ├── triggering.json                   ← D5 per-query results
     ├── benchmark.json                    ← open in the skill-creator eval-viewer
     └── runs/eval-<id>/<config>/run-<k>/
+        ├── inputs/                        ← fixtures staged for this run
         ├── grading.json                  ← per-trial pass/fail + evidence
         └── outputs/                      ← the actual output the model produced
 ```

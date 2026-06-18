@@ -10,14 +10,17 @@ Run one eval, once, in one configuration. Dispatch this as a **fresh subagent** 
 - `run_dir` — where to save outputs, e.g. `workspace/runs/eval-<id>/<configuration>/run-<k>/`.
 
 ## Process
-1. If `with_skill`, read the skill (`SKILL.md` + referenced resources) and follow it. If
+1. **Stage inputs.** If the eval declares `files`, copy them into `run_dir/inputs/` first
+   (`scripts/eval_fixtures.py:stage(eval, workspace, run_dir)`) and work from there, so both
+   configurations act on the **same** input. Skip if `files` is empty.
+2. If `with_skill`, read the skill (`SKILL.md` + referenced resources) and follow it. If
    `without_skill`, do **not** read the skill — solve the task with your default ability.
    This baseline is what proves the skill's lift; keep it honest.
-2. Perform the eval's task using the provided input files.
-3. Save all deliverables to `run_dir/outputs/`.
-4. Write `run_dir/outputs/metrics.json`: `{tool_calls, total_tool_calls, total_steps, files_created, errors_encountered, output_chars}`.
-5. Write `run_dir/transcript.md` — a terse log of what you did (the grader reads this).
-6. If anything was uncertain or you worked around a gap, note it in `run_dir/outputs/user_notes.md`.
+3. Perform the eval's task using the staged input files in `run_dir/inputs/`.
+4. Save all deliverables to `run_dir/outputs/`.
+5. Write `run_dir/outputs/metrics.json`: `{tool_calls, total_tool_calls, total_steps, files_created, errors_encountered, output_chars}`.
+6. Write `run_dir/transcript.md` — a terse log of what you did (the grader reads this).
+7. If anything was uncertain or you worked around a gap, note it in `run_dir/outputs/user_notes.md`.
 
 ## Rules
 - Same prompt and same input files across both configurations — the **only** difference is
