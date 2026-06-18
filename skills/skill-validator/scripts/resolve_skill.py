@@ -11,11 +11,14 @@ from __future__ import annotations
 
 import re
 import shutil
+import stat
+import tarfile
 import zipfile
 from pathlib import Path
 
 _REMOTE_RE = re.compile(r"^[a-z][a-z0-9+.\-]*://", re.IGNORECASE)
 _ARCHIVE_SUFFIXES = {".zip", ".skill", ".tgz", ".tar", ".gz"}
+_MAX_UNCOMPRESSED = 250 * 1024 * 1024  # guard against decompression bombs (skills are tiny)
 
 
 def _find_skill_md(root: Path) -> Path:
@@ -27,14 +30,55 @@ def _find_skill_md(root: Path) -> Path:
     raise FileNotFoundError(f"no SKILL.md found under {root}")
 
 
+def _under(name: str, dest: Path) -> bool:
+    """True if extracting member ``name`` stays inside ``dest`` (no traversal/absolute)."""
+    base = dest.resolve()
+    try:
+        (dest / name).resolve().relative_to(base)
+        return True
+    except ValueError:
+        return False
+
+
+def _safe_extract_zip(archive: Path, dest: Path) -> None:
+    # Untrusted archive: reject path traversal/absolute members and symlinks (zip-slip).
+    with zipfile.ZipFile(archive) as zf:
+        if sum(i.file_size for i in zf.infolist()) > _MAX_UNCOMPRESSED:
+            raise ValueError("archive too large (possible decompression bomb)")
+        for info in zf.infolist():
+            if not _under(info.filename, dest):
+                raise ValueError(f"unsafe path in archive (zip-slip): {info.filename!r}")
+            if stat.S_ISLNK(info.external_attr >> 16):
+                raise ValueError(f"symlink in archive not allowed: {info.filename!r}")
+        zf.extractall(dest)
+
+
+def _safe_extract_tar(archive: Path, dest: Path) -> None:
+    # tarfile.extractall is unsafe by default (CVE-2007-4559): validate every member.
+    with tarfile.open(archive, "r:*") as tf:
+        members = tf.getmembers()
+        if sum(max(m.size, 0) for m in members) > _MAX_UNCOMPRESSED:
+            raise ValueError("archive too large (possible decompression bomb)")
+        for m in members:
+            if not _under(m.name, dest):
+                raise ValueError(f"unsafe path in archive (tar-slip): {m.name!r}")
+            if m.issym() or m.islnk():
+                raise ValueError(f"link in archive not allowed: {m.name!r}")
+            if not (m.isreg() or m.isdir()):
+                raise ValueError(f"unsupported archive member type: {m.name!r}")
+        try:
+            tf.extractall(dest, filter="data")  # extra hardening on Python >= 3.12
+        except TypeError:
+            tf.extractall(dest)
+
+
 def _unpack(archive: Path, dest: Path) -> Path:
     dest.mkdir(parents=True, exist_ok=True)
     name = archive.name.lower()
     if name.endswith((".zip", ".skill")):
-        with zipfile.ZipFile(archive) as zf:
-            zf.extractall(dest)
-    elif name.endswith((".tar", ".tar.gz", ".tgz", ".gz")):
-        shutil.unpack_archive(str(archive), str(dest))
+        _safe_extract_zip(archive, dest)
+    elif name.endswith((".tar", ".tar.gz", ".tgz")):
+        _safe_extract_tar(archive, dest)
     else:
         raise ValueError(f"unsupported archive type: {archive.name}")
     return dest
