@@ -94,3 +94,12 @@ uv run pytest          # 108 tests, deterministic, no network/model calls
 
 Built with the [Superpowers](https://github.com/obra/superpowers) methodology
 (brainstorming → writing-plans → TDD).
+
+## Contributing
+
+Issues and PRs welcome — see [CONTRIBUTING.md](CONTRIBUTING.md). Please run `uv run pytest`
+and confirm the skill still self-validates (100/A) before opening a PR.
+
+## License
+
+[MIT](LICENSE) © 2026 DCCA.

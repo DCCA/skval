@@ -12,7 +12,7 @@ run; bundled `evals/evals.json` exercised the hybrid eval path.)
 
 ```
 # Skill Scorecard — `commit-conventions`
-Source: /tmp/dogfood/commit-conventions · mode: full
+Source: docs/examples/commit-conventions · mode: full
 
 ## █████████████░  95 / 100   Grade: A   Verdict: Ship
 

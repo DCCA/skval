@@ -128,6 +128,16 @@ about budget before ordering.”* Those counts are computed deterministically by
 `scripts/conversation.py`, so they’re auditable. Mark such an eval with `"type": "multi_turn"`
 and give it a `user_simulator` persona/goal (see the eval-generator schema).
 
+### Skills that are more than one type
+
+Some skills are several types at once — e.g. **“fill out this PDF form by asking the user for
+each field.”** That's **file_transform *and* interactive**, so skval combines the strategies:
+the eval-generator creates the blank form as a **fixture**, the eval runs as a **`multi_turn`**
+conversation (the user-simulator supplies each field only when asked), and the grader checks
+**both** the interaction (*did it ask before filling?* via `conversation.py`) **and** the
+output file (*does the PDF have the right values?*). `scripts/classify.py` reports the
+runner-up type in its `also` field, so you know when to combine.
+
 ---
 
 ## 7. Where your results are saved — and how to open the evals
