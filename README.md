@@ -89,11 +89,17 @@ tests/                    # pytest suite + fixtures (good / bad / unsafe skills)
 ## Develop
 
 ```bash
-uv run pytest          # 115 tests, deterministic, no network/model calls
+uv run pytest          # 120 tests, deterministic, no network/model calls
 ```
 
 Built with the [Superpowers](https://github.com/obra/superpowers) methodology
 (brainstorming → writing-plans → TDD).
+
+## Security
+
+skval ingests untrusted skills, so archive extraction rejects path traversal (zip-slip /
+tar-slip), symlink members, and decompression bombs; the deterministic engine makes no
+network calls and uses `yaml.safe_load`. See [SECURITY.md](SECURITY.md).
 
 ## Contributing
 
