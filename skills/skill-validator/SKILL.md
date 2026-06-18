@@ -61,31 +61,27 @@ Bands: A≥90, B≥80 (Ship); C≥70, D≥50 (Revise); else F (Reject). Default 
 
 ## Full validation workflow
 
-Run these stages, then compute the score with the bundled engine. Create a todo per stage.
+Make a workspace dir, run these stages (each has a guide in `agents/`), then let
+`validate_full.py` assemble the scorecard. Create a todo per stage.
 
 0. **Resolve** the input → canonical skill dir (`scripts/resolve_skill.py`).
-1. **Structural + safety** → run the quick-start script to get D1, the D6 gate, and a
-   partial scorecard. If the safety gate fails, stop and report Reject.
-2. **Resolve evals (hybrid):** if the skill has `evals/evals.json`, use it; otherwise
-   **auto-generate** 3–5 task prompts with *discriminating* expectations (assertions a
-   wrong output would fail) and a triggering query set (8–10 should-trigger + 8–10
-   near-miss should-not). **Review gate is ON** — show generated evals to the user for
-   edit/approval before running.
-3. **Behavioral runs (D2/D3):** for each eval, dispatch subagents — one executor *with*
-   the skill, one *baseline without* — **N=5 trials each**. Capture output, transcript,
-   tokens, time.
-4. **Grade + judge (D2/D4):** an LLM judge grades each run's expectations (pass/fail +
-   cited evidence, reference-guided where a gold output exists) and scores the SKILL.md
-   artifact against the D4 rubric. Apply the bias mitigations below.
-5. **Triggering (D5):** present the query set via `claude -p` with and without the skill
-   available; compute precision/recall/F1 on activation.
-6. **Aggregate:** per dimension, compute mean ± stddev and standard error
-   (`scripts/stats.py`); `pass^k` for D3; baseline lift for D2, flagged *significant*
-   only if the delta exceeds the standard error of the difference.
-7. **Score + report:** normalize each dimension to 0–1, then
-   `scripts/scoring.py:score_skill(dims, safety_pass)` → composite/grade/verdict;
-   `scripts/scorecard.py:build_scorecard(...)` + `write_scorecard(...)` → the final
-   `scorecard.json` + `scorecard.md`. Set `metadata.mode = "full"`.
+1. **Structural + safety** → run `scripts/validate_structural.py` (D1 + D6 gate). If the
+   safety gate fails, stop and report Reject.
+2. **Evals (hybrid)** → follow [agents/eval-generator.md](agents/eval-generator.md): use
+   the skill's bundled `evals/evals.json` if present, else synthesize discriminating
+   evals; also build the triggering query set. **Review gate is ON.**
+3. **Behavioral runs (D2/D3)** → for each eval, dispatch [agents/executor.md](agents/executor.md)
+   subagents — with-skill and without-skill baseline, **N=5 trials each** — into
+   `workspace/runs/eval-<id>/<config>/run-<k>/`.
+4. **Grade + judge (D2/D4)** → [agents/grader.md](agents/grader.md) writes a `grading.json`
+   per run; [agents/artifact-judge.md](agents/artifact-judge.md) writes
+   `workspace/artifact_judgment.json`. Apply the bias mitigations below.
+5. **Triggering (D5)** → [agents/triggering.md](agents/triggering.md) writes
+   `workspace/triggering.json`.
+6. **Assemble & score** → `python skills/skill-validator/scripts/validate_full.py <skill-source> <workspace>`.
+   It aggregates the runs (`pass^k`, baseline lift, significance), maps every signal to
+   D1–D5, applies the safety gate, and writes `scorecard.json` + `scorecard.md`
+   (`metadata.mode = "full"`).
 
 ## LLM-as-judge: bias mitigations (required)
 

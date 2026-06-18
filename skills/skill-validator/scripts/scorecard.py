@@ -105,6 +105,48 @@ def _bar(score: int, width: int = 14) -> str:
     return "█" * filled + "░" * (width - filled)
 
 
+_DIM_NAMES = {
+    "D1": "Structural",
+    "D2": "Effectiveness",
+    "D3": "Reliability",
+    "D4": "Artifact quality",
+    "D5": "Triggering",
+}
+
+
+def _dim_detail(dim: str, e: dict) -> str:
+    if dim == "D1":
+        checks = e.get("checks", [])
+        failed = [c for c in checks if not c.get("passed")]
+        if not checks:
+            return ""
+        return "all checks pass" if not failed else f"{len(failed)}/{len(checks)} checks failed"
+    if dim == "D2":
+        pr = e.get("pass_rate", {})
+        s = f"pass {pr.get('mean', 0) * 100:.0f}% ± {pr.get('stddev', 0) * 100:.0f}%"
+        lift = e.get("baseline_lift")
+        if lift is not None:
+            s += f", lift {lift * 100:+.0f}% ({'significant' if e.get('significant') else 'n.s.'})"
+        return s
+    if dim == "D3":
+        ph = e.get("pass_hat_k", {})
+        if not ph:
+            return ""
+        ks = sorted(ph, key=int)
+        picks = (ks[0], ks[-1]) if len(ks) > 1 else (ks[0],)
+        return "  ".join(f"pass^{k}={ph[k]:.2f}" for k in picks)
+    if dim == "D4":
+        crit = e.get("criteria", [])
+        if not crit:
+            return ""
+        passed = sum(1 for c in crit if c.get("passed"))
+        return f"{passed}/{len(crit)} rubric criteria"
+    if dim == "D5":
+        bits = [f"{label} {e[k]:.2f}" for k, label in (("f1", "F1"), ("precision", "P"), ("recall", "R")) if k in e]
+        return ", ".join(bits)
+    return ""
+
+
 def render_markdown(sc: dict) -> str:
     name = sc["metadata"].get("skill_name") or Path(sc["provenance"].get("source", "skill")).name
     mode = sc["metadata"].get("mode", "full")
@@ -114,13 +156,14 @@ def render_markdown(sc: dict) -> str:
         "",
         f"## {_bar(sc['score'])}  {sc['score']} / 100   Grade: {sc['grade']}   Verdict: {sc['verdict']}",
         "",
-        "| Dimension | Score | Weight |",
-        "|-----------|-------|--------|",
+        "| Dimension | Score | Weight | Detail |",
+        "|-----------|-------|--------|--------|",
     ]
     for dim, entry in sc["dimensions"].items():
         w = entry.get("weight")
-        wtxt = f"{w:.2f}" if isinstance(w, (int, float)) else "—"
-        lines.append(f"| {dim} | {entry['score']:.2f} | {wtxt} |")
+        wtxt = f"{w:.2f}" if isinstance(w, (int, float)) else "gate"
+        name = _DIM_NAMES.get(dim, dim)
+        lines.append(f"| {dim} {name} | {entry['score']:.2f} | {wtxt} | {_dim_detail(dim, entry)} |")
 
     safe = sc["safety"].get("safety_pass", True)
     lines += ["", f"Safety gate: {'PASS' if safe else 'FAIL (Reject)'}"]
