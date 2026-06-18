@@ -10,6 +10,9 @@ you *write* a skill, skval exists to *judge* one — rigorously and repeatably, 
 in the agent-evaluation literature (SWE-bench, GAIA, AgentBench, τ-bench) and the
 LLM-as-judge literature (Zheng et al. 2023, G-Eval, FLASK, HELM, Miller 2024).
 
+> 📖 **New here? Start with the [step-by-step usage guide](docs/USAGE.md)** — from
+> install to reading a full scorecard, with screenshots and copy-paste commands.
+
 ## Scoring model
 
 A **safety-gated, normalized weighted composite** over six dimensions — reported as a
