@@ -1,0 +1,8 @@
+{
+  "name": "skval",
+  "version": "0.1.0",
+  "description": "Skill Validator Framework — score a Claude Code skill against evals and benchmarks and get a ship/revise/reject verdict.",
+  "author": "DCCA",
+  "homepage": "https://github.com/DCCA/skval",
+  "keywords": ["skill", "validation", "evals", "benchmark", "scoring", "llm-as-judge"]
+}

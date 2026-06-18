@@ -83,6 +83,20 @@ Make a workspace dir, run these stages (each has a guide in `agents/`), then let
    D1–D5, applies the safety gate, and writes `scorecard.json` + `scorecard.md`
    (`metadata.mode = "full"`).
 
+## Comparing versions, batches & regressions
+
+- **Version A/B** — validate both versions, then `scripts/compare.py:compare_scorecards(a, b)`
+  for a per-dimension diff with significance. For output-level judging, follow
+  [agents/comparator.md](agents/comparator.md): it blinds provenance and **position-swaps**,
+  then `compare.py:decide_pairwise(...)` collapses both orders to a verdict.
+- **Regression tracking** — `scripts/history.py:append_run(history.json, scorecard)` after
+  each run; `detect_regression(history)` flags a drop vs. the best prior run.
+- **Batch** — rank many scorecards with `scripts/batch.py:rank_scorecards([...])`.
+- **Eval-viewer** — `scripts/benchmark_export.py` emits a skill-creator-compatible
+  `benchmark.json` so runs render in that project's viewer.
+- **Calibration** — tune dimension weights against a labeled corpus with
+  `scripts/calibrate.py:suggest_weights(examples)`.
+
 ## LLM-as-judge: bias mitigations (required)
 
 - **Blind provenance / cross-family:** never tell the judge which model or version made

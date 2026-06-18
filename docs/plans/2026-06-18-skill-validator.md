@@ -662,7 +662,12 @@ git push -u origin claude/vigilant-ptolemy-qyc153
 
 ---
 
-## M1–M3 Outline (separate future plans)
+## M1–M3 Outline (IMPLEMENTED)
+
+> **Status:** M1–M3 are implemented — see `scripts/` (aggregate, dimensions, validate_full,
+> compare, history, batch, benchmark_export, calibrate) and `agents/` (executor, grader,
+> artifact-judge, triggering, eval-generator, comparator). Original outline below.
+
 
 - **M1 — Behavioral + Judge (first real score):** `agents/eval-generator.md` (hybrid: read bundled `evals/evals.json`, else synthesize 3–5 discriminating evals; **review gate ON**), `agents/executor.md` (run skill with/without via subagents, N=5 trials), `agents/grader.md` (D2, adapted from skill-creator, reference-guided + evidence), `agents/artifact-judge.md` (D4, decomposed binary rubric, **provenance-blinded**), `aggregate.py` (port `aggregate_benchmark.py` + `pass^k`/std-error from `stats.py`), wire D2/D4 into the composite; LLM safety review extends D6. Validated by dogfooding (§12 of PRD), not unit tests.
 - **M2 — Reliability + Triggering:** formal `pass^k` reporting (D3) across N trials; `triggering.py` via `claude -p` (precision/recall/F1, D5); reuse skill-creator `eval-viewer` by emitting compatible `benchmark.json`.

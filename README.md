@@ -39,8 +39,11 @@ rest. See [`skills/skill-validator/references/scoring-rubric.md`](skills/skill-v
   agent prompts (`agents/`: eval generation, executor, grader, artifact judge,
   triggering) wired into the skill. The deterministic computation is unit-tested; the
   model-driven runs are agent-orchestrated per `SKILL.md`.
-- **M2–M3 — roadmap:** version comparison (pairwise + position-swap), regression history,
-  batch mode, eval-viewer integration, and weight calibration. See the
+- **M2–M3 — comparison & polish (done):** version A/B with pairwise **position-swap**
+  (`compare.py` + `agents/comparator.md`), regression **history** (`history.py`), **batch**
+  ranking (`batch.py`), **eval-viewer export** (`benchmark_export.py`), weight
+  **calibration** (`calibrate.py`), and a Claude Code **plugin manifest**
+  (`.claude-plugin/`). See the
   [implementation plan](docs/plans/2026-06-18-skill-validator.md) and
   [PRD](docs/prd/skill-validator-prd.md).
 
@@ -51,7 +54,8 @@ cp -r skills/skill-validator ~/.claude/skills/
 ```
 
 Then ask Claude to "validate / score / grade a skill," or run the deterministic path
-directly (below).
+directly (below). The repo also ships a `.claude-plugin/plugin.json`, so it can be
+installed as a Claude Code plugin (skills are auto-discovered from `skills/`).
 
 ## Use the deterministic scan now
 
@@ -82,7 +86,7 @@ tests/                    # pytest suite + fixtures (good / bad / unsafe skills)
 ## Develop
 
 ```bash
-uv run pytest          # 56 tests, deterministic, no network/model calls
+uv run pytest          # 72 tests, deterministic, no network/model calls
 ```
 
 Built with the [Superpowers](https://github.com/obra/superpowers) methodology
