@@ -36,6 +36,30 @@ def test_build_and_render(tmp_path):
     assert Path(m).exists()
 
 
+def test_render_shows_classification():
+    sc = scorecard.build_scorecard(
+        provenance={"source": "x", "kind": "dir"},
+        scoring_result=_scoring_result(),
+        d1_checks=[],
+        safety={"safety_pass": True, "findings": []},
+        metadata={"classification": {"type": "interactive", "confidence": "high", "also": ["file_transform"]}},
+    )
+    md = scorecard.render_markdown(sc)
+    assert "Type: interactive (confidence: high)" in md
+    assert "also: file_transform" in md
+
+
+def test_render_flags_low_confidence():
+    sc = scorecard.build_scorecard(
+        provenance={"source": "x", "kind": "dir"},
+        scoring_result=_scoring_result(),
+        d1_checks=[],
+        safety={"safety_pass": True, "findings": []},
+        metadata={"classification": {"type": "task", "confidence": "low", "also": []}},
+    )
+    assert "⚠ confirm the type" in scorecard.render_markdown(sc)
+
+
 def test_findings_from_failed_checks():
     checks = [
         Check("name_kebab_case", False, "major", "name 'Bad_Name' must be kebab-case"),

@@ -46,3 +46,13 @@ def test_signals_are_exposed():
     r = classify.classify_skill(_md("Extract tables from .xlsx spreadsheets."))
     assert r["signals"]["file_transform"]  # transparent: which patterns matched
     assert "scores" in r and "also" in r
+
+
+def test_confidence():
+    # clear winner -> high
+    strong = classify.classify_skill(_md(
+        "Use whenever the user wants to do anything with PDF files: extract text, merge PDFs, OCR."))
+    assert strong["confidence"] == "high"
+    # no signals -> task fallback -> low (agent should confirm)
+    weak = classify.classify_skill(_md("Produce a haiku from a topic the user provides."))
+    assert weak["type"] == "task" and weak["confidence"] == "low"

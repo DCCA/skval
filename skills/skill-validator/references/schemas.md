@@ -30,6 +30,7 @@ The machine-readable result of a validation run.
     "mode": "structural-only",
     "skipped_dimensions": ["D2", "D3", "D4", "D5"],
     "skill_name": "my-skill",
+    "classification": {"type": "interactive", "confidence": "high", "also": ["file_transform"]},
     "executor_model": "",
     "judge_model": "",
     "trials": 5,
@@ -48,6 +49,7 @@ The machine-readable result of a validation run.
 - `findings[]` — ranked `{dimension, impact_estimate, message}` (highest impact first).
 - `metadata.mode` — `"structural-only"` (M0, deterministic) or `"full"` (M1+).
 - `metadata.skipped_dimensions` — dimensions not measured in this run.
+- `metadata.classification` — detected skill type (`task`/`file_transform`/`interactive`/`discipline`/`reference`), `confidence`, and runner-up `also`; low confidence ⇒ confirm before choosing the eval strategy.
 
 ## `benchmark.json` (M2)
 

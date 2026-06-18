@@ -90,7 +90,20 @@ def classify_skill(skill_md_text: str, skill_dir=None) -> dict:
     if scores[top] == 0:
         top = "task"
     also = [t for t in _PRIORITY if t != top and scores.get(t, 0) > 0]
-    return {"type": top, "scores": scores, "signals": signals, "also": also}
+
+    # Confidence: high when the winner is clearly ahead; low for a fallback "task"
+    # (no signals) or a near-tie the agent should confirm.
+    second = max((scores[t] for t in _SIGNALS if t != top), default=0)
+    margin = scores.get(top, 0) - second
+    if top == "task":
+        confidence = "low"
+    elif margin >= 2:
+        confidence = "high"
+    elif margin == 1:
+        confidence = "medium"
+    else:
+        confidence = "low"
+    return {"type": top, "confidence": confidence, "scores": scores, "signals": signals, "also": also}
 
 
 _STRATEGY = {

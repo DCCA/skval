@@ -185,6 +185,7 @@ exactly what reveals the effectiveness lift:
 
 ## 8. How to read any scorecard
 
+- **Type line** — the detected skill type and confidence (e.g. `Type: interactive (confidence: high)`). A `⚠ confirm the type` flag means the classifier was unsure — double-check it before trusting the chosen eval strategy.
 - **The bar line** — score `/ 100`, letter **Grade**, and **Verdict**.
   - Grades: **A** ≥ 90 · **B** ≥ 80 · **C** ≥ 70 · **D** ≥ 50 · **F** < 50.
   - Verdict: **Ship** (≥ 80) · **Revise** (≥ 50) · **Reject** (< 50 *or* safety fail).

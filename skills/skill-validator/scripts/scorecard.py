@@ -153,6 +153,16 @@ def render_markdown(sc: dict) -> str:
     lines = [
         f"# Skill Scorecard — `{name}`",
         f"Source: {sc['provenance'].get('source')} · mode: {mode}",
+    ]
+    cls = sc["metadata"].get("classification")
+    if cls:
+        tline = f"Type: {cls.get('type')} (confidence: {cls.get('confidence', '?')})"
+        if cls.get("also"):
+            tline += f" · also: {', '.join(cls['also'])}"
+        if cls.get("confidence") == "low":
+            tline += "  ⚠ confirm the type before choosing the eval strategy"
+        lines.append(tline)
+    lines += [
         "",
         f"## {_bar(sc['score'])}  {sc['score']} / 100   Grade: {sc['grade']}   Verdict: {sc['verdict']}",
         "",
