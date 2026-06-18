@@ -78,10 +78,24 @@ Make a workspace dir, run these stages (each has a guide in `agents/`), then let
    `workspace/artifact_judgment.json`. Apply the bias mitigations below.
 5. **Triggering (D5)** → [agents/triggering.md](agents/triggering.md) writes
    `workspace/triggering.json`.
-6. **Assemble & score** → `python skills/skill-validator/scripts/validate_full.py <skill-source> <workspace>`.
+6. **Assemble & score** → `uv run python skills/skill-validator/scripts/validate_full.py <skill-source> <workspace>`.
    It aggregates the runs (`pass^k`, baseline lift, significance), maps every signal to
    D1–D5, applies the safety gate, and writes `scorecard.json` + `scorecard.md`
    (`metadata.mode = "full"`).
+
+## Comparing versions, batches & regressions
+
+- **Version A/B** — validate both versions, then `scripts/compare.py:compare_scorecards(a, b)`
+  for a per-dimension diff with significance. For output-level judging, follow
+  [agents/comparator.md](agents/comparator.md): it blinds provenance and **position-swaps**,
+  then `compare.py:decide_pairwise(...)` collapses both orders to a verdict.
+- **Regression tracking** — `scripts/history.py:append_run(history.json, scorecard)` after
+  each run; `detect_regression(history)` flags a drop vs. the best prior run.
+- **Batch** — rank many scorecards with `scripts/batch.py:rank_scorecards([...])`.
+- **Eval-viewer** — `scripts/benchmark_export.py` emits a skill-creator-compatible
+  `benchmark.json` so runs render in that project's viewer.
+- **Calibration** — tune dimension weights against a labeled corpus with
+  `scripts/calibrate.py:suggest_weights(examples)`.
 
 ## LLM-as-judge: bias mitigations (required)
 

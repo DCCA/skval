@@ -22,14 +22,19 @@ _BANDS = [(90, "A"), (80, "B"), (70, "C"), (50, "D"), (0, "F")]
 
 
 def composite(dims: dict, safety_pass: bool, weights: dict | None = None) -> int:
-    """Gated, normalized, weighted composite in [0, 100]. 0 if safety fails."""
+    """Gated, normalized, weighted composite in [0, 100]. 0 if safety fails.
+
+    Dimension values are clamped to [0, 1] so a stray out-of-range input can't
+    push the score outside [0, 100]; a present-weight sum of 0 (possible with a
+    calibrated weight vector) returns 0 rather than dividing by zero.
+    """
     if not safety_pass:
         return 0
     weights = weights or DEFAULT_WEIGHTS
-    present = {d: v for d, v in dims.items() if d in weights}
-    if not present:
-        return 0
+    present = {d: min(1.0, max(0.0, v)) for d, v in dims.items() if d in weights}
     total_w = sum(weights[d] for d in present)
+    if not present or total_w <= 0:
+        return 0
     raw = sum(weights[d] * present[d] for d in present) / total_w
     return round(100 * raw)
 

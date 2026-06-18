@@ -1,6 +1,6 @@
 # Skill Validator Framework (`skval`) — Product Requirements Document
 
-**Status:** Draft for review · **Date:** 2026-06-18 · **Owner:** dcca12@gmail.com
+**Status:** Implemented (M0–M3) · **Date:** 2026-06-18 · **Owner:** dcca12@gmail.com
 **Working name:** `skval` (repo) / `skill-validator` (the skill)
 **Author of this draft:** Claude (via Superpowers `brainstorming` methodology)
 

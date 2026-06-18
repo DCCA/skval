@@ -36,13 +36,6 @@ def _read_json(path: Path):
         return None
 
 
-def _skill_name(skill_md: Path) -> str | None:
-    try:
-        return static_checks.parse_frontmatter(skill_md.read_text()).get("name")
-    except (ValueError, OSError):
-        return None
-
-
 def validate_full(skill_source: str, workspace: Path, out_dir: Path | None = None) -> dict:
     workspace = Path(workspace)
     out_dir = Path(out_dir) if out_dir else workspace
@@ -75,7 +68,7 @@ def validate_full(skill_source: str, workspace: Path, out_dir: Path | None = Non
         dimensions_detail=detail,
         metadata={
             "mode": mode,
-            "skill_name": _skill_name(resolved["skill_md"]),
+            "skill_name": static_checks.skill_name(resolved["skill_md"]),
             "timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         },
     )

@@ -22,7 +22,7 @@ def _ci(pattern: str) -> re.Pattern:
 
 _PATTERNS = [
     (_ci(r"rm\s+-[rf]{2}\s+/(?![\w.])"), "critical", "destructive: recursive delete of root"),
-    (_ci(r"rm\s+-[rf]{2}\s+(~|\*|\$HOME)\b"), "critical", "destructive: recursive delete of home/glob"),
+    (_ci(r"rm\s+-[rf]{2}\s+(~|\*|\$HOME)(?=/|\s|$)"), "critical", "destructive: recursive delete of home/glob"),
     (_ci(r"\bmkfs(\.\w+)?\b"), "critical", "destructive: filesystem format"),
     (_ci(r"\bdd\s+if="), "critical", "destructive: raw disk write"),
     (_ci(r":\(\)\s*\{\s*:\s*\|\s*:\s*&\s*\}\s*;\s*:"), "critical", "fork bomb"),
