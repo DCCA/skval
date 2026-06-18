@@ -12,11 +12,21 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+import classify
 import resolve_skill
 import safety_scan
 import scorecard
 import scoring
 import static_checks
+
+
+def _classify(skill_md, skill_dir) -> dict | None:
+    """Compact skill-type classification for the scorecard (None if unreadable)."""
+    try:
+        r = classify.classify_skill(Path(skill_md).read_text(), skill_dir)
+    except OSError:
+        return None
+    return {"type": r["type"], "confidence": r["confidence"], "also": r["also"]}
 
 
 def validate_structural(source: str, out_dir: Path) -> dict:
@@ -38,6 +48,7 @@ def validate_structural(source: str, out_dir: Path) -> dict:
         metadata={
             "mode": "structural-only",
             "skill_name": static_checks.skill_name(resolved["skill_md"]),
+            "classification": _classify(resolved["skill_md"], skill_dir),
             "timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         },
     )
