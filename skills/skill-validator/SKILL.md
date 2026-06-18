@@ -59,6 +59,24 @@ shape.
 
 Bands: A≥90, B≥80 (Ship); C≥70, D≥50 (Revise); else F (Reject). Default trials **N=5**.
 
+## Pick the eval strategy (classify first)
+
+Different skills need different evals, so **classify the skill before generating evals.**
+Run `scripts/classify.py <skill-source>` for a transparent first pass (it prints the type,
+the runner-up `also`, and the matched signals), then confirm with your own read and route:
+
+| Type | Tell-tale | Eval strategy & tools |
+|------|-----------|-----------------------|
+| **task** (default) | one-shot input → output | standard single-turn executor + grader |
+| **file_transform** | acts on / produces files (pdf, xlsx, docx, …) | eval-generator creates **fixtures** (`scripts/eval_fixtures.py`); executor stages inputs; grader opens & **evaluates output files** (recalc formulas) |
+| **interactive** | must ask / confirm / gather before acting | **`type: multi_turn`** evals + the **[user-simulator](agents/user-simulator.md)**; grade interaction via `scripts/conversation.py` |
+| **discipline / process** | shapes *how* you work (TDD, debugging, review) | scenario evals; weight **D4 artifact quality**; expect a small single-task lift — judge adherence |
+| **reference / knowledge** | provides facts / answers | Q&A evals graded against `expected_output` |
+
+A skill can be more than one (e.g. file_transform **and** interactive) — combine strategies.
+`scripts/classify.py:recommend_strategy(type)` returns the executor mode / fixtures / grading
+focus / agents for each.
+
 ## Full validation workflow
 
 Make a workspace dir, run these stages (each has a guide in `agents/`), then let
@@ -67,9 +85,11 @@ Make a workspace dir, run these stages (each has a guide in `agents/`), then let
 0. **Resolve** the input → canonical skill dir (`scripts/resolve_skill.py`).
 1. **Structural + safety** → run `scripts/validate_structural.py` (D1 + D6 gate). If the
    safety gate fails, stop and report Reject.
-2. **Evals (hybrid)** → follow [agents/eval-generator.md](agents/eval-generator.md): use
-   the skill's bundled `evals/evals.json` if present, else synthesize discriminating
-   evals; also build the triggering query set. **Review gate is ON.**
+2. **Classify & evals (hybrid)** → classify the skill (above) to pick the strategy, then
+   follow [agents/eval-generator.md](agents/eval-generator.md): use the skill's bundled
+   `evals/evals.json` if present, else synthesize discriminating evals **of the right kind for
+   the type** (fixtures for file_transform, `multi_turn` for interactive, …); also build the
+   triggering query set. **Review gate is ON.**
 3. **Behavioral runs (D2/D3)** → for each eval, dispatch [agents/executor.md](agents/executor.md)
    subagents — with-skill and without-skill baseline, **N=5 trials each** — into
    `workspace/runs/eval-<id>/<config>/run-<k>/`.

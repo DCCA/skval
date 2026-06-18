@@ -11,8 +11,11 @@ the skill's own evals; only synthesize when they're missing.
 
 1. **Check for bundled evals.** If `skill_dir/evals/evals.json` exists, copy it to
    `workspace/evals.json` unchanged and skip to step 4. (Schema below.)
-2. **Read the skill** (`SKILL.md` + referenced files) to understand what it claims to do,
-   when it should trigger, and what a correct output looks like.
+2. **Read & classify the skill** (`SKILL.md` + referenced files) to understand what it
+   claims to do, when it should trigger, and what a correct output looks like. Run
+   `scripts/classify.py <skill_dir>` (and confirm by reading) — the **type drives the eval
+   kinds**: fixtures for `file_transform`, `multi_turn` + user-simulator for `interactive`,
+   scenario/adherence for `discipline`, Q&A-vs-reference for `reference`.
 3. **Synthesize 3–5 task evals.** Each must be a realistic, concrete task a real user
    would give (specific file names, values, context — not "do the thing"). For each,
    write **discriminating expectations**: assertions that *fail* for a wrong or
