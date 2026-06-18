@@ -89,6 +89,10 @@ uv run python skills/skill-validator/scripts/validate_structural.py tests/fixtur
 
 ## 6. The full behavioral scorecard
 
+skval first **classifies the skill** — task, file-transform, interactive, discipline, or
+reference — and routes to the right eval strategy automatically (fixtures for file-transform,
+a multi-turn conversation for interactive, and so on; see `scripts/classify.py`).
+
 The complete picture scores **six things** — best run via “ask Claude” (step 2),
 which generates evals, runs the task **with and without the skill** several times,
 grades the outputs, judges artifact quality, and tests triggering. It then assembles
