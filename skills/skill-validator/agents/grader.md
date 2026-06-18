@@ -19,6 +19,10 @@ subagent (or run inline) per run. Adapted from Anthropic skill-creator's grader.
      (right filename but empty/wrong content = FAIL).
 3. **Critique the evals:** flag any assertion that a clearly-wrong output would still pass,
    or any important outcome no assertion covers.
+4. **Multi-turn evals:** read `run_dir/transcript.json` and grade interaction expectations
+   (e.g. "asks ≥2 questions before delivering", "asks about budget before ordering). Use
+   `scripts/conversation.py` for the objective counts (`questions_before_delivery`,
+   `asked_about`) and cite the specific turn(s) as evidence.
 
 ## Output — `run_dir/grading.json`
 Write **only raw JSON** to this file — no Markdown ` ``` ` fences and no prose before or

@@ -29,6 +29,20 @@ Run one eval, once, in one configuration. Dispatch this as a **fresh subagent** 
 - Capture timing/tokens from the task-completion notification into `run_dir/timing.json`
   if the harness provides them.
 
+## Multi-turn evals (`type: multi_turn`)
+Some skills must **ask before acting**. For these, run a loop instead of one shot:
+1. Seed the transcript with the eval `prompt` as the first user turn.
+2. Produce the assistant turn (`with_skill`: follow the skill; `without_skill`: default ability).
+3. If the assistant **asked a question** (didn't deliver), get the next user turn from the
+   **user-simulator** ([user-simulator.md](user-simulator.md)) using the eval's `user_simulator`
+   persona/goal/answers, append it, and repeat — up to `max_turns`.
+4. Stop when the assistant delivers the final result, the simulator returns `[[DONE]]`, or
+   `max_turns` is hit.
+
+Save the exchange to `run_dir/transcript.json` (a list of `{role, content}`) and record the
+delivery turn index. The grader scores interaction expectations from this with
+`scripts/conversation.py` (e.g. `questions_before_delivery`, `asked_about`).
+
 ## Headless fallback
 Without subagents, run each configuration with `claude -p` instead. Inject the skill by
 **stripping its `---` frontmatter** and prefixing plain text — never start a `claude -p`
