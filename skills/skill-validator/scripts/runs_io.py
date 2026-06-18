@@ -9,8 +9,9 @@ through to the benchmark export instead of being silently dropped.
 
 from __future__ import annotations
 
-import json
 from pathlib import Path
+
+import jsonutil
 
 
 def load_runs(bench_dir: Path) -> dict[str, list[dict]]:
@@ -29,10 +30,10 @@ def load_runs(bench_dir: Path) -> dict[str, list[dict]]:
                 gf = run_dir / "grading.json"
                 if not gf.exists():
                     continue
-                try:
-                    summary = json.loads(gf.read_text()).get("summary", {})
-                except json.JSONDecodeError:
+                data = jsonutil.read_or(gf)
+                if data is None:
                     continue
+                summary = data.get("summary", {})
                 try:
                     run_number = int(run_dir.name.split("-", 1)[1])
                 except (ValueError, IndexError):
@@ -56,11 +57,8 @@ def load_runs(bench_dir: Path) -> dict[str, list[dict]]:
 
 
 def _merge_optional(run: dict, path: Path, mapping: dict[str, str]) -> None:
-    if not path.exists():
-        return
-    try:
-        data = json.loads(path.read_text())
-    except (json.JSONDecodeError, OSError):
+    data = jsonutil.read_or(path)
+    if not isinstance(data, dict):
         return
     for src, dst in mapping.items():
         if src in data:

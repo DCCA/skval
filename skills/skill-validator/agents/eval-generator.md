@@ -28,6 +28,8 @@ the skill's own evals; only synthesize when they're missing.
 
 ## Output schemas
 
+Write **only raw JSON** to each file below — no Markdown ` ``` ` fences and no surrounding prose.
+
 `workspace/evals.json`:
 ```json
 {

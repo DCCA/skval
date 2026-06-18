@@ -26,6 +26,7 @@ Would you consult this skill? Answer exactly YES or NO." --model <session-model>
   false & YES → FP; false & NO → TN.
 
 ## Output — `workspace/triggering.json`
+Write **only raw JSON** to this file — no Markdown ` ``` ` fences and no surrounding prose.
 ```json
 {
   "tp": 8, "fp": 1, "fn": 2, "tn": 9,
