@@ -53,6 +53,9 @@ def test_confidence():
     strong = classify.classify_skill(_md(
         "Use whenever the user wants to do anything with PDF files: extract text, merge PDFs, OCR."))
     assert strong["confidence"] == "high"
-    # no signals -> task fallback -> low (agent should confirm)
-    weak = classify.classify_skill(_md("Produce a haiku from a topic the user provides."))
-    assert weak["type"] == "task" and weak["confidence"] == "low"
+    # plain task (no signals) -> medium default, not flagged as ambiguous
+    plain = classify.classify_skill(_md("Produce a haiku from a topic the user provides."))
+    assert plain["type"] == "task" and plain["confidence"] == "medium"
+    # genuine tie between two types -> low (agent should confirm)
+    tie = classify.classify_skill(_md("Update the spreadsheet after you ask the user for the new total."))
+    assert tie["confidence"] == "low" and tie["also"]
