@@ -143,6 +143,15 @@ commit-conventions/
   uv run python skills/skill-validator/scripts/benchmark_export.py <workspace>/runs benchmark.json <skill-name>
   ```
 
+**The eval set** (`evals/evals.json`) is just the tasks and their pass/fail expectations:
+
+![The eval set — evals.json with two evals and their expectations](images/evals-set.png)
+
+**Each result** is recorded per trial; comparing the two configurations for one eval is
+exactly what reveals the effectiveness lift:
+
+![One eval, with-skill vs baseline — 3/3 PASS vs 0/3 FAIL, +33% lift](images/eval-result.png)
+
 > Using the “ask Claude” path? Claude prints the scorecard in chat and writes these
 > same files to its working directory — just ask it to “show me eval-0’s output” or
 > “where’s the workspace” to jump straight in.

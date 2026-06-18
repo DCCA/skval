@@ -17,6 +17,8 @@ trials over 2 evals, with and without the skill**.
 | [`workspace/triggering.json`](workspace/triggering.json) | D5 — every test query and whether it fired |
 | [`workspace/benchmark.json`](workspace/benchmark.json) | Ready to open in skill-creator's eval-viewer |
 
+![The eval set — evals.json](../../images/evals-set.png)
+
 ## See the lift for yourself
 Open one with-skill output next to a without-skill output for the same eval:
 
@@ -24,7 +26,9 @@ Open one with-skill output next to a without-skill output for the same eval:
 - [`workspace/runs/eval-0/without_skill/run-2/outputs/commit.txt`](workspace/runs/eval-0/without_skill/run-2/outputs/commit.txt)
 
 Comparing the two configurations, trial by trial, is exactly what produces the
-**+33% effectiveness lift** reported in the scorecard.
+**+33% effectiveness lift** reported in the scorecard:
+
+![One eval, with-skill vs baseline — 3/3 PASS vs 0/3 FAIL](../../images/eval-result.png)
 
 ## Reproduce
 ```bash
