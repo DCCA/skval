@@ -29,3 +29,15 @@ def test_unsafe_skill_is_rejected(tmp_path):
 def test_skill_name_recorded(tmp_path):
     sc = v.validate_structural(str(FX / "good-skill"), tmp_path)
     assert sc["metadata"]["skill_name"] == "good-skill"
+
+
+def test_classification_recorded(tmp_path):
+    sc = v.validate_structural(str(FX / "good-skill"), tmp_path)
+    assert sc["metadata"]["classification"]["type"] in (
+        "task", "file_transform", "interactive", "discipline", "reference")
+
+
+def test_type_override(tmp_path):
+    sc = v.validate_structural(str(FX / "good-skill"), tmp_path, type_override="interactive")
+    assert sc["metadata"]["classification"] == {"type": "interactive", "confidence": "forced", "also": []}
+    assert "Type: interactive (confidence: forced)" in __import__("scorecard").render_markdown(sc)

@@ -20,8 +20,13 @@ import scoring
 import static_checks
 
 
-def _classify(skill_md, skill_dir) -> dict | None:
-    """Compact skill-type classification for the scorecard (None if unreadable)."""
+def _classify(skill_md, skill_dir, override=None) -> dict | None:
+    """Compact skill-type classification for the scorecard (None if unreadable).
+
+    ``override`` forces a type (confidence ``forced``) so the agent can pin the strategy.
+    """
+    if override:
+        return {"type": override, "confidence": "forced", "also": []}
     try:
         r = classify.classify_skill(Path(skill_md).read_text(), skill_dir)
     except OSError:
@@ -29,7 +34,7 @@ def _classify(skill_md, skill_dir) -> dict | None:
     return {"type": r["type"], "confidence": r["confidence"], "also": r["also"]}
 
 
-def validate_structural(source: str, out_dir: Path) -> dict:
+def validate_structural(source: str, out_dir: Path, type_override: str | None = None) -> dict:
     out_dir = Path(out_dir)
     resolved = resolve_skill.resolve(source, out_dir / "resolved")
     skill_dir = resolved["skill_dir"]
@@ -48,7 +53,7 @@ def validate_structural(source: str, out_dir: Path) -> dict:
         metadata={
             "mode": "structural-only",
             "skill_name": static_checks.skill_name(resolved["skill_md"]),
-            "classification": _classify(resolved["skill_md"], skill_dir),
+            "classification": _classify(resolved["skill_md"], skill_dir, type_override),
             "timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         },
     )
@@ -62,9 +67,11 @@ def main(argv=None) -> int:
     )
     parser.add_argument("source", help="skill directory, SKILL.md file, or .skill/.zip archive")
     parser.add_argument("--out", default="skval-runs/latest", help="output directory for the scorecard")
+    parser.add_argument("--type", choices=classify.TYPES, default=None,
+                        help="force the skill type (overrides auto-classification)")
     args = parser.parse_args(argv)
 
-    sc = validate_structural(args.source, Path(args.out))
+    sc = validate_structural(args.source, Path(args.out), type_override=args.type)
     print(scorecard.render_markdown(sc))
     return 1 if sc["verdict"] == "Reject" else 0
 

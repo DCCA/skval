@@ -87,6 +87,17 @@ def build_scorecard(
     metadata = dict(metadata or {})
     metadata.setdefault("skipped_dimensions", [d for d in _ALL_DIMS if d not in dims])
 
+    fnd = findings if findings is not None else derive_findings(d1_checks, safety, dimensions_detail)
+    cls = metadata.get("classification")
+    if cls and cls.get("confidence") == "low":  # genuine type ambiguity — advisory, zero score impact
+        also = f" vs {', '.join(cls.get('also', []))}" if cls.get("also") else ""
+        fnd = list(fnd) + [{
+            "dimension": "info",
+            "impact_estimate": 0,
+            "message": f"Ambiguous skill type ({cls.get('type')}{also}) — confirm before choosing the eval strategy",
+        }]
+        fnd.sort(key=lambda x: x["impact_estimate"], reverse=True)
+
     return {
         "score": scoring_result["score"],
         "grade": scoring_result["grade"],
@@ -94,7 +105,7 @@ def build_scorecard(
         "safety_pass": scoring_result.get("safety_pass", safety.get("safety_pass", True)),
         "dimensions": dimensions,
         "safety": safety,
-        "findings": findings if findings is not None else derive_findings(d1_checks, safety, dimensions_detail),
+        "findings": fnd,
         "provenance": provenance,
         "metadata": metadata,
     }

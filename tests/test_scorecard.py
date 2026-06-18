@@ -49,15 +49,32 @@ def test_render_shows_classification():
     assert "also: file_transform" in md
 
 
-def test_render_flags_low_confidence():
+def test_low_confidence_flags_and_adds_finding():
     sc = scorecard.build_scorecard(
         provenance={"source": "x", "kind": "dir"},
         scoring_result=_scoring_result(),
         d1_checks=[],
         safety={"safety_pass": True, "findings": []},
-        metadata={"classification": {"type": "task", "confidence": "low", "also": []}},
+        metadata={"classification": {"type": "file_transform", "confidence": "low", "also": ["interactive"]}},
     )
+    # rendered ⚠ on the Type line
     assert "⚠ confirm the type" in scorecard.render_markdown(sc)
+    # and an advisory finding (zero score impact -> verdict/score unchanged)
+    msgs = [f["message"] for f in sc["findings"]]
+    assert any("Ambiguous skill type" in m for m in msgs)
+    assert sc["score"] == 78 and all(f["impact_estimate"] == 0 for f in sc["findings"] if "Ambiguous" in f["message"])
+
+
+def test_medium_confidence_adds_no_finding():
+    sc = scorecard.build_scorecard(
+        provenance={"source": "x", "kind": "dir"},
+        scoring_result=_scoring_result(),
+        d1_checks=[],
+        safety={"safety_pass": True, "findings": []},
+        metadata={"classification": {"type": "task", "confidence": "medium", "also": []}},
+    )
+    assert sc["findings"] == []
+    assert "⚠" not in scorecard.render_markdown(sc)
 
 
 def test_findings_from_failed_checks():

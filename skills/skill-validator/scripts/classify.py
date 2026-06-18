@@ -91,18 +91,18 @@ def classify_skill(skill_md_text: str, skill_dir=None) -> dict:
         top = "task"
     also = [t for t in _PRIORITY if t != top and scores.get(t, 0) > 0]
 
-    # Confidence: high when the winner is clearly ahead; low for a fallback "task"
-    # (no signals) or a near-tie the agent should confirm.
+    # Confidence: high = clear winner; medium = a slim lead or a plain "task"
+    # default (no signals); low = a genuine tie with a runner-up the agent should confirm.
     second = max((scores[t] for t in _SIGNALS if t != top), default=0)
     margin = scores.get(top, 0) - second
     if top == "task":
-        confidence = "low"
+        confidence = "medium"   # nothing detected — a reasonable default, not contested
     elif margin >= 2:
         confidence = "high"
     elif margin == 1:
         confidence = "medium"
     else:
-        confidence = "low"
+        confidence = "low"      # tie: another type scored equally
     return {"type": top, "confidence": confidence, "scores": scores, "signals": signals, "also": also}
 
 
@@ -122,6 +122,9 @@ _STRATEGY = {
                   "grading": "answer accuracy vs reference (expected_output)",
                   "agents": ["eval-generator", "executor", "grader"]},
 }
+
+
+TYPES = tuple(_STRATEGY)  # valid skill types (for --type overrides etc.)
 
 
 def recommend_strategy(skill_type: str) -> dict:

@@ -63,7 +63,9 @@ Bands: A≥90, B≥80 (Ship); C≥70, D≥50 (Revise); else F (Reject). Default 
 
 Different skills need different evals, so **classify the skill before generating evals.**
 Run `scripts/classify.py <skill-source>` for a transparent first pass (it prints the type,
-the runner-up `also`, and the matched signals), then confirm with your own read and route:
+the runner-up `also`, and the matched signals), then confirm with your own read and route.
+The scorecard shows the detected `Type` + confidence and flags a low-confidence (ambiguous)
+classification as a finding; force the type with `--type <type>` on `validate_structural`/`validate_full`.
 
 | Type | Tell-tale | Eval strategy & tools |
 |------|-----------|-----------------------|

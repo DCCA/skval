@@ -91,7 +91,9 @@ uv run python skills/skill-validator/scripts/validate_structural.py tests/fixtur
 
 skval first **classifies the skill** — task, file-transform, interactive, discipline, or
 reference — and routes to the right eval strategy automatically (fixtures for file-transform,
-a multi-turn conversation for interactive, and so on; see `scripts/classify.py`).
+a multi-turn conversation for interactive, and so on; see `scripts/classify.py`). The detected
+type and confidence show on the scorecard; an ambiguous (low-confidence) classification is
+flagged as a finding, and you can force the type with `--type <type>`.
 
 The complete picture scores **six things** — best run via “ask Claude” (step 2),
 which generates evals, runs the task **with and without the skill** several times,
