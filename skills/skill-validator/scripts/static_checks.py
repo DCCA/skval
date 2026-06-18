@@ -33,7 +33,9 @@ _SEVERITY_WEIGHT = {"critical": 3, "major": 2, "minor": 1}
 
 _FRONTMATTER_RE = re.compile(r"^---\n(.*?)\n---", re.DOTALL)
 _MD_LINK_RE = re.compile(r"\[[^\]]*\]\(([^)]+)\)")
-_MD_REF_DEF_RE = re.compile(r"^\s*\[[^\]]+\]:\s*(\S+)", re.MULTILINE)
+# Reference-style definition: destination must be on the SAME line (so a prose
+# heading like "[Subagent returns]:" with nothing after it isn't treated as a link).
+_MD_REF_DEF_RE = re.compile(r"^\s*\[[^\]]+\]:[^\S\n]+(\S+)", re.MULTILINE)
 _LINE_BUDGET = 500
 _TOKEN_BUDGET = 5000  # estimated tokens for the SKILL.md body
 
@@ -92,12 +94,33 @@ def _clean_target(raw: str) -> str:
     return t.split("#")[0].strip()
 
 
+def _is_external_or_anchor(t: str) -> bool:
+    return (not t) or bool(re.match(r"^[a-z]+://", t)) or t.startswith(("#", "mailto:"))
+
+
+def _looks_local_path(t: str) -> bool:
+    """A real local-file reference has a path separator or a file extension.
+
+    Reference-style `[label]: text` lines are often prose (code-review templates,
+    definition lists), so we only treat their destination as a checkable file path
+    when it actually looks like one — otherwise `[Note]: see below` is flagged spuriously.
+    """
+    return ("/" in t) or bool(re.search(r"\.[A-Za-z0-9]{1,6}$", t))
+
+
 def _broken_local_refs(skill_dir: Path, text: str) -> list[str]:
     broken = []
-    # Inline links [t](path) and reference-style definitions [id]: path.
-    for raw in _MD_LINK_RE.findall(text) + _MD_REF_DEF_RE.findall(text):
+    # Inline links [t](path) are intentional — check any local target.
+    for raw in _MD_LINK_RE.findall(text):
         target = _clean_target(raw)
-        if not target or re.match(r"^[a-z]+://", target) or target.startswith(("#", "mailto:")):
+        if _is_external_or_anchor(target):
+            continue
+        if not (skill_dir / target).exists():
+            broken.append(target)
+    # Reference-style [id]: dest — only check destinations that look like local paths.
+    for raw in _MD_REF_DEF_RE.findall(text):
+        target = _clean_target(raw)
+        if _is_external_or_anchor(target) or not _looks_local_path(target):
             continue
         if not (skill_dir / target).exists():
             broken.append(target)

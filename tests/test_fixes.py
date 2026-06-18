@@ -72,6 +72,13 @@ def test_skill_name_helper(tmp_path):
     assert sc.skill_name(d / "nope.md") is None
 
 
+def test_prose_label_not_flagged_as_broken_ref(tmp_path):
+    # A prose heading "[Subagent returns]:" and a "[Note]: see below" line are not links.
+    body = GOOD + "\n[Subagent returns]:\n\nStrengths: what went well\n\n[Note]: see the section below\n"
+    checks = {c.id: c for c in sc.run_checks(_write(tmp_path, body, "prose"))}
+    assert checks["no_broken_local_refs"].passed
+
+
 # --- runs_io: optional metrics/timing flow through ---
 def _mk_run(base, eval_id, cfg, run, pr, metrics=None, timing=None):
     d = base / f"eval-{eval_id}" / cfg / f"run-{run}"
