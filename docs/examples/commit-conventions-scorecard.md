@@ -1,5 +1,9 @@
 # Example: a live `skval` full-validation run
 
+> 📂 **Want to browse the actual eval set and every per-trial result?** They're committed
+> at [`commit-conventions/`](commit-conventions/) — `evals/evals.json`, the full `runs/`
+> tree, judgments, and the scorecard.
+
 A real `skval` **full** (M1) validation of a small example skill,
 `commit-conventions`, produced by actually running the behavioral pipeline via
 `claude -p` — N=3 trials × 2 evals, with-skill vs no-skill — plus an LLM artifact

@@ -1,0 +1,44 @@
+{
+  "criteria": [
+    {
+      "id": "description_triggering",
+      "passed": true,
+      "evidence": "'Use when writing a git commit message' is a clear, specific trigger condition that tells the harness when to invoke this skill."
+    },
+    {
+      "id": "overview_clear",
+      "passed": true,
+      "evidence": "The heading and description together state the goal unambiguously: produce a Conventional Commits formatted message for staged changes."
+    },
+    {
+      "id": "instructions_actionable",
+      "passed": true,
+      "evidence": "Provides the exact format string, an exhaustive type list, and three concrete summary rules (imperative, lowercase, no trailing period). Scope usage is implied by the format template."
+    },
+    {
+      "id": "progressive_disclosure",
+      "passed": false,
+      "evidence": "The skill is short enough that layering isn't strictly required, but there is no hierarchy at all \u2014 optional vs required fields (scope is optional in the spec) and edge cases (breaking changes, multi-line body) are absent with no indication they exist."
+    },
+    {
+      "id": "example_present",
+      "passed": true,
+      "evidence": "A concrete Input/Output pair is provided that directly illustrates the format rule and type selection."
+    },
+    {
+      "id": "output_defined",
+      "passed": true,
+      "evidence": "'Output ONLY the commit message line, nothing else.' is unambiguous and immediately actionable."
+    },
+    {
+      "id": "self_contained",
+      "passed": false,
+      "evidence": "The description says 'for staged changes' but the body contains no instruction to inspect staged changes (e.g., run git diff --staged). A model following only these instructions would not know how to obtain the diff to write the message from."
+    },
+    {
+      "id": "appropriately_scoped",
+      "passed": true,
+      "evidence": "Tightly scoped to a single, well-bounded task (formatting one commit message line) with no feature creep into branch naming, PR templates, or changelog generation."
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+```
+fix: handle null user profile image to prevent crash
+
+Guard against missing profile image reference that caused a null-pointer exception when the user has no profile image set.
+```
