@@ -1,0 +1,41 @@
+{
+  "tp": 3,
+  "fp": 0,
+  "fn": 0,
+  "tn": 3,
+  "precision": 1.0,
+  "recall": 1.0,
+  "f1": 1.0,
+  "per_query": [
+    {
+      "query": "write a commit message for my staged change adding a logout button",
+      "should_trigger": true,
+      "fired": true
+    },
+    {
+      "query": "i need a conventional commit for a bugfix in the json parser",
+      "should_trigger": true,
+      "fired": true
+    },
+    {
+      "query": "help me phrase the git commit for this refactor of the cache layer",
+      "should_trigger": true,
+      "fired": true
+    },
+    {
+      "query": "write a python function to parse a csv file",
+      "should_trigger": false,
+      "fired": false
+    },
+    {
+      "query": "summarize this blog post about git workflows",
+      "should_trigger": false,
+      "fired": false
+    },
+    {
+      "query": "what's the git command to undo my last commit",
+      "should_trigger": false,
+      "fired": false
+    }
+  ]
+}

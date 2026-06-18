@@ -1,0 +1,1 @@
+{"expectations": [{"text": "Conventional Commits format", "passed": false, "evidence": ""}, {"text": "type in allowed set", "passed": false, "evidence": ""}, {"text": "summary has no trailing period", "passed": false, "evidence": ""}], "summary": {"passed": 0, "failed": 3, "total": 3, "pass_rate": 0.0}}

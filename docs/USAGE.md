@@ -115,7 +115,39 @@ helps.
 
 ---
 
-## 7. How to read any scorecard
+## 7. Where your results are saved — and how to open the evals
+
+Everything from a run lands in the **workspace** you point `validate_full.py` at
+(or `--out`). A complete real run is committed at
+**[`docs/examples/commit-conventions/`](examples/commit-conventions/)** — click in to
+browse an actual eval set and every per-trial result:
+
+```
+commit-conventions/
+├── evals/evals.json                      ← the eval set (the tasks + expectations)
+└── workspace/
+    ├── scorecard.md / scorecard.json     ← the headline result
+    ├── artifact_judgment.json            ← D4 rubric detail
+    ├── triggering.json                   ← D5 per-query results
+    ├── benchmark.json                    ← open in the skill-creator eval-viewer
+    └── runs/eval-<id>/<config>/run-<k>/
+        ├── grading.json                  ← per-trial pass/fail + evidence
+        └── outputs/                      ← the actual output the model produced
+```
+
+- **The eval set** — `evals/evals.json` (bundled with the skill, or generated into the workspace during a run).
+- **The headline** — `scorecard.md` (for you) / `scorecard.json` (for CI/tooling).
+- **The granular evidence** — `runs/eval-*/{with_skill,without_skill}/run-*/` lets you compare, trial by trial, what the model produced with vs. without the skill. That delta is the effectiveness lift.
+- **Interactive** — export to the skill-creator eval-viewer format:
+  ```bash
+  uv run python skills/skill-validator/scripts/benchmark_export.py <workspace>/runs benchmark.json <skill-name>
+  ```
+
+> Using the “ask Claude” path? Claude prints the scorecard in chat and writes these
+> same files to its working directory — just ask it to “show me eval-0’s output” or
+> “where’s the workspace” to jump straight in.
+
+## 8. How to read any scorecard
 
 - **The bar line** — score `/ 100`, letter **Grade**, and **Verdict**.
   - Grades: **A** ≥ 90 · **B** ≥ 80 · **C** ≥ 70 · **D** ≥ 50 · **F** < 50.
@@ -126,7 +158,7 @@ helps.
 
 ---
 
-## 8. Going further (advanced)
+## 9. Going further (advanced)
 
 | You want to… | Use |
 |---|---|
@@ -142,4 +174,4 @@ helps.
 - [README](../README.md) — overview and the scoring model
 - [Scoring rubric](../skills/skill-validator/references/scoring-rubric.md) — every check and weight
 - [PRD](prd/skill-validator-prd.md) and [implementation plan](plans/2026-06-18-skill-validator.md)
-- [An example live run](examples/commit-conventions-scorecard.md)
+- [A complete example run](examples/commit-conventions/) — eval set + per-trial results + scorecard you can browse
