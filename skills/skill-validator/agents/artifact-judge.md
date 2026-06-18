@@ -26,6 +26,7 @@ point to the specific line/section). Reason step by step before deciding. Judge 
 | `appropriately_scoped` | Focused on one coherent capability, not many unrelated ones. |
 
 ## Output — `workspace/artifact_judgment.json`
+Write **only raw JSON** to this file — no Markdown ` ``` ` fences and no surrounding prose.
 ```json
 {
   "criteria": [

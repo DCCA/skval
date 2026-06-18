@@ -12,13 +12,13 @@ turning their outputs into a defensible number is this module's job.
 from __future__ import annotations
 
 import argparse
-import json
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
 import aggregate
 import dimensions
+import jsonutil
 import resolve_skill
 import safety_scan
 import scorecard
@@ -27,13 +27,8 @@ import static_checks
 
 
 def _read_json(path: Path):
-    path = Path(path)
-    if not path.exists():
-        return None
-    try:
-        return json.loads(path.read_text())
-    except json.JSONDecodeError:
-        return None
+    # Lenient: agent-written artifacts often arrive fenced or prose-wrapped.
+    return jsonutil.read_or(path, None)
 
 
 def validate_full(skill_source: str, workspace: Path, out_dir: Path | None = None) -> dict:

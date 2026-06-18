@@ -21,6 +21,8 @@ subagent (or run inline) per run. Adapted from Anthropic skill-creator's grader.
    or any important outcome no assertion covers.
 
 ## Output — `run_dir/grading.json`
+Write **only raw JSON** to this file — no Markdown ` ``` ` fences and no prose before or
+after; the scorer parses the file directly and silently drops a run whose JSON is malformed.
 ```json
 {
   "expectations": [
