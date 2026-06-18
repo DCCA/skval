@@ -30,13 +30,17 @@ rest. See [`skills/skill-validator/references/scoring-rubric.md`](skills/skill-v
 
 ## Status
 
-- **M0 — deterministic core (done, fully unit-tested):** input resolver; D1 structural
-  checks; D6 static safety gate; the statistics engine (`pass^k`, error bars); the
-  scoring engine (composite/gate/grade/verdict); scorecard generation; and a
-  **structural-only** end-to-end path that produces a real scorecard with **no model
-  calls**.
-- **M1–M3 — roadmap:** behavioral evals + LLM grading/judging (D2/D4), reliability and
-  triggering (D3/D5), and version comparison. See the
+- **M0 — deterministic core (done):** input resolver; D1 structural checks; D6 static
+  safety gate; the statistics engine (`pass^k`, error bars); the scoring engine
+  (composite/gate/grade/verdict); scorecard generation; and a **structural-only**
+  end-to-end path that produces a real scorecard with **no model calls**.
+- **M1 — behavioral + LLM-judge (done):** behavioral aggregation (`pass^k`, baseline
+  lift, significance), dimension mapping (D2–D5), the full-validation assembler, and
+  agent prompts (`agents/`: eval generation, executor, grader, artifact judge,
+  triggering) wired into the skill. The deterministic computation is unit-tested; the
+  model-driven runs are agent-orchestrated per `SKILL.md`.
+- **M2–M3 — roadmap:** version comparison (pairwise + position-swap), regression history,
+  batch mode, eval-viewer integration, and weight calibration. See the
   [implementation plan](docs/plans/2026-06-18-skill-validator.md) and
   [PRD](docs/prd/skill-validator-prd.md).
 
@@ -78,7 +82,7 @@ tests/                    # pytest suite + fixtures (good / bad / unsafe skills)
 ## Develop
 
 ```bash
-uv run pytest          # 40 tests, deterministic, no network/model calls
+uv run pytest          # 56 tests, deterministic, no network/model calls
 ```
 
 Built with the [Superpowers](https://github.com/obra/superpowers) methodology
