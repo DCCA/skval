@@ -33,6 +33,7 @@ _SEVERITY_WEIGHT = {"critical": 3, "major": 2, "minor": 1}
 
 _FRONTMATTER_RE = re.compile(r"^---\n(.*?)\n---", re.DOTALL)
 _MD_LINK_RE = re.compile(r"\[[^\]]*\]\(([^)]+)\)")
+_MD_REF_DEF_RE = re.compile(r"^\s*\[[^\]]+\]:\s*(\S+)", re.MULTILINE)
 _LINE_BUDGET = 500
 _TOKEN_BUDGET = 5000  # estimated tokens for the SKILL.md body
 
@@ -47,6 +48,7 @@ class Check:
 
 def parse_frontmatter(skill_md_text: str) -> dict:
     """Return the YAML frontmatter as a dict, or raise ValueError if malformed."""
+    skill_md_text = skill_md_text.replace("\r\n", "\n").replace("\r", "\n")  # tolerate CRLF
     if not skill_md_text.startswith("---"):
         raise ValueError("no YAML frontmatter found")
     match = _FRONTMATTER_RE.match(skill_md_text)
@@ -58,6 +60,14 @@ def parse_frontmatter(skill_md_text: str) -> dict:
     return data
 
 
+def skill_name(skill_md) -> str | None:
+    """Best-effort skill name from a SKILL.md path; None if unreadable/missing."""
+    try:
+        return parse_frontmatter(Path(skill_md).read_text()).get("name")
+    except (ValueError, OSError):
+        return None
+
+
 def _counts_as_skill_md(rel_path: Path) -> bool:
     dir_parts = rel_path.parts[:-1]
     if any(part in _EXCLUDED_DIR_PARTS for part in dir_parts):
@@ -67,11 +77,26 @@ def _counts_as_skill_md(rel_path: Path) -> bool:
     return True
 
 
+def _clean_target(raw: str) -> str:
+    """Extract the path from a Markdown link/ref destination.
+
+    Handles angle-bracket destinations (``<path>``), an optional "title" after the
+    path, and a trailing ``#anchor``.
+    """
+    t = raw.strip()
+    if t.startswith("<"):
+        end = t.find(">")
+        t = t[1:end] if end != -1 else t[1:]
+    else:
+        t = t.split()[0] if t.split() else ""
+    return t.split("#")[0].strip()
+
+
 def _broken_local_refs(skill_dir: Path, text: str) -> list[str]:
     broken = []
-    for target in _MD_LINK_RE.findall(text):
-        target = target.strip().split()[0]  # drop any "title" after the path
-        target = target.split("#")[0].strip()
+    # Inline links [t](path) and reference-style definitions [id]: path.
+    for raw in _MD_LINK_RE.findall(text) + _MD_REF_DEF_RE.findall(text):
+        target = _clean_target(raw)
         if not target or re.match(r"^[a-z]+://", target) or target.startswith(("#", "mailto:")):
             continue
         if not (skill_dir / target).exists():
@@ -91,7 +116,7 @@ def run_checks(skill_dir: Path) -> list[Check]:
         add("frontmatter_present", False, "critical", "SKILL.md not found")
         return checks
 
-    text = skill_md.read_text()
+    text = skill_md.read_text().replace("\r\n", "\n").replace("\r", "\n")
 
     # Frontmatter present + valid.
     has_fm = text.startswith("---")

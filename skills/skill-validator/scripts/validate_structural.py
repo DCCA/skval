@@ -19,13 +19,6 @@ import scoring
 import static_checks
 
 
-def _skill_name(skill_md: Path) -> str | None:
-    try:
-        return static_checks.parse_frontmatter(skill_md.read_text()).get("name")
-    except (ValueError, OSError):
-        return None
-
-
 def validate_structural(source: str, out_dir: Path) -> dict:
     out_dir = Path(out_dir)
     resolved = resolve_skill.resolve(source, out_dir / "resolved")
@@ -44,7 +37,7 @@ def validate_structural(source: str, out_dir: Path) -> dict:
         safety=safety,
         metadata={
             "mode": "structural-only",
-            "skill_name": _skill_name(resolved["skill_md"]),
+            "skill_name": static_checks.skill_name(resolved["skill_md"]),
             "timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         },
     )

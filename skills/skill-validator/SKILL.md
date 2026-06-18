@@ -78,7 +78,7 @@ Make a workspace dir, run these stages (each has a guide in `agents/`), then let
    `workspace/artifact_judgment.json`. Apply the bias mitigations below.
 5. **Triggering (D5)** → [agents/triggering.md](agents/triggering.md) writes
    `workspace/triggering.json`.
-6. **Assemble & score** → `python skills/skill-validator/scripts/validate_full.py <skill-source> <workspace>`.
+6. **Assemble & score** → `uv run python skills/skill-validator/scripts/validate_full.py <skill-source> <workspace>`.
    It aggregates the runs (`pass^k`, baseline lift, significance), maps every signal to
    D1–D5, applies the safety gate, and writes `scorecard.json` + `scorecard.md`
    (`metadata.mode = "full"`).

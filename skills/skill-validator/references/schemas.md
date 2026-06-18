@@ -19,7 +19,7 @@ The machine-readable result of a validation run.
       ]
     },
     "D2": {"score": 0.84, "weight": 0.30, "pass_rate": {"mean": 0.86, "stddev": 0.04, "std_error": 0.02, "n": 5},
-           "baseline_lift": "+0.45", "significant": true}
+           "baseline_lift": 0.45, "significant": true}
   },
   "safety": {"safety_pass": true, "findings": []},
   "findings": [
