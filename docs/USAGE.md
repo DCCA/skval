@@ -113,6 +113,17 @@ In this run the skill shows a **real, significant +33% effectiveness lift** over
 no-skill baseline — that’s the headline number that tells you the skill actually
 helps.
 
+### Interactive (multi-step) skills
+
+Some skills should **ask before they act** — e.g. a concierge that must gather a budget and
+dietary needs before placing an order. skval tests these with **multi-turn evals**: the
+executor runs a real conversation loop (the skill vs. a **user-simulator** that reveals
+details only when asked), records the transcript, and the grader scores interaction
+expectations such as *“asks at least 2 clarifying questions before delivering”* or *“asks
+about budget before ordering.”* Those counts are computed deterministically by
+`scripts/conversation.py`, so they’re auditable. Mark such an eval with `"type": "multi_turn"`
+and give it a `user_simulator` persona/goal (see the eval-generator schema).
+
 ---
 
 ## 7. Where your results are saved — and how to open the evals
