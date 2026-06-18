@@ -30,16 +30,20 @@ _SIGNALS = {
         r"convert .*(to|into) (pdf|docx|xlsx|pptx)", r"fill (out|in)[^.]*form", r"\bOCR\b",
         r"watermark", r"create (a |an )?(document|deck|report|workbook|spreadsheet)",
     ],
-    "interactive": [
-        r"clarif", r"concierge", r"gather (the )?(details|requirements|information|preferences)",
-        r"confirm[^.]*before", r"before (ordering|booking|proceeding|purchasing|placing|scheduling)",
-        r"walk (the user |you )?through", r"place an order",
-        r"book(ing)? (a|an|the|appointment|service)", r"refill", r"schedule (a|an|the)",
-        r"ask[^.]*(clarifying|question|before|about the|the user)", r"step[- ]by[- ]step with",
+    "interactive": [  # concierge / transaction *with the user* — needs a user-simulator
+        r"concierge", r"place an order", r"order (groceries|food|delivery|takeout|online|a meal)",
+        r"book(ing)? (a|an|the|your)?\s*(appointment|service|table|reservation|flight|hotel|room|ride|provider)",
+        r"\brefill\b", r"schedule (a|an|the|your)", r"\bcheckout\b", r"\bcart\b",
+        r"help (you |the user )?(order|book|shop|buy|find|hire|refill|schedule|plan an? )",
+        r"gather .*(from|with) the user", r"the user'?s? (budget|preferences|dietary|address)",
+        r"ask the user for", r"walk the user through",
     ],
-    "discipline": [
-        r"test[- ]driven", r"\bTDD\b", r"red[- ]green", r"failing test first", r"refactor",
-        r"methodology", r"systematic", r"code review", r"before (completing|finishing|marking)",
+    "discipline": [  # a methodology / workflow the *agent* follows
+        r"test[- ]driven", r"\bTDD\b", r"red[- ]green", r"failing test first", r"\brefactor",
+        r"methodology", r"systematic", r"code review", r"\bdebugging\b", r"root cause",
+        r"worktree", r"\bsubagent", r"dispatch", r"parallel agents", r"development branch",
+        r"writing (a |the )?plan", r"executing (a |the )?plan", r"writing skills?",
+        r"before (completing|finishing|claiming|marking)",
     ],
     "reference": [
         r"reference (knowledge|guide|for)", r"knowledge (base|about|to answer)",
