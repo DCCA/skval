@@ -64,6 +64,12 @@ installed as a Claude Code plugin (skills are auto-discovered from `skills/`).
 
 ```bash
 uv venv && uv pip install -e ".[dev]"
+uv run skval structural <skill-source> --out skval-runs/<name>
+```
+
+Script fallback if you do not want the console entrypoint:
+
+```bash
 uv run python skills/skill-validator/scripts/validate_structural.py <skill-source> --out skval-runs/<name>
 ```
 

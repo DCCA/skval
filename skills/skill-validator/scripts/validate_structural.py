@@ -71,7 +71,11 @@ def main(argv=None) -> int:
                         help="force the skill type (overrides auto-classification)")
     args = parser.parse_args(argv)
 
-    sc = validate_structural(args.source, Path(args.out), type_override=args.type)
+    try:
+        sc = validate_structural(args.source, Path(args.out), type_override=args.type)
+    except (FileNotFoundError, ValueError, NotImplementedError) as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
+        return 2
     print(scorecard.render_markdown(sc))
     return 1 if sc["verdict"] == "Reject" else 0
 

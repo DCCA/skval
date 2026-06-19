@@ -46,7 +46,7 @@ yourself, instantly and offline.
 The fastest signal. This scores **D1 (structure)** and runs the **safety gate**:
 
 ```bash
-uv run python skills/skill-validator/scripts/validate_structural.py tests/fixtures/good-skill
+uv run skval structural tests/fixtures/good-skill
 ```
 
 ![Clean skill scorecard: 100/100, grade A, verdict Ship](images/scorecard-clean.png)
@@ -62,7 +62,7 @@ Run it on a skill with problems and the scorecard tells you **what to fix, ranke
 by how much each issue costs you**:
 
 ```bash
-uv run python skills/skill-validator/scripts/validate_structural.py tests/fixtures/bad-skill
+uv run skval structural tests/fixtures/bad-skill
 ```
 
 ![Skill with findings: 73/100, grade C, verdict Revise, four findings listed](images/scorecard-findings.png)
@@ -80,7 +80,7 @@ contains a destructive or dangerous instruction, the verdict is **Reject** and t
 score is **0 — no matter how good everything else is**:
 
 ```bash
-uv run python skills/skill-validator/scripts/validate_structural.py tests/fixtures/unsafe-skill
+uv run skval structural tests/fixtures/unsafe-skill
 ```
 
 ![Unsafe skill: 0/100, grade F, verdict Reject, safety gate FAIL](images/scorecard-unsafe.png)
@@ -101,7 +101,7 @@ grades the outputs, judges artifact quality, and tests triggering. It then assem
 everything deterministically:
 
 ```bash
-uv run python skills/skill-validator/scripts/validate_full.py ./my-skill ./workspace
+uv run skval full ./my-skill ./workspace
 ```
 
 ![Full scorecard: 95/100, grade A, Ship, all five dimensions plus safety](images/scorecard-full.png)
@@ -169,7 +169,7 @@ commit-conventions/
 - **The granular evidence** — `runs/eval-*/{with_skill,without_skill}/run-*/` lets you compare, trial by trial, what the model produced with vs. without the skill. That delta is the effectiveness lift.
 - **Interactive** — export to the skill-creator eval-viewer format:
   ```bash
-  uv run python skills/skill-validator/scripts/benchmark_export.py <workspace>/runs benchmark.json <skill-name>
+  uv run skval benchmark-export <workspace>/runs benchmark.json --skill-name <skill-name>
   ```
 
 **The eval set** (`evals/evals.json`) is just the tasks and their pass/fail expectations:
