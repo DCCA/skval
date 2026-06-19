@@ -90,8 +90,22 @@ def write_benchmark(bench_dir, out_path, skill_name: str = "", executor_model: s
     return out_path
 
 
-if __name__ == "__main__":
-    import sys
+def main(argv=None) -> int:
+    import argparse
 
-    p = write_benchmark(sys.argv[1], sys.argv[2], sys.argv[3] if len(sys.argv) > 3 else "")
+    parser = argparse.ArgumentParser(
+        description="Export a skval runs directory to skill-creator eval-viewer benchmark.json format."
+    )
+    parser.add_argument("runs_dir", help="workspace runs/ directory")
+    parser.add_argument("out_path", help="output benchmark.json path")
+    parser.add_argument("--skill-name", default="", help="skill name to store in benchmark metadata")
+    parser.add_argument("--executor-model", default="", help="executor model to store in benchmark metadata")
+    args = parser.parse_args(argv)
+
+    p = write_benchmark(args.runs_dir, args.out_path, args.skill_name, args.executor_model)
     print(f"wrote {p}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

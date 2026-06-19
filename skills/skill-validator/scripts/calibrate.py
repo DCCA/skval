@@ -67,3 +67,20 @@ def suggest_weights(examples: list[dict], samples: int = 300, seed: int = 0) -> 
         if s > best:
             best, best_w = s, w
     return {"weights": {d: round(best_w.get(d, 0.0), 4) for d in DIMS}, "score": best}
+
+
+def main(argv=None) -> int:
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        description="Calibrate skval dimension weights against a labeled corpus (library helper)."
+    )
+    parser.add_argument("--samples", type=int, default=300, help="random-search samples for callers using suggest_weights")
+    parser.add_argument("--seed", type=int, default=0, help="random seed for callers using suggest_weights")
+    parser.parse_args(argv)
+    parser.print_help()
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

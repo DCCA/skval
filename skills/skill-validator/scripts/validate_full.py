@@ -99,8 +99,12 @@ def main(argv=None) -> int:
                         help="force the skill type (overrides auto-classification)")
     args = parser.parse_args(argv)
 
-    sc = validate_full(args.skill_source, Path(args.workspace), Path(args.out) if args.out else None,
-                       type_override=args.type)
+    try:
+        sc = validate_full(args.skill_source, Path(args.workspace), Path(args.out) if args.out else None,
+                           type_override=args.type)
+    except (FileNotFoundError, ValueError, NotImplementedError) as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
+        return 2
     print(scorecard.render_markdown(sc))
     return 1 if sc["verdict"] == "Reject" else 0
 

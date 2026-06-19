@@ -8,7 +8,38 @@ dependencies = ["PyYAML>=6.0"]
 [project.optional-dependencies]
 dev = ["pytest>=7.4"]
 
+[project.scripts]
+skval = "skval_cli:main"
+
+[tool.setuptools]
+py-modules = [
+  "aggregate",
+  "batch",
+  "benchmark_export",
+  "calibrate",
+  "classify",
+  "compare",
+  "conversation",
+  "dimensions",
+  "eval_fixtures",
+  "history",
+  "jsonutil",
+  "resolve_skill",
+  "runs_io",
+  "safety_scan",
+  "scorecard",
+  "scoring",
+  "skval_cli",
+  "static_checks",
+  "stats",
+  "validate_full",
+  "validate_structural",
+]
+
+[tool.setuptools.package-dir]
+"" = "skills/skill-validator/scripts"
+
 [tool.pytest.ini_options]
-pythonpath = ["skills/skill-validator/scripts"]
+pythonpath = [".", "skills/skill-validator/scripts"]
 testpaths = ["tests"]
 addopts = "-q"
