@@ -1,0 +1,125 @@
+{
+  "score": 92,
+  "grade": "A",
+  "verdict": "Ship",
+  "safety_pass": true,
+  "dimensions": {
+    "D1": {
+      "score": 0.9231,
+      "weight": 0.15,
+      "checks": [
+        {
+          "id": "frontmatter_present",
+          "passed": true,
+          "severity": "critical",
+          "detail": ""
+        },
+        {
+          "id": "frontmatter_valid_yaml",
+          "passed": true,
+          "severity": "critical",
+          "detail": ""
+        },
+        {
+          "id": "name_present",
+          "passed": true,
+          "severity": "critical",
+          "detail": ""
+        },
+        {
+          "id": "name_kebab_case",
+          "passed": true,
+          "severity": "major",
+          "detail": ""
+        },
+        {
+          "id": "description_present",
+          "passed": true,
+          "severity": "critical",
+          "detail": ""
+        },
+        {
+          "id": "description_len",
+          "passed": true,
+          "severity": "major",
+          "detail": ""
+        },
+        {
+          "id": "description_no_angle_brackets",
+          "passed": true,
+          "severity": "major",
+          "detail": ""
+        },
+        {
+          "id": "allowed_frontmatter_keys",
+          "passed": true,
+          "severity": "minor",
+          "detail": ""
+        },
+        {
+          "id": "single_skill_md",
+          "passed": true,
+          "severity": "critical",
+          "detail": ""
+        },
+        {
+          "id": "skill_md_line_budget",
+          "passed": false,
+          "severity": "minor",
+          "detail": "SKILL.md is 599 lines (> 500); consider splitting"
+        },
+        {
+          "id": "token_budget",
+          "passed": false,
+          "severity": "minor",
+          "detail": "SKILL.md ~5142 tokens (> 5000); move detail to references/"
+        },
+        {
+          "id": "no_broken_local_refs",
+          "passed": true,
+          "severity": "major",
+          "detail": ""
+        }
+      ]
+    }
+  },
+  "safety": {
+    "safety_pass": true,
+    "findings": []
+  },
+  "findings": [
+    {
+      "dimension": "D1",
+      "impact_estimate": 1,
+      "message": "SKILL.md is 599 lines (> 500); consider splitting"
+    },
+    {
+      "dimension": "D1",
+      "impact_estimate": 1,
+      "message": "SKILL.md ~5142 tokens (> 5000); move detail to references/"
+    }
+  ],
+  "provenance": {
+    "source": "/mnt/skills/public/docx",
+    "kind": "dir",
+    "resolved_path": "/mnt/skills/public/docx"
+  },
+  "metadata": {
+    "mode": "structural-only",
+    "skill_name": "docx",
+    "classification": {
+      "type": "file_transform",
+      "confidence": "high",
+      "also": [
+        "discipline"
+      ]
+    },
+    "timestamp": "2026-06-20T12:42:51Z",
+    "skipped_dimensions": [
+      "D2",
+      "D3",
+      "D4",
+      "D5"
+    ]
+  }
+}

@@ -214,3 +214,4 @@ exactly what reveals the effectiveness lift:
 - [Scoring rubric](../skills/skill-validator/references/scoring-rubric.md) — every check and weight
 - [PRD](prd/skill-validator-prd.md) and [implementation plan](plans/2026-06-18-skill-validator.md)
 - [A complete example run](examples/commit-conventions/) — eval set + per-trial results + scorecard you can browse
+- [Skill benchmark](examples/skill-benchmark/) — 10 widely-used skills scored, with raw→improved case studies
