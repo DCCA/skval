@@ -97,7 +97,7 @@ tests/                    # pytest suite + fixtures (good / bad / unsafe skills)
 ## Develop
 
 ```bash
-uv run pytest          # 120 tests, deterministic, no network/model calls
+uv run pytest          # 128 tests, deterministic, no network/model calls
 ```
 
 Built with the [Superpowers](https://github.com/obra/superpowers) methodology
