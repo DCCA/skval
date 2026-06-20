@@ -88,11 +88,11 @@
     <p class="lead">A safety-gated, normalized weighted composite over six dimensions — reported as a vector <em>and</em> a single number.</p>
     <table>
       <tr><th>Dim</th><th>Dimension</th><th>Weight</th><th>How it's measured</th></tr>
+      <tr><td>D1</td><td>Structural integrity</td><td>0.15</td><td>deterministic</td></tr>
       <tr><td>D2</td><td>Effectiveness (pass rate + lift over a no-skill baseline)</td><td>0.30</td><td>behavioral, LLM-graded</td></tr>
       <tr><td>D3</td><td>Reliability (<code>pass^k</code> over N trials)</td><td>0.20</td><td>behavioral</td></tr>
       <tr><td>D4</td><td>Artifact quality (decomposed LLM rubric)</td><td>0.20</td><td>LLM-as-judge</td></tr>
       <tr><td>D5</td><td>Triggering (precision / recall / F1)</td><td>0.15</td><td>behavioral</td></tr>
-      <tr><td>D1</td><td>Structural integrity</td><td>0.15</td><td>deterministic</td></tr>
       <tr><td>D6</td><td>Safety / least-surprise</td><td><b>gate</b></td><td>unsafe ⇒ score 0, verdict Reject</td></tr>
     </table>
     <p class="lead" style="margin-top:14px">Bands: A≥90, B≥80 (Ship) · C≥70, D≥50 (Revise) · else F (Reject). skval also

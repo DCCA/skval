@@ -22,11 +22,11 @@ vector *and* a single number:
 
 | Dim | Dimension | Weight | Type |
 |-----|-----------|--------|------|
+| D1 | Structural integrity | 0.15 | deterministic |
 | D2 | Effectiveness (pass rate + lift over a no-skill baseline) | 0.30 | behavioral, LLM-graded |
 | D3 | Reliability (`pass^k` over N=5 trials) | 0.20 | behavioral |
 | D4 | Artifact quality (decomposed LLM rubric) | 0.20 | LLM-as-judge |
 | D5 | Triggering (precision/recall/F1) | 0.15 | behavioral |
-| D1 | Structural integrity | 0.15 | deterministic |
 | D6 | Safety / least-surprise | **gate** | deterministic + LLM |
 
 `SkillScore = round(100 · safety_gate · Σ wᵢdᵢ)`. Bands: A≥90, B≥80 (Ship); C≥70,
