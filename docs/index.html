@@ -23,8 +23,11 @@
   code,.mono{font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
   header{border-bottom:1px solid var(--line);background:rgba(13,17,23,.8);position:sticky;top:0;backdrop-filter:blur(6px);z-index:10}
   header .wrap{display:flex;align-items:center;justify-content:space-between;height:56px}
-  header .brand{font-weight:700;color:var(--white)} header nav a{margin-left:18px;color:var(--dim);font-size:14px}
+  header .brand{display:flex;align-items:center;gap:8px;font-weight:700;color:var(--white)}
+  header .brand img{width:22px;height:22px;display:block}
+  header nav a{margin-left:18px;color:var(--dim);font-size:14px}
   .hero{text-align:center;padding:72px 0 40px}
+  .hero-logo{width:84px;height:84px;display:block;margin:0 auto 18px;filter:drop-shadow(0 8px 22px rgba(0,0,0,.45))}
   .hero h1{font-size:54px;margin:0 0 6px;color:var(--white);letter-spacing:-1px}
   .hero .tag{font-size:21px;color:var(--dim);margin:0 auto 8px;max-width:680px}
   .hero .sub{color:var(--dim);max-width:680px;margin:14px auto 26px}
@@ -48,12 +51,13 @@
   .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px}
   .card h3{margin:0 0 6px;color:var(--white);font-size:17px}
   footer{border-top:1px solid var(--line);color:var(--dim);font-size:13.5px;padding:28px 0;text-align:center}
+  footer .flogo{width:16px;height:16px;vertical-align:-3px;margin-right:5px}
   @media(max-width:680px){.gallery,.grid2{grid-template-columns:1fr}.hero h1{font-size:40px}}
 </style>
 </head>
 <body>
 <header><div class="wrap">
-  <span class="brand">skval</span>
+  <span class="brand"><img src="favicon.svg" width="22" height="22" alt="">skval</span>
   <nav>
     <a href="#how">How it works</a>
     <a href="#benchmark">Benchmark</a>
@@ -65,6 +69,7 @@
 <div class="wrap">
 
   <div class="hero">
+    <img class="hero-logo" src="favicon.svg" width="84" height="84" alt="">
     <h1>skval</h1>
     <p class="tag">Give it a skill, get a score.</p>
     <p class="sub">The <strong>Skill Validator Framework</strong> — point it at a Claude Code skill and get back a
@@ -154,7 +159,7 @@ uv run skval structural <span class="b">&lt;skill-source&gt;</span>
 
 <footer>
   <div class="wrap">
-    <strong>skval</strong> — Skill Validator Framework · <a href="https://github.com/DCCA/skval">GitHub</a> ·
+    <img class="flogo" src="favicon.svg" alt=""><strong>skval</strong> — Skill Validator Framework · <a href="https://github.com/DCCA/skval">GitHub</a> ·
     <a href="https://github.com/DCCA/skval/blob/main/docs/prd/skill-validator-prd.md">PRD</a> ·
     <a href="https://github.com/DCCA/skval/blob/main/SECURITY.md">Security</a><br>
     MIT licensed · built with the Superpowers methodology (brainstorming → writing-plans → TDD).
