@@ -2,11 +2,17 @@ import conversation as C
 
 CONVO = [
     {"role": "user", "content": "I want to order groceries for the week"},
-    {"role": "assistant", "content": "Happy to help! Any dietary restrictions I should know about?"},
+    {
+        "role": "assistant",
+        "content": "Happy to help! Any dietary restrictions I should know about?",
+    },
     {"role": "user", "content": "Vegetarian"},
     {"role": "assistant", "content": "Got it. And what's your budget for this order?"},
     {"role": "user", "content": "About $50"},
-    {"role": "assistant", "content": "Here is your order summary: spinach, tofu, rice... Total $48."},
+    {
+        "role": "assistant",
+        "content": "Here is your order summary: spinach, tofu, rice... Total $48.",
+    },
 ]
 
 
@@ -34,7 +40,10 @@ def test_asked_about_keywords():
 
 
 def test_single_turn_has_no_questions():
-    st = [{"role": "user", "content": "sum 2+2"}, {"role": "assistant", "content": "Done. Result: 4."}]
+    st = [
+        {"role": "user", "content": "sum 2+2"},
+        {"role": "assistant", "content": "Done. Result: 4."},
+    ]
     assert C.count_questions(st) == 0
     assert C.meets_min_questions(st, 1) is False
 

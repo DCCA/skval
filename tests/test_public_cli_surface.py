@@ -37,4 +37,11 @@ def test_pyproject_exposes_skval_console_script():
     assert pyproject["project"]["scripts"]["skval"] == "skval_cli:main"
     assert pyproject["tool"]["setuptools"]["package-dir"][""] == "skills/skill-validator/scripts"
     packaged_modules = set(pyproject["tool"]["setuptools"]["py-modules"])
-    assert {"skval_cli", "validate_structural", "validate_full", "benchmark_export", "batch", "compare"} <= packaged_modules
+    assert {
+        "skval_cli",
+        "validate_structural",
+        "validate_full",
+        "benchmark_export",
+        "batch",
+        "compare",
+    } <= packaged_modules

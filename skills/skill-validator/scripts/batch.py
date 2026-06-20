@@ -18,7 +18,12 @@ def rank_scorecards(cards: list[dict]) -> list[dict]:
 
 
 def render_batch_table(ranked: list[dict]) -> str:
-    lines = ["| Rank | Skill | Score | Grade | Verdict |", "|------|-------|-------|-------|---------|"]
+    lines = [
+        "| Rank | Skill | Score | Grade | Verdict |",
+        "|------|-------|-------|-------|---------|",
+    ]
     for r in ranked:
-        lines.append(f"| {r['rank']} | {r['skill_name']} | {r['score']} | {r['grade']} | {r['verdict']} |")
+        lines.append(
+            f"| {r['rank']} | {r['skill_name']} | {r['score']} | {r['grade']} | {r['verdict']} |"
+        )
     return "\n".join(lines) + "\n"

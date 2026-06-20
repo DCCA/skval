@@ -35,7 +35,7 @@ def loads_lenient(text: str):
     for op, cl in (("{", "}"), ("[", "]")):
         i, j = s.find(op), s.rfind(cl)
         if 0 <= i < j:
-            candidates.append((i, s[i:j + 1]))
+            candidates.append((i, s[i : j + 1]))
     for _, span in sorted(candidates):
         try:
             return json.loads(span)

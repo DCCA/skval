@@ -28,7 +28,9 @@ def test_structural_command_prints_friendly_missing_source_error(tmp_path, capsy
 
 
 def test_structural_command_prints_friendly_unsupported_remote_error(tmp_path, capsys):
-    rc = skval_cli.main(["structural", "https://github.com/example/skill.git", "--out", str(tmp_path / "out")])
+    rc = skval_cli.main(
+        ["structural", "https://github.com/example/skill.git", "--out", str(tmp_path / "out")]
+    )
 
     captured = capsys.readouterr()
     assert rc == 2
@@ -40,7 +42,9 @@ def test_structural_command_prints_friendly_unsupported_remote_error(tmp_path, c
 def test_benchmark_export_help_and_command(tmp_path, capsys):
     runs = tmp_path / "runs" / "eval-0" / "with_skill" / "run-1"
     runs.mkdir(parents=True)
-    (runs / "grading.json").write_text(json.dumps({"summary": {"pass_rate": 1.0, "passed": 1, "failed": 0, "total": 1}}))
+    (runs / "grading.json").write_text(
+        json.dumps({"summary": {"pass_rate": 1.0, "passed": 1, "failed": 0, "total": 1}})
+    )
     out = tmp_path / "benchmark.json"
 
     with pytest.raises(SystemExit) as exc:
@@ -48,7 +52,9 @@ def test_benchmark_export_help_and_command(tmp_path, capsys):
     assert exc.value.code == 0
     assert "usage:" in capsys.readouterr().out
 
-    rc = skval_cli.main(["benchmark-export", str(tmp_path / "runs"), str(out), "--skill-name", "demo"])
+    rc = skval_cli.main(
+        ["benchmark-export", str(tmp_path / "runs"), str(out), "--skill-name", "demo"]
+    )
     captured = capsys.readouterr()
     assert rc == 0
     assert "wrote" in captured.out
@@ -58,8 +64,16 @@ def test_benchmark_export_help_and_command(tmp_path, capsys):
 def test_batch_command_ranks_scorecards(tmp_path, capsys):
     a = tmp_path / "a.json"
     b = tmp_path / "b.json"
-    a.write_text(json.dumps({"score": 70, "grade": "C", "verdict": "Revise", "metadata": {"skill_name": "alpha"}}))
-    b.write_text(json.dumps({"score": 95, "grade": "A", "verdict": "Ship", "metadata": {"skill_name": "beta"}}))
+    a.write_text(
+        json.dumps(
+            {"score": 70, "grade": "C", "verdict": "Revise", "metadata": {"skill_name": "alpha"}}
+        )
+    )
+    b.write_text(
+        json.dumps(
+            {"score": 95, "grade": "A", "verdict": "Ship", "metadata": {"skill_name": "beta"}}
+        )
+    )
 
     rc = skval_cli.main(["batch", str(a), str(b)])
 
@@ -71,8 +85,16 @@ def test_batch_command_ranks_scorecards(tmp_path, capsys):
 def test_compare_command_diffs_scorecards(tmp_path, capsys):
     old = tmp_path / "old.json"
     new = tmp_path / "new.json"
-    old.write_text(json.dumps({"score": 70, "grade": "C", "verdict": "Revise", "dimensions": {"D1": {"score": 0.7}}}))
-    new.write_text(json.dumps({"score": 90, "grade": "A", "verdict": "Ship", "dimensions": {"D1": {"score": 1.0}}}))
+    old.write_text(
+        json.dumps(
+            {"score": 70, "grade": "C", "verdict": "Revise", "dimensions": {"D1": {"score": 0.7}}}
+        )
+    )
+    new.write_text(
+        json.dumps(
+            {"score": 90, "grade": "A", "verdict": "Ship", "dimensions": {"D1": {"score": 1.0}}}
+        )
+    )
 
     rc = skval_cli.main(["compare", str(old), str(new)])
 

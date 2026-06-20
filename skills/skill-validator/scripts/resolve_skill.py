@@ -136,4 +136,8 @@ if __name__ == "__main__":
     import tempfile
 
     out = resolve(sys.argv[1], Path(tempfile.mkdtemp(prefix="skval-")))
-    print(json.dumps({**out, "skill_dir": str(out["skill_dir"]), "skill_md": str(out["skill_md"])}, indent=2))
+    print(
+        json.dumps(
+            {**out, "skill_dir": str(out["skill_dir"]), "skill_md": str(out["skill_md"])}, indent=2
+        )
+    )

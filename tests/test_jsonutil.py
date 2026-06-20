@@ -1,4 +1,5 @@
 """Lenient JSON loading + the fenced-artifact gap found by real-skill dogfooding."""
+
 import json
 
 import jsonutil
@@ -21,7 +22,9 @@ def test_loads_prose_then_fence():
 
 
 def test_loads_prose_then_bare_object():
-    raw = 'I need write permission. Here it is directly:\n{"criteria": [{"id": "x", "passed": true}]}'
+    raw = (
+        'I need write permission. Here it is directly:\n{"criteria": [{"id": "x", "passed": true}]}'
+    )
     assert jsonutil.loads_lenient(raw)["criteria"][0]["passed"] is True
 
 
@@ -46,7 +49,10 @@ def test_runs_io_tolerates_fenced_grading(tmp_path):
     d = tmp_path / "eval-0" / "with_skill" / "run-1"
     d.mkdir(parents=True)
     (d / "grading.json").write_text(
-        '```json\n' + json.dumps({"summary": {"pass_rate": 1.0, "passed": 3, "failed": 0, "total": 3}}) + '\n```')
+        "```json\n"
+        + json.dumps({"summary": {"pass_rate": 1.0, "passed": 3, "failed": 0, "total": 3}})
+        + "\n```"
+    )
     runs = runs_io.load_runs(tmp_path)
     assert "with_skill" in runs
     assert runs["with_skill"][0]["pass_rate"] == 1.0

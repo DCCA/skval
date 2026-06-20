@@ -35,7 +35,8 @@ def test_stage_copies_directory_and_skips_missing(tmp_path):
     run_dir = tmp_path / "run"
     run_dir.mkdir()
     staged = fixtures.stage(
-        {"id": 0, "files": ["fixtures/eval-0/assets", "fixtures/eval-0/gone.bin"]}, ws, run_dir)
+        {"id": 0, "files": ["fixtures/eval-0/assets", "fixtures/eval-0/gone.bin"]}, ws, run_dir
+    )
     assert staged == ["assets"]
     assert (run_dir / "inputs" / "assets" / "logo.txt").read_text() == "logo"
 

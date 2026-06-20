@@ -43,3 +43,9 @@ py-modules = [
 pythonpath = [".", "skills/skill-validator/scripts"]
 testpaths = ["tests"]
 addopts = "-q"
+
+[tool.ruff]
+# The deterministic engine + tests are formatted with `ruff format`.
+# A PostToolUse hook (.claude/hooks/format.sh) reformats .py files on save.
+line-length = 100
+target-version = "py311"

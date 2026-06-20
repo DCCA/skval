@@ -2,9 +2,13 @@ import history
 
 
 def _sc(score, grade, verdict, d2=0.8):
-    return {"score": score, "grade": grade, "verdict": verdict,
-            "metadata": {"skill_name": "demo"},
-            "dimensions": {"D1": {"score": 1.0}, "D2": {"score": d2}}}
+    return {
+        "score": score,
+        "grade": grade,
+        "verdict": verdict,
+        "metadata": {"skill_name": "demo"},
+        "dimensions": {"D1": {"score": 1.0}, "D2": {"score": d2}},
+    }
 
 
 def test_append_run(tmp_path):

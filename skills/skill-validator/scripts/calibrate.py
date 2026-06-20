@@ -75,8 +75,15 @@ def main(argv=None) -> int:
     parser = argparse.ArgumentParser(
         description="Calibrate skval dimension weights against a labeled corpus (library helper)."
     )
-    parser.add_argument("--samples", type=int, default=300, help="random-search samples for callers using suggest_weights")
-    parser.add_argument("--seed", type=int, default=0, help="random seed for callers using suggest_weights")
+    parser.add_argument(
+        "--samples",
+        type=int,
+        default=300,
+        help="random-search samples for callers using suggest_weights",
+    )
+    parser.add_argument(
+        "--seed", type=int, default=0, help="random seed for callers using suggest_weights"
+    )
     parser.parse_args(argv)
     parser.print_help()
     return 0

@@ -46,8 +46,12 @@ def _read_json(path: Path):
     return jsonutil.read_or(path, None)
 
 
-def validate_full(skill_source: str, workspace: Path, out_dir: Path | None = None,
-                  type_override: str | None = None) -> dict:
+def validate_full(
+    skill_source: str,
+    workspace: Path,
+    out_dir: Path | None = None,
+    type_override: str | None = None,
+) -> dict:
     workspace = Path(workspace)
     out_dir = Path(out_dir) if out_dir else workspace
 
@@ -93,15 +97,25 @@ def main(argv=None) -> int:
         description="skval full validation: assemble D1-D6 into a scorecard from collected artifacts."
     )
     parser.add_argument("skill_source", help="skill directory, SKILL.md, or .skill/.zip")
-    parser.add_argument("workspace", help="workspace dir with runs/ + artifact_judgment.json + triggering.json")
+    parser.add_argument(
+        "workspace", help="workspace dir with runs/ + artifact_judgment.json + triggering.json"
+    )
     parser.add_argument("--out", default=None, help="output dir (default: workspace)")
-    parser.add_argument("--type", choices=classify.TYPES, default=None,
-                        help="force the skill type (overrides auto-classification)")
+    parser.add_argument(
+        "--type",
+        choices=classify.TYPES,
+        default=None,
+        help="force the skill type (overrides auto-classification)",
+    )
     args = parser.parse_args(argv)
 
     try:
-        sc = validate_full(args.skill_source, Path(args.workspace), Path(args.out) if args.out else None,
-                           type_override=args.type)
+        sc = validate_full(
+            args.skill_source,
+            Path(args.workspace),
+            Path(args.out) if args.out else None,
+            type_override=args.type,
+        )
     except (FileNotFoundError, ValueError, NotImplementedError) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 2

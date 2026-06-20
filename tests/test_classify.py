@@ -6,26 +6,36 @@ def _md(desc, body=""):
 
 
 def test_file_transform():
-    r = classify.classify_skill(_md(
-        "Use whenever the user wants to do anything with PDF files: extract text, merge PDFs, fill forms, OCR."))
+    r = classify.classify_skill(
+        _md(
+            "Use whenever the user wants to do anything with PDF files: extract text, merge PDFs, fill forms, OCR."
+        )
+    )
     assert r["type"] == "file_transform"
 
 
 def test_interactive():
-    r = classify.classify_skill(_md(
-        "Concierge-style flow that asks about budget and dietary needs before placing an order."))
+    r = classify.classify_skill(
+        _md(
+            "Concierge-style flow that asks about budget and dietary needs before placing an order."
+        )
+    )
     assert r["type"] == "interactive"
 
 
 def test_discipline():
-    r = classify.classify_skill(_md(
-        "Test-driven development: always write a failing test first (RED), then make it pass (GREEN), then refactor."))
+    r = classify.classify_skill(
+        _md(
+            "Test-driven development: always write a failing test first (RED), then make it pass (GREEN), then refactor."
+        )
+    )
     assert r["type"] == "discipline"
 
 
 def test_reference():
-    r = classify.classify_skill(_md(
-        "Reference knowledge to answer questions about the product's pricing and limits."))
+    r = classify.classify_skill(
+        _md("Reference knowledge to answer questions about the product's pricing and limits.")
+    )
     assert r["type"] == "reference"
 
 
@@ -50,12 +60,17 @@ def test_signals_are_exposed():
 
 def test_confidence():
     # clear winner -> high
-    strong = classify.classify_skill(_md(
-        "Use whenever the user wants to do anything with PDF files: extract text, merge PDFs, OCR."))
+    strong = classify.classify_skill(
+        _md(
+            "Use whenever the user wants to do anything with PDF files: extract text, merge PDFs, OCR."
+        )
+    )
     assert strong["confidence"] == "high"
     # plain task (no signals) -> medium default, not flagged as ambiguous
     plain = classify.classify_skill(_md("Produce a haiku from a topic the user provides."))
     assert plain["type"] == "task" and plain["confidence"] == "medium"
     # genuine tie between two types -> low (agent should confirm)
-    tie = classify.classify_skill(_md("Update the spreadsheet after you ask the user for the new total."))
+    tie = classify.classify_skill(
+        _md("Update the spreadsheet after you ask the user for the new total.")
+    )
     assert tie["confidence"] == "low" and tie["also"]
