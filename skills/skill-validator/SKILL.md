@@ -50,11 +50,11 @@ shape.
 
 | Dim | Dimension | Weight | How it's measured |
 |-----|-----------|--------|-------------------|
+| D1 | Structural | 0.15 | deterministic static checks |
 | D2 | Effectiveness | 0.30 | with-skill vs no-skill eval pass rate + baseline lift |
 | D3 | Reliability | 0.20 | `pass^k` across N independent trials |
 | D4 | Artifact quality | 0.20 | LLM judge, decomposed binary rubric + evidence |
 | D5 | Triggering | 0.15 | precision/recall/F1 on should/should-not queries |
-| D1 | Structural | 0.15 | deterministic static checks |
 | D6 | Safety | **gate** | unsafe ⇒ score 0, verdict Reject |
 
 Bands: A≥90, B≥80 (Ship); C≥70, D≥50 (Revise); else F (Reject). Default trials **N=5**.
