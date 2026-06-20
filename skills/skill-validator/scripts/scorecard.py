@@ -87,15 +87,21 @@ def build_scorecard(
     metadata = dict(metadata or {})
     metadata.setdefault("skipped_dimensions", [d for d in _ALL_DIMS if d not in dims])
 
-    fnd = findings if findings is not None else derive_findings(d1_checks, safety, dimensions_detail)
+    fnd = (
+        findings if findings is not None else derive_findings(d1_checks, safety, dimensions_detail)
+    )
     cls = metadata.get("classification")
-    if cls and cls.get("confidence") == "low":  # genuine type ambiguity — advisory, zero score impact
+    if (
+        cls and cls.get("confidence") == "low"
+    ):  # genuine type ambiguity — advisory, zero score impact
         also = f" vs {', '.join(cls.get('also', []))}" if cls.get("also") else ""
-        fnd = list(fnd) + [{
-            "dimension": "info",
-            "impact_estimate": 0,
-            "message": f"Ambiguous skill type ({cls.get('type')}{also}) — confirm before choosing the eval strategy",
-        }]
+        fnd = list(fnd) + [
+            {
+                "dimension": "info",
+                "impact_estimate": 0,
+                "message": f"Ambiguous skill type ({cls.get('type')}{also}) — confirm before choosing the eval strategy",
+            }
+        ]
         fnd.sort(key=lambda x: x["impact_estimate"], reverse=True)
 
     return {
@@ -153,7 +159,11 @@ def _dim_detail(dim: str, e: dict) -> str:
         passed = sum(1 for c in crit if c.get("passed"))
         return f"{passed}/{len(crit)} rubric criteria"
     if dim == "D5":
-        bits = [f"{label} {e[k]:.2f}" for k, label in (("f1", "F1"), ("precision", "P"), ("recall", "R")) if k in e]
+        bits = [
+            f"{label} {e[k]:.2f}"
+            for k, label in (("f1", "F1"), ("precision", "P"), ("recall", "R"))
+            if k in e
+        ]
         return ", ".join(bits)
     return ""
 
@@ -184,7 +194,9 @@ def render_markdown(sc: dict) -> str:
         w = entry.get("weight")
         wtxt = f"{w:.2f}" if isinstance(w, (int, float)) else "gate"
         name = _DIM_NAMES.get(dim, dim)
-        lines.append(f"| {dim} {name} | {entry['score']:.2f} | {wtxt} | {_dim_detail(dim, entry)} |")
+        lines.append(
+            f"| {dim} {name} | {entry['score']:.2f} | {wtxt} | {_dim_detail(dim, entry)} |"
+        )
 
     safe = sc["safety"].get("safety_pass", True)
     lines += ["", f"Safety gate: {'PASS' if safe else 'FAIL (Reject)'}"]

@@ -40,7 +40,8 @@ def questions_before_delivery(turns, delivered_at: int | None = None) -> int:
         assistant_idx = [i for i, t in enumerate(turns) if _role(t) == "assistant"]
         delivered_at = assistant_idx[-1] if assistant_idx else len(turns)
     return sum(
-        1 for i, t in enumerate(turns)
+        1
+        for i, t in enumerate(turns)
         if i < delivered_at and _role(t) == "assistant" and is_question(_content(t))
     )
 

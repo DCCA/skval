@@ -66,9 +66,15 @@ def main(argv=None) -> int:
         description="skval structural-only validation (M0): score a skill's structure and safety."
     )
     parser.add_argument("source", help="skill directory, SKILL.md file, or .skill/.zip archive")
-    parser.add_argument("--out", default="skval-runs/latest", help="output directory for the scorecard")
-    parser.add_argument("--type", choices=classify.TYPES, default=None,
-                        help="force the skill type (overrides auto-classification)")
+    parser.add_argument(
+        "--out", default="skval-runs/latest", help="output directory for the scorecard"
+    )
+    parser.add_argument(
+        "--type",
+        choices=classify.TYPES,
+        default=None,
+        help="force the skill type (overrides auto-classification)",
+    )
     args = parser.parse_args(argv)
 
     try:

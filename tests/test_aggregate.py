@@ -7,7 +7,14 @@ import aggregate
 
 def _grading(pass_rate, total=2):
     passed = round(pass_rate * total)
-    return {"summary": {"pass_rate": pass_rate, "passed": passed, "failed": total - passed, "total": total}}
+    return {
+        "summary": {
+            "pass_rate": pass_rate,
+            "passed": passed,
+            "failed": total - passed,
+            "total": total,
+        }
+    }
 
 
 def _mk_run(base, eval_id, config, run, grading):

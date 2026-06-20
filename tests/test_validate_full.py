@@ -19,7 +19,16 @@ def _mk_runs(ws):
             rd.mkdir(parents=True)
             passed = int(pr * 2)
             (rd / "grading.json").write_text(
-                json.dumps({"summary": {"pass_rate": pr, "passed": passed, "failed": 2 - passed, "total": 2}})
+                json.dumps(
+                    {
+                        "summary": {
+                            "pass_rate": pr,
+                            "passed": passed,
+                            "failed": 2 - passed,
+                            "total": 2,
+                        }
+                    }
+                )
             )
 
 
@@ -29,7 +38,9 @@ def test_full_validation(tmp_path):
     ws.mkdir()
     _mk_runs(ws)
     (ws / "artifact_judgment.json").write_text(
-        json.dumps({"criteria": [{"passed": True}, {"passed": True}, {"passed": True}, {"passed": False}]})
+        json.dumps(
+            {"criteria": [{"passed": True}, {"passed": True}, {"passed": True}, {"passed": False}]}
+        )
     )
     (ws / "triggering.json").write_text(json.dumps({"f1": 0.9, "precision": 0.92, "recall": 0.88}))
 

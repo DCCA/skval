@@ -225,7 +225,9 @@ def run_checks(skill_dir: Path) -> list[Check]:
         "token_budget",
         tok_ok,
         "minor",
-        "" if tok_ok else f"SKILL.md ~{est_tokens} tokens (> {_TOKEN_BUDGET}); move detail to references/",
+        ""
+        if tok_ok
+        else f"SKILL.md ~{est_tokens} tokens (> {_TOKEN_BUDGET}); move detail to references/",
     )
 
     # Broken local references.

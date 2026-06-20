@@ -35,9 +35,7 @@ def test_verdict():
 
 
 def test_score_skill_bundle():
-    out = scoring.score_skill(
-        {"D1": 0.75, "D2": 0.84, "D3": 0.62, "D4": 0.80, "D5": 0.90}, True
-    )
+    out = scoring.score_skill({"D1": 0.75, "D2": 0.84, "D3": 0.62, "D4": 0.80, "D5": 0.90}, True)
     assert out["score"] == 78
     assert out["grade"] == "C"
     assert out["verdict"] == "Revise"

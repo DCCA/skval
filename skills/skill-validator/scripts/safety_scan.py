@@ -15,6 +15,7 @@ from pathlib import Path
 _SCAN_SUFFIXES = {".md", ".py", ".sh", ".bash", ".js", ".ts", ".rb", ".pl"}
 _SKIP_DIRS = {"__pycache__", "node_modules", ".git"}
 
+
 # (regex, severity, label). All patterns are matched case-insensitively.
 def _ci(pattern: str) -> re.Pattern:
     return re.compile(pattern, re.IGNORECASE)
@@ -22,14 +23,26 @@ def _ci(pattern: str) -> re.Pattern:
 
 _PATTERNS = [
     (_ci(r"rm\s+-[rf]{2}\s+/(?![\w.])"), "critical", "destructive: recursive delete of root"),
-    (_ci(r"rm\s+-[rf]{2}\s+(~|\*|\$HOME)(?=/|\s|$)"), "critical", "destructive: recursive delete of home/glob"),
+    (
+        _ci(r"rm\s+-[rf]{2}\s+(~|\*|\$HOME)(?=/|\s|$)"),
+        "critical",
+        "destructive: recursive delete of home/glob",
+    ),
     (_ci(r"\bmkfs(\.\w+)?\b"), "critical", "destructive: filesystem format"),
     (_ci(r"\bdd\s+if="), "critical", "destructive: raw disk write"),
     (_ci(r":\(\)\s*\{\s*:\s*\|\s*:\s*&\s*\}\s*;\s*:"), "critical", "fork bomb"),
     (_ci(r">\s*/dev/sd[a-z]"), "critical", "destructive: overwrite block device"),
-    (_ci(r"(curl|wget)\b[^\n|]*\|\s*(sudo\s+)?(sh|bash|zsh)\b"), "critical", "remote code execution: pipe to shell"),
+    (
+        _ci(r"(curl|wget)\b[^\n|]*\|\s*(sudo\s+)?(sh|bash|zsh)\b"),
+        "critical",
+        "remote code execution: pipe to shell",
+    ),
     (_ci(r"ignore\s+(all\s+)?(previous|prior)\s+instructions"), "critical", "prompt injection"),
-    (_ci(r"disregard\s+(the\s+)?(system\s+prompt|previous|prior\s+instructions)"), "critical", "prompt injection"),
+    (
+        _ci(r"disregard\s+(the\s+)?(system\s+prompt|previous|prior\s+instructions)"),
+        "critical",
+        "prompt injection",
+    ),
 ]
 
 

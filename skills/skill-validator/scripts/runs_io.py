@@ -50,8 +50,16 @@ def load_runs(bench_dir: Path) -> dict[str, list[dict]]:
                     "tool_calls": 0,
                     "errors": 0,
                 }
-                _merge_optional(run, run_dir / "outputs" / "metrics.json", {"total_tool_calls": "tool_calls", "errors_encountered": "errors"})
-                _merge_optional(run, run_dir / "timing.json", {"total_duration_seconds": "time_seconds", "total_tokens": "tokens"})
+                _merge_optional(
+                    run,
+                    run_dir / "outputs" / "metrics.json",
+                    {"total_tool_calls": "tool_calls", "errors_encountered": "errors"},
+                )
+                _merge_optional(
+                    run,
+                    run_dir / "timing.json",
+                    {"total_duration_seconds": "time_seconds", "total_tokens": "tokens"},
+                )
                 out.setdefault(cfg_dir.name, []).append(run)
     return out
 

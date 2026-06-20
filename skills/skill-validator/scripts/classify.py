@@ -24,37 +24,84 @@ from pathlib import Path
 
 _SIGNALS = {
     "file_transform": [
-        r"\.(pdf|xlsx?|docx?|pptx?|csv)\b", r"spreadsheet", r"workbook", r"presentation",
-        r"slide deck", r"\bPDFs?\b", r"\bExcel\b", r"\bPowerPoint\b", r"Word document",
-        r"extract (text|tables|data|images)", r"merge (pdf|file|document)",
-        r"convert .*(to|into) (pdf|docx|xlsx|pptx)", r"fill (out|in)[^.]*form", r"\bOCR\b",
-        r"watermark", r"create (a |an )?(document|deck|report|workbook|spreadsheet)",
+        r"\.(pdf|xlsx?|docx?|pptx?|csv)\b",
+        r"spreadsheet",
+        r"workbook",
+        r"presentation",
+        r"slide deck",
+        r"\bPDFs?\b",
+        r"\bExcel\b",
+        r"\bPowerPoint\b",
+        r"Word document",
+        r"extract (text|tables|data|images)",
+        r"merge (pdf|file|document)",
+        r"convert .*(to|into) (pdf|docx|xlsx|pptx)",
+        r"fill (out|in)[^.]*form",
+        r"\bOCR\b",
+        r"watermark",
+        r"create (a |an )?(document|deck|report|workbook|spreadsheet)",
     ],
     "interactive": [  # concierge / transaction *with the user* — needs a user-simulator
-        r"concierge", r"place an order", r"order (groceries|food|delivery|takeout|online|a meal)",
+        r"concierge",
+        r"place an order",
+        r"order (groceries|food|delivery|takeout|online|a meal)",
         r"book(ing)? (a|an|the|your)?\s*(appointment|service|table|reservation|flight|hotel|room|ride|provider)",
-        r"\brefill\b", r"schedule (a|an|the|your)", r"\bcheckout\b", r"\bcart\b",
+        r"\brefill\b",
+        r"schedule (a|an|the|your)",
+        r"\bcheckout\b",
+        r"\bcart\b",
         r"help (you |the user )?(order|book|shop|buy|find|hire|refill|schedule|plan an? )",
-        r"gather .*(from|with) the user", r"the user'?s? (budget|preferences|dietary|address)",
-        r"ask the user for", r"walk the user through",
+        r"gather .*(from|with) the user",
+        r"the user'?s? (budget|preferences|dietary|address)",
+        r"ask the user for",
+        r"walk the user through",
     ],
     "discipline": [  # a methodology / workflow the *agent* follows
-        r"test[- ]driven", r"\bTDD\b", r"red[- ]green", r"failing test first", r"\brefactor",
-        r"methodology", r"systematic", r"code review", r"\bdebugging\b", r"root cause",
-        r"worktree", r"\bsubagent", r"dispatch", r"parallel agents", r"development branch",
-        r"writing (a |the )?plan", r"executing (a |the )?plan", r"writing skills?",
+        r"test[- ]driven",
+        r"\bTDD\b",
+        r"red[- ]green",
+        r"failing test first",
+        r"\brefactor",
+        r"methodology",
+        r"systematic",
+        r"code review",
+        r"\bdebugging\b",
+        r"root cause",
+        r"worktree",
+        r"\bsubagent",
+        r"dispatch",
+        r"parallel agents",
+        r"development branch",
+        r"writing (a |the )?plan",
+        r"executing (a |the )?plan",
+        r"writing skills?",
         r"before (completing|finishing|claiming|marking)",
     ],
     "reference": [
-        r"reference (knowledge|guide|for)", r"knowledge (base|about|to answer)",
-        r"answer questions about", r"facts about", r"information about", r"guide to",
-        r"documentation for", r"look up",
+        r"reference (knowledge|guide|for)",
+        r"knowledge (base|about|to answer)",
+        r"answer questions about",
+        r"facts about",
+        r"information about",
+        r"guide to",
+        r"documentation for",
+        r"look up",
     ],
 }
 # Tie-break order (most specialized first); "task" is the fallback.
 _PRIORITY = ["interactive", "file_transform", "discipline", "reference", "task"]
 
-_FILE_LIBS = ("openpyxl", "python-docx", "docx", "pptx", "pypdf", "PyPDF2", "pdfplumber", "fitz", "pandas")
+_FILE_LIBS = (
+    "openpyxl",
+    "python-docx",
+    "docx",
+    "pptx",
+    "pypdf",
+    "PyPDF2",
+    "pdfplumber",
+    "fitz",
+    "pandas",
+)
 
 
 def _matches(text: str, patterns: list[str]) -> list[str]:
@@ -84,7 +131,9 @@ def classify_skill(skill_md_text: str, skill_dir=None) -> dict:
                 continue
         if any(lib in blob for lib in _FILE_LIBS):
             scores["file_transform"] += 2
-            signals["file_transform"] = sorted(set(signals["file_transform"]) | {"bundled file library"})
+            signals["file_transform"] = sorted(
+                set(signals["file_transform"]) | {"bundled file library"}
+            )
 
     top = max(_SIGNALS, key=lambda t: (scores[t], -_PRIORITY.index(t)))
     if scores[top] == 0:
@@ -96,31 +145,53 @@ def classify_skill(skill_md_text: str, skill_dir=None) -> dict:
     second = max((scores[t] for t in _SIGNALS if t != top), default=0)
     margin = scores.get(top, 0) - second
     if top == "task":
-        confidence = "medium"   # nothing detected — a reasonable default, not contested
+        confidence = "medium"  # nothing detected — a reasonable default, not contested
     elif margin >= 2:
         confidence = "high"
     elif margin == 1:
         confidence = "medium"
     else:
-        confidence = "low"      # tie: another type scored equally
-    return {"type": top, "confidence": confidence, "scores": scores, "signals": signals, "also": also}
+        confidence = "low"  # tie: another type scored equally
+    return {
+        "type": top,
+        "confidence": confidence,
+        "scores": scores,
+        "signals": signals,
+        "also": also,
+    }
 
 
 _STRATEGY = {
-    "task": {"executor": "single_turn", "fixtures": False,
-             "grading": "output correctness vs expected_output", "agents": ["eval-generator", "executor", "grader"]},
-    "file_transform": {"executor": "single_turn", "fixtures": True,
-                       "grading": "open & evaluate output files (recalc formulas)",
-                       "agents": ["eval-generator", "executor", "grader"]},
-    "interactive": {"executor": "multi_turn", "fixtures": False,
-                    "grading": "interaction expectations via conversation.py + final deliverable",
-                    "agents": ["eval-generator", "user-simulator", "executor", "grader"]},
-    "discipline": {"executor": "scenario", "fixtures": False,
-                   "grading": "process adherence + artifact quality (D4); expect small task lift",
-                   "agents": ["eval-generator", "executor", "grader", "artifact-judge"]},
-    "reference": {"executor": "single_turn", "fixtures": False,
-                  "grading": "answer accuracy vs reference (expected_output)",
-                  "agents": ["eval-generator", "executor", "grader"]},
+    "task": {
+        "executor": "single_turn",
+        "fixtures": False,
+        "grading": "output correctness vs expected_output",
+        "agents": ["eval-generator", "executor", "grader"],
+    },
+    "file_transform": {
+        "executor": "single_turn",
+        "fixtures": True,
+        "grading": "open & evaluate output files (recalc formulas)",
+        "agents": ["eval-generator", "executor", "grader"],
+    },
+    "interactive": {
+        "executor": "multi_turn",
+        "fixtures": False,
+        "grading": "interaction expectations via conversation.py + final deliverable",
+        "agents": ["eval-generator", "user-simulator", "executor", "grader"],
+    },
+    "discipline": {
+        "executor": "scenario",
+        "fixtures": False,
+        "grading": "process adherence + artifact quality (D4); expect small task lift",
+        "agents": ["eval-generator", "executor", "grader", "artifact-judge"],
+    },
+    "reference": {
+        "executor": "single_turn",
+        "fixtures": False,
+        "grading": "answer accuracy vs reference (expected_output)",
+        "agents": ["eval-generator", "executor", "grader"],
+    },
 }
 
 

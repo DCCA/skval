@@ -86,7 +86,9 @@ def export_benchmark(bench_dir, skill_name: str = "", executor_model: str = "") 
 def write_benchmark(bench_dir, out_path, skill_name: str = "", executor_model: str = "") -> Path:
     out_path = Path(out_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(json.dumps(export_benchmark(bench_dir, skill_name, executor_model), indent=2))
+    out_path.write_text(
+        json.dumps(export_benchmark(bench_dir, skill_name, executor_model), indent=2)
+    )
     return out_path
 
 
@@ -98,8 +100,12 @@ def main(argv=None) -> int:
     )
     parser.add_argument("runs_dir", help="workspace runs/ directory")
     parser.add_argument("out_path", help="output benchmark.json path")
-    parser.add_argument("--skill-name", default="", help="skill name to store in benchmark metadata")
-    parser.add_argument("--executor-model", default="", help="executor model to store in benchmark metadata")
+    parser.add_argument(
+        "--skill-name", default="", help="skill name to store in benchmark metadata"
+    )
+    parser.add_argument(
+        "--executor-model", default="", help="executor model to store in benchmark metadata"
+    )
     args = parser.parse_args(argv)
 
     p = write_benchmark(args.runs_dir, args.out_path, args.skill_name, args.executor_model)

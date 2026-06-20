@@ -61,7 +61,9 @@ def main(argv=None) -> int:
     parser = argparse.ArgumentParser(
         description="Track skval scorecards over time and detect regressions (library helper)."
     )
-    parser.add_argument("--history", default="history.json", help="history file path for callers using append_run")
+    parser.add_argument(
+        "--history", default="history.json", help="history file path for callers using append_run"
+    )
     parser.parse_args(argv)
     parser.print_help()
     return 0

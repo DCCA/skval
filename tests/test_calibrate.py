@@ -19,8 +19,7 @@ def test_evaluate_weights_correlation():
 
 def test_suggest_weights_finds_signal():
     examples = [
-        {"dims": {"D2": v / 10, "D1": 1 - v / 10}, "human_score": v * 10}
-        for v in (1, 3, 5, 7, 9)
+        {"dims": {"D2": v / 10, "D1": 1 - v / 10}, "human_score": v * 10} for v in (1, 3, 5, 7, 9)
     ]
     result = calibrate.suggest_weights(examples, samples=300, seed=7)
     assert abs(sum(result["weights"].values()) - 1.0) < 1e-6

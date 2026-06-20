@@ -42,7 +42,13 @@ def test_render_shows_classification():
         scoring_result=_scoring_result(),
         d1_checks=[],
         safety={"safety_pass": True, "findings": []},
-        metadata={"classification": {"type": "interactive", "confidence": "high", "also": ["file_transform"]}},
+        metadata={
+            "classification": {
+                "type": "interactive",
+                "confidence": "high",
+                "also": ["file_transform"],
+            }
+        },
     )
     md = scorecard.render_markdown(sc)
     assert "Type: interactive (confidence: high)" in md
@@ -55,14 +61,22 @@ def test_low_confidence_flags_and_adds_finding():
         scoring_result=_scoring_result(),
         d1_checks=[],
         safety={"safety_pass": True, "findings": []},
-        metadata={"classification": {"type": "file_transform", "confidence": "low", "also": ["interactive"]}},
+        metadata={
+            "classification": {
+                "type": "file_transform",
+                "confidence": "low",
+                "also": ["interactive"],
+            }
+        },
     )
     # rendered ⚠ on the Type line
     assert "⚠ confirm the type" in scorecard.render_markdown(sc)
     # and an advisory finding (zero score impact -> verdict/score unchanged)
     msgs = [f["message"] for f in sc["findings"]]
     assert any("Ambiguous skill type" in m for m in msgs)
-    assert sc["score"] == 78 and all(f["impact_estimate"] == 0 for f in sc["findings"] if "Ambiguous" in f["message"])
+    assert sc["score"] == 78 and all(
+        f["impact_estimate"] == 0 for f in sc["findings"] if "Ambiguous" in f["message"]
+    )
 
 
 def test_medium_confidence_adds_no_finding():
@@ -90,7 +104,15 @@ def test_findings_from_failed_checks():
 def test_safety_finding_ranks_first():
     safety = {
         "safety_pass": False,
-        "findings": [{"pattern": "fork bomb", "severity": "critical", "file": "SKILL.md", "line": 9, "excerpt": ":(){...}"}],
+        "findings": [
+            {
+                "pattern": "fork bomb",
+                "severity": "critical",
+                "file": "SKILL.md",
+                "line": 9,
+                "excerpt": ":(){...}",
+            }
+        ],
     }
     checks = [Check("token_budget", False, "minor", "too big")]
     findings = scorecard.derive_findings(checks, safety, None)
