@@ -174,9 +174,15 @@ uv venv && uv pip install -e <span class="g">".[dev]"</span>
 <span class="c"># score a skill (directory, SKILL.md, or .skill archive)</span>
 uv run skval structural <span class="b">&lt;skill-source&gt;</span>
 
-<span class="c"># → ██████████████  100 / 100   Grade: A   Verdict: Ship</span></pre>
+<span class="c"># → ██████████████  100 / 100   Grade: A   Verdict: Ship</span>
+
+<span class="c"># preview the token + $ cost of a full run before launching it</span>
+uv run skval estimate <span class="b">&lt;skill-source&gt;</span>
+
+<span class="c"># → ## $4.04 – $6.19 – $12.23   (684k – 1.04M – 2.04M tokens)</span></pre>
     <p class="lead" style="margin-top:18px">For the full six-dimension run, ask Claude to “validate / score this skill” — it generates evals,
-      runs the task <strong>with and without the skill</strong>, grades the outputs, judges quality, and tests triggering, then assembles the scorecard.</p>
+      runs the task <strong>with and without the skill</strong>, grades the outputs, judges quality, and tests triggering, then assembles the scorecard.
+      Run <code>skval estimate</code> first to see the projected <strong>token + $ cost</strong> — handy for token-billed / enterprise users.</p>
     <div class="grid2">
       <div class="card"><h3>📖 Step-by-step guide</h3><p style="margin:0"><a href="https://github.com/DCCA/skval/blob/main/docs/USAGE.md">docs/USAGE.md</a> — install to a full scorecard, with screenshots.</p></div>
       <div class="card"><h3>🔬 Browse a real run</h3><p style="margin:0"><a href="https://github.com/DCCA/skval/tree/main/docs/examples/commit-conventions">commit-conventions</a> — the eval set + every per-trial result.</p></div>
