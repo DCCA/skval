@@ -44,7 +44,7 @@
   table{width:100%;border-collapse:collapse;font-size:14.5px;margin-top:8px}
   th,td{border:1px solid var(--line);padding:8px 10px;text-align:left}
   th{color:var(--white);background:var(--panel)} td .pill{font-weight:700}
-  .A{color:var(--green)} .warn{color:var(--yellow)}
+  .A{color:var(--green)} .warn{color:var(--yellow)} .dash{color:var(--dim)}
   pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;overflow:auto;font-size:13.5px}
   pre .c{color:var(--dim)} pre .g{color:var(--green)} pre .b{color:var(--blue)}
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
@@ -60,6 +60,7 @@
   <span class="brand"><img src="favicon.svg" width="22" height="22" alt="">skval</span>
   <nav>
     <a href="#how">How it works</a>
+    <a href="#vs">vs skill-creator</a>
     <a href="#benchmark">Benchmark</a>
     <a href="#start">Quick start</a>
     <a href="https://github.com/DCCA/skval">GitHub</a>
@@ -111,6 +112,33 @@
       <figure><img src="images/scorecard-findings.png" alt="Skill with findings: 73/100 C Revise"><figcaption>Findings ranked by score impact</figcaption></figure>
       <figure><img src="images/scorecard-unsafe.png" alt="Unsafe skill: 0/100 F Reject"><figcaption>Safety gate → 0 / F / Reject</figcaption></figure>
       <figure><img src="images/eval-result.png" alt="With-skill vs baseline eval result"><figcaption>With-skill vs. no-skill lift</figcaption></figure>
+    </div>
+  </section>
+
+  <section id="vs">
+    <h2>skval vs. <code>skill-creator</code></h2>
+    <p class="lead">They aren't rivals — they're two halves of one loop. Anthropic's <code>skill-creator</code> helps you
+      <strong>write and iterate</strong> on a skill with a human in the loop; skval gives an <strong>automated, defensible
+      verdict</strong> on the result — and can audit skills you didn't write. skval even
+      <a href="https://github.com/DCCA/skval/tree/main/docs/examples/skill-benchmark">exports to skill-creator's eval-viewer</a>,
+      so the two interoperate.</p>
+    <table>
+      <tr><th>Capability</th><th>skill-creator</th><th>skval</th></tr>
+      <tr><td>Primary job</td><td>Author &amp; iterate (draft → test → improve)</td><td>Audit &amp; grade a finished skill</td></tr>
+      <tr><td>Headline output</td><td>Eval viewer + benchmark; <em>you</em> decide</td><td><strong>0–100 score, grade, Ship / Revise / Reject</strong></td></tr>
+      <tr><td>Structural / lint checks</td><td><span class="dash">—</span></td><td><span class="A">✓</span> deterministic static checks <span class="dash">(D1)</span></td></tr>
+      <tr><td>Safety gate</td><td><span class="dash">—</span></td><td><span class="A">✓</span> veto gate + safe extraction of untrusted skills <span class="dash">(D6)</span></td></tr>
+      <tr><td>Offline, no-model path</td><td><span class="dash">— needs model runs + review</span></td><td><span class="A">✓</span> deterministic scan, CI-gateable (exit ≠ 0 on Reject)</td></tr>
+      <tr><td>With-skill vs. baseline evals</td><td><span class="A">✓</span> core of the loop</td><td><span class="A">✓</span> effectiveness + lift, significance <span class="dash">(D2)</span></td></tr>
+      <tr><td>Reliability</td><td>variance (mean ± stddev)</td><td><span class="A">✓</span> <code>pass^k</code> over N trials, scored <span class="dash">(D3)</span></td></tr>
+      <tr><td>Triggering</td><td><span class="A">✓</span> description optimizer (train / test)</td><td><span class="A">✓</span> precision / recall / F1, scored <span class="dash">(D5)</span></td></tr>
+      <tr><td>Skills you didn't write</td><td>aimed at your own authoring</td><td><span class="A">✓</span> dir / SKILL.md / <code>.skill</code>, untrusted-safe</td></tr>
+      <tr><td>Many skills at once</td><td>single-skill iteration</td><td><span class="A">✓</span> batch leaderboard + regression history</td></tr>
+      <tr><td>Judge-bias controls</td><td>blind A/B (optional, advanced)</td><td><span class="A">✓</span> blind + position-swap + cross-family by default</td></tr>
+    </table>
+    <div class="grid2" style="margin-top:18px">
+      <div class="card"><h3>Reach for <code>skill-creator</code> when…</h3><p style="color:var(--dim);margin:0">you're <strong>building</strong> a skill — capturing intent, drafting, and iterating on a handful of examples with your eyes on every output.</p></div>
+      <div class="card"><h3>Reach for skval when…</h3><p style="color:var(--dim);margin:0">you need a <strong>decision</strong>: is it good enough to ship? did my edit regress? is this third-party skill safe? — or you're gating many skills in CI.</p></div>
     </div>
   </section>
 
