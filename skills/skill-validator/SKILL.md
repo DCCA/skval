@@ -92,6 +92,11 @@ Make a workspace dir, run these stages (each has a guide in `agents/`), then let
    `evals/evals.json` if present, else synthesize discriminating evals **of the right kind for
    the type** (fixtures for file_transform, `multi_turn` for interactive, …); also build the
    triggering query set. **Review gate is ON.**
+2b. **Cost preview (before the expensive part)** → the behavioral stage spawns dozens of
+   subagents (~1M tokens for a default run). Run `scripts/cost_estimate.py <skill-source>` (or
+   `skval estimate <skill-source>` with the chosen `--evals/--trials/--configs/--*-model`) to
+   show the projected **token + $ range** — it is deterministic, no model calls. For
+   token-billed / enterprise users, surface this and confirm before launching step 3.
 3. **Behavioral runs (D2/D3)** → for each eval, dispatch [agents/executor.md](agents/executor.md)
    subagents — with-skill and without-skill baseline, **N=5 trials each** — into
    `workspace/runs/eval-<id>/<config>/run-<k>/`.

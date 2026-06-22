@@ -5,11 +5,14 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import tempfile
 from pathlib import Path
 
 import batch
 import benchmark_export
 import compare
+import cost_estimate
+import resolve_skill
 import scorecard
 import validate_full
 import validate_structural
@@ -48,6 +51,38 @@ def _cmd_full(args: argparse.Namespace) -> int:
         return 2
     print(scorecard.render_markdown(sc))
     return 1 if sc["verdict"] == "Reject" else 0
+
+
+def _cmd_estimate(args: argparse.Namespace) -> int:
+    plan = cost_estimate.RunPlan(
+        evals=args.evals,
+        trials=args.trials,
+        configs=args.configs,
+        trigger_queries=args.triggering_queries,
+        trigger_reps=args.triggering_reps,
+        executor_model=args.executor_model,
+        judge_model=args.judge_model,
+    )
+    try:
+        if args.write:
+            # producing run: resolve + write estimate.json under --out
+            out = Path(args.out)
+            resolved = resolve_skill.resolve(args.source, out / "resolved")
+            est = cost_estimate.estimate(resolved["skill_dir"], plan)
+            out.mkdir(parents=True, exist_ok=True)
+            (out / "estimate.json").write_text(json.dumps(est, indent=2, sort_keys=True))
+            print(cost_estimate.render_markdown(est))
+            print(f"wrote {out / 'estimate.json'}", file=sys.stderr)
+        else:
+            # read-only preview: resolve into a temp dir so nothing lands on disk
+            with tempfile.TemporaryDirectory() as tmp:
+                resolved = resolve_skill.resolve(args.source, Path(tmp) / "resolved")
+                est = cost_estimate.estimate(resolved["skill_dir"], plan)
+            print(cost_estimate.render_markdown(est))
+    except (FileNotFoundError, ValueError, NotImplementedError) as exc:
+        print(_friendly_error(exc), file=sys.stderr)
+        return 2
+    return 0
 
 
 def _cmd_benchmark_export(args: argparse.Namespace) -> int:
@@ -111,6 +146,32 @@ def build_parser() -> argparse.ArgumentParser:
         help="force the skill type (overrides auto-classification)",
     )
     full.set_defaults(func=_cmd_full)
+
+    estimate = sub.add_parser(
+        "estimate",
+        help="Estimate the token + $ cost of a full run before launching it (no model calls).",
+    )
+    estimate.add_argument("source", help="skill directory, SKILL.md file, or .skill/.zip archive")
+    estimate.add_argument("--evals", type=int, default=cost_estimate.DEFAULT_EVALS)
+    estimate.add_argument("--trials", type=int, default=cost_estimate.DEFAULT_TRIALS)
+    estimate.add_argument(
+        "--configs",
+        type=int,
+        choices=[1, 2],
+        default=cost_estimate.DEFAULT_CONFIGS,
+        help="1 = with-skill only, 2 = with-skill + baseline",
+    )
+    estimate.add_argument(
+        "--triggering-queries", type=int, default=cost_estimate.DEFAULT_TRIGGER_QUERIES
+    )
+    estimate.add_argument("--triggering-reps", type=int, default=cost_estimate.DEFAULT_TRIGGER_REPS)
+    estimate.add_argument("--executor-model", default=cost_estimate.DEFAULT_EXECUTOR_MODEL)
+    estimate.add_argument("--judge-model", default=cost_estimate.DEFAULT_JUDGE_MODEL)
+    estimate.add_argument(
+        "--out", default="skval-runs/estimate", help="dir for resolved skill + estimate.json"
+    )
+    estimate.add_argument("--write", action="store_true", help="also write estimate.json to --out")
+    estimate.set_defaults(func=_cmd_estimate)
 
     bench = sub.add_parser(
         "benchmark-export", help="Export skval runs to eval-viewer benchmark.json format."
