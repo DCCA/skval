@@ -159,7 +159,11 @@ def main(argv: list[str]) -> int:
             ratio = dw / dh if dh else 0
             line(True, "actual pixels", f"{dw}x{dh} (ratio {ratio:.2f}; 1.91 is ideal)")
             if declared[0] or declared[1]:
-                line(match, "declared width/height match actual", f"declared {declared[0]}x{declared[1]}")
+                line(
+                    match,
+                    "declared width/height match actual",
+                    f"declared {declared[0]}x{declared[1]}",
+                )
         elif b:
             line(False, "decode dimensions", "not PNG/JPEG or unreadable header")
 
