@@ -33,9 +33,10 @@ finding and scores the skill. Pinned in
 [`tests/test_precision.py`](../../../tests/test_precision.py)
 (`test_invalid_yaml_frontmatter_scores_not_crashes`).
 
-## Case study — invalid frontmatter: 50 → 100
+## Case study — `annotate`: 50 → 100
 
-A real-world bug class: a `description` with an unquoted colon.
+[`annotate`](https://github.com/glebis/claude-skills) (from glebis/claude-skills) — a real
+published skill whose `description` has an unquoted colon, scored verbatim:
 
 | | Score | Grade | Verdict | Finding |
 |---|------:|-------|---------|---------|

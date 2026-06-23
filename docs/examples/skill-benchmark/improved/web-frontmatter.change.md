@@ -1,24 +1,26 @@
 # web-frontmatter — the fix
 
-A bug class found in **real published skills** on GitHub: the `description` contains an
-unquoted colon, so the YAML frontmatter is invalid and the skill has no usable
-name/description (it won't trigger or load correctly).
+A real published skill: **`annotate`** from
+[glebis/claude-skills](https://github.com/glebis/claude-skills). Its `description` contains an
+unquoted colon (`… Local-only: synthetic or consented data only …`), so the YAML frontmatter
+is invalid and the skill has no usable name/description — it won't trigger or load correctly.
+Scored verbatim, before and after the one-line fix.
 
 **Before** (invalid YAML — the colon after `Local-only` starts a YAML mapping):
 
 ```yaml
 ---
 name: annotate
-description: Build a PII gold set. Local-only: synthetic data only, nothing leaves the machine.
+description: Build and verify a PII gold set … Local-only: synthetic or consented data only; …
 ---
 ```
 
-**After** (skval's finding applied — quote the description so the colon is safe):
+**After** (skval's finding applied — wrap the description in quotes so the colon is safe):
 
 ```yaml
 ---
 name: annotate
-description: "Build a PII gold set. Local-only: synthetic data only, nothing leaves the machine. Use when labeling PII spans or measuring inter-annotator agreement (kappa)."
+description: "Build and verify a PII gold set … Local-only: synthetic or consented data only; …"
 ---
 ```
 

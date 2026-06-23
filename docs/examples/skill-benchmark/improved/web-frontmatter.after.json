@@ -89,9 +89,9 @@
   },
   "findings": [],
   "provenance": {
-    "source": "community/claude-skills/annotate",
+    "source": "github.com/glebis/claude-skills \u00b7 annotate",
     "kind": "dir",
-    "resolved_path": "community/claude-skills/annotate"
+    "resolved_path": "github.com/glebis/claude-skills \u00b7 annotate"
   },
   "metadata": {
     "mode": "structural-only",
@@ -101,7 +101,7 @@
       "confidence": "medium",
       "also": []
     },
-    "timestamp": "2026-06-23T01:49:56Z",
+    "timestamp": "2026-06-23T10:59:29Z",
     "skipped_dimensions": [
       "D2",
       "D3",
