@@ -85,6 +85,23 @@ It writes `scorecard.json` + `scorecard.md` and exits non-zero on a Reject verdi
 handy as a CI gate. The full six-dimension validation (D2–D5) is driven by the skill
 itself via subagents and `claude -p`, following `skills/skill-validator/SKILL.md`.
 
+## Preview the cost before a full run
+
+The full validation spawns dozens of subagents (~1M tokens for a default run). For
+token-billed / enterprise users, `skval estimate` projects the **token + $ cost**
+first — deterministic, no model calls:
+
+```bash
+uv run skval estimate <skill-source>
+# → ## $4.04 – $6.19 – $12.23   (684k – 1.04M – 2.04M tokens)
+```
+
+It prints a per-stage breakdown (executors, graders, judge, triggering) as a
+low / expected / high range, priced from a per-model rate table. Tune the plan with
+`--evals` / `--trials` / `--configs` / `--executor-model` / `--judge-model`, and pass
+`--write` to also save `estimate.json`. It reads the skill but writes nothing unless
+`--write` is given.
+
 ## Repo layout
 
 ```
