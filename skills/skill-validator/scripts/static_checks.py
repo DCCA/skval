@@ -61,7 +61,12 @@ def parse_frontmatter(skill_md_text: str) -> dict:
     match = _FRONTMATTER_RE.match(skill_md_text)
     if not match:
         raise ValueError("invalid frontmatter delimiters")
-    data = yaml.safe_load(match.group(1))
+    try:
+        data = yaml.safe_load(match.group(1))
+    except yaml.YAMLError as e:
+        # Real published skills ship malformed frontmatter (e.g. an unquoted colon
+        # in the description). Report it as invalid rather than crashing the scan.
+        raise ValueError(f"invalid YAML frontmatter: {str(e).splitlines()[0]}") from e
     if not isinstance(data, dict):
         raise ValueError("frontmatter must be a YAML mapping")
     return data
