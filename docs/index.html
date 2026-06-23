@@ -60,7 +60,7 @@
   .btn-ghost{border:1px solid var(--line);color:var(--white)!important} .btn-ghost:hover{border-color:var(--blue);text-decoration:none}
   .badges{margin:22px 0 0} .badges span{display:inline-block;border:1px solid var(--line);border-radius:20px;
     padding:4px 12px;margin:3px;font-size:12.5px;color:var(--dim)} .badges b{color:var(--green)}
-  section{padding:46px 0;border-top:1px solid var(--line)}
+  section{padding:46px 0;border-top:1px solid var(--line);scroll-margin-top:64px}
   h2{color:var(--white);font-size:28px;margin:0 0 6px} .lead{color:var(--dim);margin:0 0 22px}
   figure{margin:0} figure img{width:100%;border:1px solid var(--line);border-radius:10px;display:block}
   figcaption{color:var(--dim);font-size:13px;text-align:center;margin-top:8px}
@@ -86,6 +86,7 @@
     <a href="#how">How it works</a>
     <a href="#vs">vs skill-creator</a>
     <a href="#benchmark">Benchmark</a>
+    <a href="#estimate">Cost</a>
     <a href="#start">Quick start</a>
     <a href="https://github.com/DCCA/skval">GitHub</a>
   </nav>
@@ -189,6 +190,21 @@
     </div>
   </section>
 
+  <section id="estimate">
+    <h2>Know the cost before you run</h2>
+    <p class="lead">A full validation spawns dozens of subagents (~1M tokens for a default run). For token-billed / enterprise
+      teams, <code>skval estimate</code> projects the <strong>token + $ cost up front</strong> — deterministic, no model calls.</p>
+<pre><span class="c"># preview the cost of a full run (directory, SKILL.md, or .skill archive)</span>
+uv run skval estimate <span class="b">&lt;skill-source&gt;</span>
+
+<span class="c"># → ## $4.04 – $6.19 – $12.23   (684k – 1.04M – 2.04M tokens)</span></pre>
+    <figure style="margin-top:18px"><img src="images/estimate.png" alt="skval estimate output: $4.04–$6.19–$12.23 projected for a full run, with a per-stage token and cost breakdown"><figcaption><code>skval estimate</code> — a low / expected / high range, broken down per stage.</figcaption></figure>
+    <div class="grid2" style="margin-top:18px">
+      <div class="card"><h3>How it's computed</h3><p style="color:var(--dim);margin:0">Per-stage token assumptions (executors, graders, judge, triggering) × your run plan × a per-model rate table, as a <strong>low / expected / high</strong> range. Anchored to observed runs; prompt caching isn't modeled, so real cost usually runs lower.</p></div>
+      <div class="card"><h3>Tune the plan</h3><p style="color:var(--dim);margin:0">Flags for <code>--evals</code>, <code>--trials</code>, <code>--configs</code>, and the <code>--executor-model</code> / <code>--judge-model</code>. Read-only by default; <code>--write</code> also saves an <code>estimate.json</code>.</p></div>
+    </div>
+  </section>
+
   <section id="start">
     <h2>Quick start</h2>
     <p class="lead">Run the deterministic scan now — no model calls, fully offline:</p>
@@ -198,16 +214,10 @@ uv venv && uv pip install -e <span class="g">".[dev]"</span>
 <span class="c"># score a skill (directory, SKILL.md, or .skill archive)</span>
 uv run skval structural <span class="b">&lt;skill-source&gt;</span>
 
-<span class="c"># → ██████████████  100 / 100   Grade: A   Verdict: Ship</span>
-
-<span class="c"># preview the token + $ cost of a full run before launching it</span>
-uv run skval estimate <span class="b">&lt;skill-source&gt;</span>
-
-<span class="c"># → ## $4.04 – $6.19 – $12.23   (684k – 1.04M – 2.04M tokens)</span></pre>
-    <figure style="margin-top:18px"><img src="images/estimate.png" alt="skval estimate output: $4.04–$6.19–$12.23 projected for a full run, with a per-stage token and cost breakdown"><figcaption><code>skval estimate</code> — projected token + $ cost (low / expected / high) before you launch a full run.</figcaption></figure>
+<span class="c"># → ██████████████  100 / 100   Grade: A   Verdict: Ship</span></pre>
     <p class="lead" style="margin-top:18px">For the full six-dimension run, ask Claude to “validate / score this skill” — it generates evals,
-      runs the task <strong>with and without the skill</strong>, grades the outputs, judges quality, and tests triggering, then assembles the scorecard.
-      Run <code>skval estimate</code> first to see the projected <strong>token + $ cost</strong> — handy for token-billed / enterprise users.</p>
+      runs the task <strong>with and without the skill</strong>, grades the outputs, judges quality, and tests triggering, then assembles the scorecard
+      (<a href="#estimate">preview the cost</a> first).</p>
     <div class="grid2">
       <div class="card"><h3><span aria-hidden="true">📖</span> Step-by-step guide</h3><p style="margin:0"><a href="https://github.com/DCCA/skval/blob/main/docs/USAGE.md">docs/USAGE.md</a> — install to a full scorecard, with screenshots.</p></div>
       <div class="card"><h3><span aria-hidden="true">🔬</span> Browse a real run</h3><p style="margin:0"><a href="https://github.com/DCCA/skval/tree/main/docs/examples/commit-conventions">commit-conventions</a> — the eval set + every per-trial result.</p></div>
