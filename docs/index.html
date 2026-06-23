@@ -5,10 +5,34 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>skval — Skill Validator Framework</title>
 <meta name="description" content="Give it a skill, get a score. skval validates Claude Code skills with deterministic checks, safety gates, behavioral evals, and ship/revise/reject scorecards.">
+<link rel="canonical" href="https://dcca.github.io/skval/">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="theme-color" content="#0d1117">
+
+<!-- Open Graph (link previews on Slack, LinkedIn, Discord, iMessage, …) -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="skval">
+<meta property="og:title" content="skval — Skill Validator Framework">
+<meta property="og:description" content="Give it a skill, get a score. Point skval at a Claude Code skill for a 0–100 score, per-dimension breakdown, ranked findings, and a Ship / Revise / Reject verdict.">
+<meta property="og:url" content="https://dcca.github.io/skval/">
+<meta property="og:image" content="https://dcca.github.io/skval/og.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="skval — Give it a skill, get a score. A 100/100, Grade A, Ship scorecard.">
+
+<!-- Twitter / X large-image card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="skval — Skill Validator Framework">
+<meta name="twitter:description" content="Give it a skill, get a score — a 0–100 score, breakdown, findings, and a Ship / Revise / Reject verdict for Claude Code skills.">
+<meta name="twitter:image" content="https://dcca.github.io/skval/og.png">
+<meta name="twitter:image:alt" content="skval — Give it a skill, get a score.">
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"skval","alternateName":"Skill Validator Framework","applicationCategory":"DeveloperApplication","operatingSystem":"Cross-platform","description":"Validate, score, and benchmark Claude Code skills — a 0–100 score with a per-dimension breakdown, ranked findings, and a Ship / Revise / Reject verdict.","url":"https://dcca.github.io/skval/","image":"https://dcca.github.io/skval/og.png","license":"https://opensource.org/licenses/MIT","codeRepository":"https://github.com/DCCA/skval","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+</script>
 <style>
   :root{
     --bg:#0d1117; --panel:#161b22; --line:#21262d; --text:#c9d1d9; --dim:#8b949e;
@@ -82,14 +106,14 @@
     </div>
     <div class="badges">
       <span><b>151</b> tests, deterministic</span>
-      <span><b>6</b> dimensions + safety gate</span>
+      <span><b>6</b> dimensions, safety-gated</span>
       <span>self-validates <b>100/A</b></span>
       <span>MIT licensed</span>
     </div>
   </div>
 
   <figure>
-    <img src="images/scorecard-full.png" alt="A full skval scorecard: 95/100, grade A, Ship, with all five dimensions plus the safety gate">
+    <img src="images/scorecard-full.png" alt="A full skval scorecard: 95/100, grade A, Ship, with all six dimensions including the safety gate">
     <figcaption>A full scorecard — structure, effectiveness lift, reliability, artifact quality, triggering, and the safety gate.</figcaption>
   </figure>
 
@@ -185,8 +209,8 @@ uv run skval estimate <span class="b">&lt;skill-source&gt;</span>
       runs the task <strong>with and without the skill</strong>, grades the outputs, judges quality, and tests triggering, then assembles the scorecard.
       Run <code>skval estimate</code> first to see the projected <strong>token + $ cost</strong> — handy for token-billed / enterprise users.</p>
     <div class="grid2">
-      <div class="card"><h3>📖 Step-by-step guide</h3><p style="margin:0"><a href="https://github.com/DCCA/skval/blob/main/docs/USAGE.md">docs/USAGE.md</a> — install to a full scorecard, with screenshots.</p></div>
-      <div class="card"><h3>🔬 Browse a real run</h3><p style="margin:0"><a href="https://github.com/DCCA/skval/tree/main/docs/examples/commit-conventions">commit-conventions</a> — the eval set + every per-trial result.</p></div>
+      <div class="card"><h3><span aria-hidden="true">📖</span> Step-by-step guide</h3><p style="margin:0"><a href="https://github.com/DCCA/skval/blob/main/docs/USAGE.md">docs/USAGE.md</a> — install to a full scorecard, with screenshots.</p></div>
+      <div class="card"><h3><span aria-hidden="true">🔬</span> Browse a real run</h3><p style="margin:0"><a href="https://github.com/DCCA/skval/tree/main/docs/examples/commit-conventions">commit-conventions</a> — the eval set + every per-trial result.</p></div>
     </div>
   </section>
 
