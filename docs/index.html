@@ -171,6 +171,8 @@
   <section id="benchmark">
     <h2>Benchmark</h2>
     <p class="lead">skval's deterministic structural scan over 10 widely-used skills — 8 ship as-is; the two flagged hit the size budget.
+      Plus runs over <a href="https://github.com/DCCA/skval/blob/main/docs/examples/skill-benchmark/wild-skills.md">75 installed skills</a>
+      and <a href="https://github.com/DCCA/skval/blob/main/docs/examples/skill-benchmark/from-the-web.md">69 from the web</a>.
       <a href="https://github.com/DCCA/skval/tree/main/docs/examples/skill-benchmark">See the full benchmark →</a></p>
     <table>
       <tr><th>Skill</th><th>Type</th><th>Score</th><th>Findings</th></tr>
@@ -185,9 +187,13 @@
       <tr><td>skill-creator</td><td>file_transform</td><td class="pill warn">96 / A</td><td>SKILL.md ~8246 tokens (&gt;5000)</td></tr>
       <tr><td>docx</td><td>file_transform</td><td class="pill warn">92 / A</td><td>599 lines &amp; ~5142 tokens (over budget)</td></tr>
     </table>
-    <div class="grid2" style="margin-top:18px">
-      <div class="card"><h3>docx · 92 → 100</h3><p style="color:var(--dim);margin:0">Applied skval's finding — moved the XML Reference section to <code>references/</code> (progressive disclosure). skval's own <code>compare.py</code>: <b class="A">+8</b>.</p></div>
-      <div class="card"><h3>bad-skill · 73 → 100</h3><p style="color:var(--dim);margin:0">Fixed four findings (kebab name, drop <code>&lt;&gt;</code>, broken ref, stray key). <code>compare.py</code>: <b class="A">+27</b>, Revise → Ship.</p></div>
+    <h3 style="color:var(--white);font-size:19px;margin:28px 0 4px">The upgrade: score → fix → re-score</h3>
+    <p class="lead" style="margin:0 0 14px">skval doesn't just grade — its ranked findings drive the fix. The biggest real-world turnarounds:</p>
+    <div class="grid2">
+      <div class="card"><h3>web skill · invalid frontmatter · <span class="warn">50</span> → <span class="A">100</span></h3>
+        <p style="color:var(--dim);margin:0">A real published skill whose unquoted colon broke its YAML — it used to <em>crash</em> skval, and now scores. One-line fix: quote the description. <code>compare.py</code>: <b class="A">+50</b>, Revise → Ship. <a href="https://github.com/DCCA/skval/blob/main/docs/examples/skill-benchmark/from-the-web.md">case study →</a></p></div>
+      <div class="card"><h3>bad-skill · <span class="warn">73</span> → <span class="A">100</span></h3>
+        <p style="color:var(--dim);margin:0">Four findings fixed one-for-one — kebab name, drop <code>&lt;&gt;</code>, broken ref, stray key. <code>compare.py</code>: <b class="A">+27</b>, Revise → Ship. <a href="https://github.com/DCCA/skval/tree/main/docs/examples/skill-benchmark/improved">case study →</a></p></div>
     </div>
   </section>
 
