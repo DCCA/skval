@@ -1,5 +1,5 @@
 # Skill Scorecard — `annotate`
-Source: community/claude-skills/annotate · mode: structural-only
+Source: github.com/glebis/claude-skills · annotate · mode: structural-only
 Type: task (confidence: medium)
 
 ## ██████████████  100 / 100   Grade: A   Verdict: Ship

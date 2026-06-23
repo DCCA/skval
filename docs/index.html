@@ -190,8 +190,8 @@
     <h3 style="color:var(--white);font-size:19px;margin:28px 0 4px">The upgrade: score → fix → re-score</h3>
     <p class="lead" style="margin:0 0 14px">skval doesn't just grade — its ranked findings drive the fix. The biggest real-world turnarounds:</p>
     <div class="grid2">
-      <div class="card"><h3>web skill · invalid frontmatter · <span class="warn">50</span> → <span class="A">100</span></h3>
-        <p style="color:var(--dim);margin:0">A real published skill whose unquoted colon broke its YAML — it used to <em>crash</em> skval, and now scores. One-line fix: quote the description. <code>compare.py</code>: <b class="A">+50</b>, Revise → Ship. <a href="https://github.com/DCCA/skval/blob/main/docs/examples/skill-benchmark/from-the-web.md">case study →</a></p></div>
+      <div class="card"><h3><a href="https://github.com/glebis/claude-skills">annotate</a> · invalid frontmatter · <span class="warn">50</span> → <span class="A">100</span></h3>
+        <p style="color:var(--dim);margin:0">A real published skill (glebis/claude-skills) whose unquoted colon broke its YAML — it used to <em>crash</em> skval, and now scores. One-line fix: quote the description. <code>compare.py</code>: <b class="A">+50</b>, Revise → Ship. <a href="https://github.com/DCCA/skval/blob/main/docs/examples/skill-benchmark/from-the-web.md">case study →</a></p></div>
       <div class="card"><h3>bad-skill · <span class="warn">73</span> → <span class="A">100</span></h3>
         <p style="color:var(--dim);margin:0">Four findings fixed one-for-one — kebab name, drop <code>&lt;&gt;</code>, broken ref, stray key. <code>compare.py</code>: <b class="A">+27</b>, Revise → Ship. <a href="https://github.com/DCCA/skval/tree/main/docs/examples/skill-benchmark/improved">case study →</a></p></div>
     </div>
