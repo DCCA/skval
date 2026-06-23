@@ -180,6 +180,7 @@ uv run skval structural <span class="b">&lt;skill-source&gt;</span>
 uv run skval estimate <span class="b">&lt;skill-source&gt;</span>
 
 <span class="c"># → ## $4.04 – $6.19 – $12.23   (684k – 1.04M – 2.04M tokens)</span></pre>
+    <figure style="margin-top:18px"><img src="images/estimate.png" alt="skval estimate output: $4.04–$6.19–$12.23 projected for a full run, with a per-stage token and cost breakdown"><figcaption><code>skval estimate</code> — projected token + $ cost (low / expected / high) before you launch a full run.</figcaption></figure>
     <p class="lead" style="margin-top:18px">For the full six-dimension run, ask Claude to “validate / score this skill” — it generates evals,
       runs the task <strong>with and without the skill</strong>, grades the outputs, judges quality, and tests triggering, then assembles the scorecard.
       Run <code>skval estimate</code> first to see the projected <strong>token + $ cost</strong> — handy for token-billed / enterprise users.</p>
