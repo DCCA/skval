@@ -93,3 +93,13 @@ def test_dd_to_regular_file_not_flagged(tmp_path):
 def test_dd_to_block_device_still_unsafe(tmp_path):
     (tmp_path / "run.sh").write_text("dd if=/dev/zero of=/dev/sda bs=1M\n")
     assert not safety_scan.scan(tmp_path)["safety_pass"]
+
+
+def test_invalid_yaml_frontmatter_scores_not_crashes(tmp_path):
+    # Real web skills ship an unquoted colon in the description → invalid YAML.
+    # skval must report it (frontmatter_valid_yaml=False), never raise.
+    (tmp_path / "SKILL.md").write_text(
+        "---\nname: x\ndescription: Local-only: synthetic data only, nothing leaves\n---\n# Body\n"
+    )
+    checks = {c.id: c for c in static_checks.run_checks(tmp_path)}
+    assert not checks["frontmatter_valid_yaml"].passed

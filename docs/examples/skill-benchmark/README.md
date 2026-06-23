@@ -50,6 +50,16 @@ over-broad `dd` rule, and a too-strict frontmatter allow-list), now fixed and lo
 clean**, the rest splitting into vendored-duplicate `SKILL.md` (e.g. [nextjs](raw/nextjs.md),
 77/C/Revise), size budget, vendor-specific keys, and 4 real `rm -rf ~/…`.
 
+## From the web — real published skills
+
+Beyond installed plugins, **[from-the-web.md](from-the-web.md)** scores **69 community
+skills** pulled from three public GitHub collections (every one safety-scanned as inert
+text first — 0 tripped the gate, none executed). It surfaced a real bug class —
+**invalid YAML frontmatter** (an unquoted colon in `description`) — that used to *crash*
+skval; skval now scores it instead, and the
+[50 → 100 case study](from-the-web.md#case-study--invalid-frontmatter-50--100) shows the
+one-line fix.
+
 ## Case study 1 — `docx`: 92 → 100 (real skill)
 
 skval flagged `docx`'s `SKILL.md` as over the size budget. Applying the finding — moving the
