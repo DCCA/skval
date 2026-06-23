@@ -29,7 +29,7 @@ _PATTERNS = [
         "destructive: recursive delete of home/glob",
     ),
     (_ci(r"\bmkfs(\.\w+)?\b"), "critical", "destructive: filesystem format"),
-    (_ci(r"\bdd\s+if="), "critical", "destructive: raw disk write"),
+    (_ci(r"\bdd\b[^\n]*\bof=\s*/dev/"), "critical", "destructive: raw disk write"),
     (_ci(r":\(\)\s*\{\s*:\s*\|\s*:\s*&\s*\}\s*;\s*:"), "critical", "fork bomb"),
     (_ci(r">\s*/dev/sd[a-z]"), "critical", "destructive: overwrite block device"),
     (
@@ -44,6 +44,25 @@ _PATTERNS = [
         "prompt injection",
     ),
 ]
+
+
+_DEFENSIVE_RE = _ci(
+    r"\b(deny|denylist|block|blocklist|disallow|forbid|reject|refuse|prevent|"
+    r"detect|dangerous|guard|prohibit|warn)\b"
+)
+
+
+def _is_defensive(line: str, m: re.Match) -> bool:
+    """True when a dangerous match is a string being *matched/blocked* or documented.
+
+    Skills that guard against dangerous commands (a hook checking ``*"mkfs"*``) or
+    document them ("block ``dd if=``…") quote the token or sit on a line with a
+    defensive keyword — not an executable invocation. Real destructive commands
+    are unquoted and lack that framing, so they stay flagged.
+    """
+    before, after = line[: m.start()], line[m.end() :]
+    quoted = bool(re.search(r"[\"'][*]?\s*$", before)) and bool(re.match(r"\s*[*]?[\"']", after))
+    return quoted or bool(_DEFENSIVE_RE.search(line))
 
 
 def _iter_files(skill_dir: Path):
@@ -67,7 +86,8 @@ def scan(skill_dir: Path) -> dict:
             continue
         for lineno, line in enumerate(lines, start=1):
             for pattern, severity, label in _PATTERNS:
-                if pattern.search(line):
+                m = pattern.search(line)
+                if m and not _is_defensive(line, m):
                     findings.append(
                         {
                             "pattern": label,

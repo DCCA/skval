@@ -22,6 +22,11 @@ ALLOWED_FRONTMATTER_KEYS = {
     "allowed-tools",
     "metadata",
     "compatibility",
+    # widely used in real Claude Code / plugin skills — harmless if present
+    "version",
+    "user-invocable",
+    "tools",
+    "model",
 }
 
 # Directories whose contents are not packaged as part of the skill, so a nested
@@ -108,7 +113,24 @@ def _looks_local_path(t: str) -> bool:
     return ("/" in t) or bool(re.search(r"\.[A-Za-z0-9]{1,6}$", t))
 
 
+def _content_only(text: str) -> str:
+    """Strip YAML frontmatter and code so non-markdown isn't read as links.
+
+    Frontmatter holds config (a regex like ``['"](pkg)`` parses as ``[..](pkg)``)
+    and code blocks/spans hold illustrative ``[x](y)`` that aren't real links —
+    only the prose body should be scanned for broken local references.
+    """
+    m = _FRONTMATTER_RE.match(text)
+    if m:
+        text = text[m.end() :]
+    text = re.sub(r"```.*?```", "", text, flags=re.DOTALL)
+    text = re.sub(r"~~~.*?~~~", "", text, flags=re.DOTALL)
+    text = re.sub(r"`[^`\n]*`", "", text)
+    return text
+
+
 def _broken_local_refs(skill_dir: Path, text: str) -> list[str]:
+    text = _content_only(text)
     broken = []
     # Inline links [t](path) are intentional — check any local target.
     for raw in _MD_LINK_RE.findall(text):

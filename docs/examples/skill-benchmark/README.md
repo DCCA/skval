@@ -38,6 +38,18 @@ Ranked by skval (`scripts/batch.py`). Full scorecards are in [`raw/`](raw).
 - skval also classified each skill's **type** and routed accordingly (file_transform / task /
   discipline) — shown on every scorecard's `Type:` line.
 
+## Wild run — the full installed population
+
+The leaderboard above is curated. For the **unfiltered** set, see
+**[wild-skills.md](wild-skills.md)** — a real skval run over **75 installed skills**
+(Anthropic plugins, the Vercel suite, Superpowers). It doubles as a **false-positive
+regression set**: running skval over real, in-the-wild skills exposed four precision bugs
+(a regex in frontmatter read as a link, defensive `rm -rf`/`mkfs` in blocking hooks, an
+over-broad `dd` rule, and a too-strict frontmatter allow-list), now fixed and locked in
+[`tests/test_precision.py`](../../../tests/test_precision.py). Net after the fixes: **34/75
+clean**, the rest splitting into vendored-duplicate `SKILL.md` (e.g. [nextjs](raw/nextjs.md),
+77/C/Revise), size budget, vendor-specific keys, and 4 real `rm -rf ~/…`.
+
 ## Case study 1 — `docx`: 92 → 100 (real skill)
 
 skval flagged `docx`'s `SKILL.md` as over the size budget. Applying the finding — moving the
