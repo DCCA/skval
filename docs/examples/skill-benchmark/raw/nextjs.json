@@ -1,0 +1,128 @@
+{
+  "score": 77,
+  "grade": "C",
+  "verdict": "Revise",
+  "safety_pass": true,
+  "dimensions": {
+    "D1": {
+      "score": 0.7692,
+      "weight": 0.15,
+      "checks": [
+        {
+          "id": "frontmatter_present",
+          "passed": true,
+          "severity": "critical",
+          "detail": ""
+        },
+        {
+          "id": "frontmatter_valid_yaml",
+          "passed": true,
+          "severity": "critical",
+          "detail": ""
+        },
+        {
+          "id": "name_present",
+          "passed": true,
+          "severity": "critical",
+          "detail": ""
+        },
+        {
+          "id": "name_kebab_case",
+          "passed": true,
+          "severity": "major",
+          "detail": ""
+        },
+        {
+          "id": "description_present",
+          "passed": true,
+          "severity": "critical",
+          "detail": ""
+        },
+        {
+          "id": "description_len",
+          "passed": true,
+          "severity": "major",
+          "detail": ""
+        },
+        {
+          "id": "description_no_angle_brackets",
+          "passed": true,
+          "severity": "major",
+          "detail": ""
+        },
+        {
+          "id": "allowed_frontmatter_keys",
+          "passed": false,
+          "severity": "minor",
+          "detail": "unexpected key(s): chainTo, retrieval, validate"
+        },
+        {
+          "id": "single_skill_md",
+          "passed": false,
+          "severity": "critical",
+          "detail": "found 2 packaged SKILL.md files (expected 1)"
+        },
+        {
+          "id": "skill_md_line_budget",
+          "passed": true,
+          "severity": "minor",
+          "detail": ""
+        },
+        {
+          "id": "token_budget",
+          "passed": true,
+          "severity": "minor",
+          "detail": ""
+        },
+        {
+          "id": "no_broken_local_refs",
+          "passed": false,
+          "severity": "major",
+          "detail": "missing referenced path(s): ./file-conventions.md, ./rsc-boundaries.md, ./async-patterns.md, ./runtime-selection.md, ./directives.md, ./functions.md, ./error-handling.md, ./data-patterns.md, ./route-handlers.md, ./metadata.md, ./image.md, ./font.md, ./bundling.md, ./scripts.md, ./hydration-error.md, ./suspense-boundaries.md, ./parallel-routes.md, ./self-hosting.md, ./debug-tricks.md"
+        }
+      ]
+    }
+  },
+  "safety": {
+    "safety_pass": true,
+    "findings": []
+  },
+  "findings": [
+    {
+      "dimension": "D1",
+      "impact_estimate": 3,
+      "message": "found 2 packaged SKILL.md files (expected 1)"
+    },
+    {
+      "dimension": "D1",
+      "impact_estimate": 2,
+      "message": "missing referenced path(s): ./file-conventions.md, ./rsc-boundaries.md, ./async-patterns.md, ./runtime-selection.md, ./directives.md, ./functions.md, ./error-handling.md, ./data-patterns.md, ./route-handlers.md, ./metadata.md, ./image.md, ./font.md, ./bundling.md, ./scripts.md, ./hydration-error.md, ./suspense-boundaries.md, ./parallel-routes.md, ./self-hosting.md, ./debug-tricks.md"
+    },
+    {
+      "dimension": "D1",
+      "impact_estimate": 1,
+      "message": "unexpected key(s): chainTo, retrieval, validate"
+    }
+  ],
+  "provenance": {
+    "source": "vercel/skills/nextjs",
+    "kind": "dir",
+    "resolved_path": "vercel/skills/nextjs"
+  },
+  "metadata": {
+    "mode": "structural-only",
+    "skill_name": "nextjs",
+    "classification": {
+      "type": "discipline",
+      "confidence": "high",
+      "also": []
+    },
+    "timestamp": "2026-06-23T01:34:39Z",
+    "skipped_dimensions": [
+      "D2",
+      "D3",
+      "D4",
+      "D5"
+    ]
+  }
+}
