@@ -52,13 +52,12 @@ clean**, the rest splitting into vendored-duplicate `SKILL.md` (e.g. [nextjs](ra
 
 ## From the web — real published skills
 
-Beyond installed plugins, **[from-the-web.md](from-the-web.md)** scores **69 community
-skills** pulled from three public GitHub collections (every one safety-scanned as inert
-text first — 0 tripped the gate, none executed). It surfaced a real bug class —
-**invalid YAML frontmatter** (an unquoted colon in `description`) — that used to *crash*
-skval; skval now scores it instead, and the
-[50 → 100 case study](from-the-web.md#case-study--invalid-frontmatter-50--100) shows the
-one-line fix.
+Beyond installed plugins, **[from-the-web.md](from-the-web.md)** scores **123 community
+skills** pulled from four public GitHub collections (every one safety-scanned as inert
+text first — 0 tripped the gate, none executed). It surfaced real, fixable classes —
+missing/invalid frontmatter and `<>` in the description — and several
+[score → fix → re-score case studies](from-the-web.md#case-studies--score--fix--re-score),
+the biggest being **`daydream` 38 → 100** (no frontmatter → Ship).
 
 ## Case study 1 — `docx`: 92 → 100 (real skill)
 

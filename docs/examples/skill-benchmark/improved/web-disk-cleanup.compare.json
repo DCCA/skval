@@ -1,0 +1,11 @@
+{
+  "overall_delta": 50,
+  "dimensions": {
+    "D1": {
+      "a": 0.5,
+      "b": 1.0,
+      "delta": 0.5
+    }
+  },
+  "verdict_change": "Revise -> Ship"
+}

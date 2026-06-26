@@ -1,0 +1,112 @@
+{
+  "score": 100,
+  "grade": "A",
+  "verdict": "Ship",
+  "safety_pass": true,
+  "dimensions": {
+    "D1": {
+      "score": 1.0,
+      "weight": 0.15,
+      "checks": [
+        {
+          "id": "frontmatter_present",
+          "passed": true,
+          "severity": "critical",
+          "detail": ""
+        },
+        {
+          "id": "frontmatter_valid_yaml",
+          "passed": true,
+          "severity": "critical",
+          "detail": ""
+        },
+        {
+          "id": "name_present",
+          "passed": true,
+          "severity": "critical",
+          "detail": ""
+        },
+        {
+          "id": "name_kebab_case",
+          "passed": true,
+          "severity": "major",
+          "detail": ""
+        },
+        {
+          "id": "description_present",
+          "passed": true,
+          "severity": "critical",
+          "detail": ""
+        },
+        {
+          "id": "description_len",
+          "passed": true,
+          "severity": "major",
+          "detail": ""
+        },
+        {
+          "id": "description_no_angle_brackets",
+          "passed": true,
+          "severity": "major",
+          "detail": ""
+        },
+        {
+          "id": "allowed_frontmatter_keys",
+          "passed": true,
+          "severity": "minor",
+          "detail": ""
+        },
+        {
+          "id": "single_skill_md",
+          "passed": true,
+          "severity": "critical",
+          "detail": ""
+        },
+        {
+          "id": "skill_md_line_budget",
+          "passed": true,
+          "severity": "minor",
+          "detail": ""
+        },
+        {
+          "id": "token_budget",
+          "passed": true,
+          "severity": "minor",
+          "detail": ""
+        },
+        {
+          "id": "no_broken_local_refs",
+          "passed": true,
+          "severity": "major",
+          "detail": ""
+        }
+      ]
+    }
+  },
+  "safety": {
+    "safety_pass": true,
+    "findings": []
+  },
+  "findings": [],
+  "provenance": {
+    "source": "github.com/glebis/claude-skills \u00b7 daydream",
+    "kind": "dir",
+    "resolved_path": "github.com/glebis/claude-skills \u00b7 daydream"
+  },
+  "metadata": {
+    "mode": "structural-only",
+    "skill_name": "daydream",
+    "classification": {
+      "type": "task",
+      "confidence": "medium",
+      "also": []
+    },
+    "timestamp": "2026-06-26T15:59:31Z",
+    "skipped_dimensions": [
+      "D2",
+      "D3",
+      "D4",
+      "D5"
+    ]
+  }
+}
