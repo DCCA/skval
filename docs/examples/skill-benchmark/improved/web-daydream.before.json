@@ -1,0 +1,143 @@
+{
+  "score": 38,
+  "grade": "F",
+  "verdict": "Reject",
+  "safety_pass": true,
+  "dimensions": {
+    "D1": {
+      "score": 0.3846,
+      "weight": 0.15,
+      "checks": [
+        {
+          "id": "frontmatter_present",
+          "passed": false,
+          "severity": "critical",
+          "detail": "missing leading '---'"
+        },
+        {
+          "id": "frontmatter_valid_yaml",
+          "passed": false,
+          "severity": "critical",
+          "detail": "no YAML frontmatter found"
+        },
+        {
+          "id": "name_present",
+          "passed": false,
+          "severity": "critical",
+          "detail": "missing 'name'"
+        },
+        {
+          "id": "name_kebab_case",
+          "passed": false,
+          "severity": "major",
+          "detail": "name '' must be kebab-case, <=64 chars"
+        },
+        {
+          "id": "description_present",
+          "passed": false,
+          "severity": "critical",
+          "detail": "missing 'description'"
+        },
+        {
+          "id": "description_len",
+          "passed": false,
+          "severity": "major",
+          "detail": "description is 0 chars (max 1024)"
+        },
+        {
+          "id": "description_no_angle_brackets",
+          "passed": true,
+          "severity": "major",
+          "detail": ""
+        },
+        {
+          "id": "allowed_frontmatter_keys",
+          "passed": true,
+          "severity": "minor",
+          "detail": ""
+        },
+        {
+          "id": "single_skill_md",
+          "passed": true,
+          "severity": "critical",
+          "detail": ""
+        },
+        {
+          "id": "skill_md_line_budget",
+          "passed": true,
+          "severity": "minor",
+          "detail": ""
+        },
+        {
+          "id": "token_budget",
+          "passed": true,
+          "severity": "minor",
+          "detail": ""
+        },
+        {
+          "id": "no_broken_local_refs",
+          "passed": true,
+          "severity": "major",
+          "detail": ""
+        }
+      ]
+    }
+  },
+  "safety": {
+    "safety_pass": true,
+    "findings": []
+  },
+  "findings": [
+    {
+      "dimension": "D1",
+      "impact_estimate": 3,
+      "message": "missing leading '---'"
+    },
+    {
+      "dimension": "D1",
+      "impact_estimate": 3,
+      "message": "no YAML frontmatter found"
+    },
+    {
+      "dimension": "D1",
+      "impact_estimate": 3,
+      "message": "missing 'name'"
+    },
+    {
+      "dimension": "D1",
+      "impact_estimate": 3,
+      "message": "missing 'description'"
+    },
+    {
+      "dimension": "D1",
+      "impact_estimate": 2,
+      "message": "name '' must be kebab-case, <=64 chars"
+    },
+    {
+      "dimension": "D1",
+      "impact_estimate": 2,
+      "message": "description is 0 chars (max 1024)"
+    }
+  ],
+  "provenance": {
+    "source": "github.com/glebis/claude-skills \u00b7 daydream",
+    "kind": "dir",
+    "resolved_path": "github.com/glebis/claude-skills \u00b7 daydream"
+  },
+  "metadata": {
+    "mode": "structural-only",
+    "skill_name": null,
+    "classification": {
+      "type": "task",
+      "confidence": "medium",
+      "also": []
+    },
+    "timestamp": "2026-06-26T15:59:31Z",
+    "skipped_dimensions": [
+      "D2",
+      "D3",
+      "D4",
+      "D5"
+    ]
+  }
+}
