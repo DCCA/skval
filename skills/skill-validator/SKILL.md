@@ -121,6 +121,10 @@ Make a workspace dir, run these stages (each has a guide in `agents/`), then let
 - **Batch** — rank many scorecards with `scripts/batch.py:rank_scorecards([...])`.
 - **Eval-viewer** — `scripts/benchmark_export.py` emits a skill-creator-compatible
   `benchmark.json` so runs render in that project's viewer.
+- **SkillsBench-style paired evals** — when reporting D2 lift, preserve no-skill pass
+  rate, with-skill pass rate, absolute lift, and normalized gain; see
+  [`docs/references/skillsbench.md`](../../docs/references/skillsbench.md) for the
+  research note that motivates this future scorecard improvement.
 - **Calibration** — tune dimension weights against a labeled corpus with
   `scripts/calibrate.py:suggest_weights(examples)`.
 

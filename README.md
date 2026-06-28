@@ -7,8 +7,10 @@ per-dimension breakdown, ranked findings, and a **Ship / Revise / Reject** verdi
 
 It is the measurement counterpart to Anthropic's `skill-creator`: where that helps
 you *write* a skill, skval exists to *judge* one — rigorously and repeatably, grounded
-in the agent-evaluation literature (SWE-bench, GAIA, AgentBench, τ-bench) and the
-LLM-as-judge literature (Zheng et al. 2023, G-Eval, FLASK, HELM, Miller 2024).
+in the agent-evaluation literature (SWE-bench, GAIA, AgentBench, τ-bench), the
+LLM-as-judge literature (Zheng et al. 2023, G-Eval, FLASK, HELM, Miller 2024), and
+paired Agent Skills evaluation work such as
+[SkillsBench](docs/references/skillsbench.md).
 
 > 📖 **New here? Start with the [step-by-step usage guide](docs/USAGE.md)** — from
 > install to reading a full scorecard, with screenshots and copy-paste commands.
