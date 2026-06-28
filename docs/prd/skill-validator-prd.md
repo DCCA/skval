@@ -17,8 +17,10 @@ Reject** verdict.
 It is the validation/measurement counterpart to Anthropic's `skill-creator`:
 where `skill-creator` helps you *write and iterate*, `skval` exists to *judge*
 — rigorously, repeatably, and with defensible methodology grounded in the
-agent-evaluation literature (SWE-bench, GAIA, AgentBench, τ-bench) and the
-LLM-as-judge literature (Zheng et al. 2023, G-Eval, FLASK, HELM, Miller 2024).
+agent-evaluation literature (SWE-bench, GAIA, AgentBench, τ-bench), the
+LLM-as-judge literature (Zheng et al. 2023, G-Eval, FLASK, HELM, Miller 2024),
+and paired Agent Skills evaluation work such as
+[SkillsBench](../references/skillsbench.md).
 
 The score is a **gated, normalized weighted composite** over six dimensions, and
 it is reported as **both a single headline number and a metric vector** so
