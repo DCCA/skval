@@ -8,7 +8,13 @@ itself lives in `skills/skill-validator/`; its deterministic engine is in
 
 ## Development
 
+- **Setup:** `uv venv && uv pip install -e ".[dev]"` — installs the `skval`
+  console entrypoint.
 - **Tests:** `uv run pytest` — deterministic, no network or model calls.
+  Single file/test: `uv run pytest tests/test_scoring.py -k <expr>`.
+- **CLI:** `uv run skval <structural|full|estimate|benchmark-export|batch|compare>`.
+  `structural` is the no-model-calls path; `estimate` previews token/$ cost of a
+  full run without spending anything.
 - **Self-validation gate (run before every PR):**
   ```bash
   uv run python skills/skill-validator/scripts/validate_structural.py skills/skill-validator --out /tmp/skval-self
@@ -18,6 +24,37 @@ itself lives in `skills/skill-validator/`; its deterministic engine is in
   `[tool.ruff]` in `pyproject.toml`). A PostToolUse hook
   (`.claude/hooks/format.sh`) reformats `.py` files on save, so keep edits
   ruff-clean.
+
+## Architecture
+
+Two tiers, split by whether a model is needed:
+
+- **Deterministic engine** (`skills/skill-validator/scripts/`): plain Python,
+  unit-tested, no network/model calls. Scores D1 (structural) + D6 (safety gate)
+  and does all math/assembly. Flow: `resolve_skill` (dir / SKILL.md / .skill →
+  canonical dir, hardened against zip-slip/symlinks/bombs) → `static_checks` +
+  `safety_scan` → `scoring` (weighted composite; **safety is a veto gate, not a
+  weight**) → `scorecard` (renders json + md).
+- **Model-driven stages** (D2–D5): not code — prompt guides in
+  `skills/skill-validator/agents/*.md` (executor, grader, artifact-judge,
+  triggering, user-simulator, comparator, eval-generator), orchestrated by
+  `SKILL.md` via subagents. They drop artifacts into a workspace
+  (`grading.json`, `artifact_judgment.json`, `triggering.json`) which
+  `validate_full.py` aggregates (`stats.py` pass^k / error bars,
+  `aggregate.py`, `dimensions.py` signal→dimension mapping) into the same
+  scorecard shape.
+
+Conventions:
+
+- `scripts/` modules are **flat top-level imports** (`import scoring`, no
+  package prefix) — `[tool.setuptools.package-dir]` in `pyproject.toml` maps
+  the dir to the root, and pytest's `pythonpath` mirrors it. A new module must
+  be added to `py-modules` there.
+- `skills/skill-validator/references/scoring-rubric.md` is the **source of
+  truth** for weights and grade bands; code and docs must match it.
+- `classify.py` types a skill (task / file_transform / interactive /
+  discipline / reference) and that type routes the eval strategy — see the
+  table in `SKILL.md`.
 
 ## UI / Design (the landing page in `docs/`)
 
