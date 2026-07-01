@@ -29,6 +29,11 @@ jobs:
         # VIRTUAL_ENV, so install straight into it — no `uv venv` needed.
         run: uv pip install -e ".[dev]"
 
+      - name: Formatting and lint (ruff)
+        run: |
+          uvx ruff format --check .
+          uvx ruff check .
+
       - name: Run the test suite
         run: .venv/bin/pytest
 
