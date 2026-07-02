@@ -62,6 +62,9 @@ def behavioral_dims(
         detail["D2"] = {
             "pass_rate": agg["configs"]["with_skill"]["pass_rate"],
             "baseline_lift": agg.get("baseline_lift"),
+            "normalized_gain": agg.get("normalized_gain"),
+            "paired_lift": agg.get("paired_lift"),
+            "paired_se": agg.get("paired_se"),
             "significant": agg.get("significant"),
         }
         if agg.get("pass_hat_k", {}).get("with_skill"):

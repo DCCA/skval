@@ -144,6 +144,9 @@ def _dim_detail(dim: str, e: dict) -> str:
         lift = e.get("baseline_lift")
         if lift is not None:
             s += f", lift {lift * 100:+.0f}% ({'significant' if e.get('significant') else 'n.s.'})"
+        gain = e.get("normalized_gain")
+        if gain is not None:
+            s += f", gain {gain:+.2f}"
         return s
     if dim == "D3":
         ph = e.get("pass_hat_k", {})

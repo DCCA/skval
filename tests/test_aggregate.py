@@ -3,6 +3,7 @@ import json
 import pytest
 
 import aggregate
+import stats
 
 
 def _grading(pass_rate, total=2):
@@ -64,3 +65,47 @@ def test_aggregate_no_baseline(tmp_path):
     agg = aggregate.aggregate(tmp_path)
     assert agg["baseline_lift"] is None
     assert agg["significant"] is None
+    assert agg["normalized_gain"] is None
+    assert agg["paired_lift"] is None
+
+
+def test_aggregate_normalized_gain(tmp_path):
+    # with-skill mean 0.8, baseline mean 0.6 -> gain (0.8-0.6)/(1-0.6) = 0.5
+    for r in (1, 2):
+        _mk_run(tmp_path, 0, "with_skill", r, _grading(0.8))
+        _mk_run(tmp_path, 0, "without_skill", r, _grading(0.6))
+    agg = aggregate.aggregate(tmp_path)
+    assert agg["baseline_lift"] == pytest.approx(0.2)
+    assert agg["normalized_gain"] == pytest.approx(0.5)
+
+
+def test_aggregate_paired_significance_beats_unpaired(tmp_path):
+    # Two evals of very different difficulty; the skill adds a steady ~0.19 on
+    # each. The between-eval difficulty swamps an unpaired SE (verdict n.s.),
+    # but cancels in the paired difference (Miller 2024) -> significant.
+    for r in (1, 2):
+        _mk_run(tmp_path, 0, "with_skill", r, _grading(0.4))  # hard eval
+        _mk_run(tmp_path, 0, "without_skill", r, _grading(0.2))
+        _mk_run(tmp_path, 1, "with_skill", r, _grading(0.9))  # easy eval
+        _mk_run(tmp_path, 1, "without_skill", r, _grading(0.72))
+    agg = aggregate.aggregate(tmp_path)
+    # unpaired SE of the difference would not clear the lift...
+    unpaired = stats.se_of_difference(
+        stats.std_error([0.4, 0.4, 0.9, 0.9]), stats.std_error([0.2, 0.2, 0.72, 0.72])
+    )
+    assert agg["baseline_lift"] <= unpaired  # unpaired alone would be n.s.
+    # ...but the paired inference exploits the correlation and clears it.
+    assert agg["paired_lift"] == pytest.approx(0.19)
+    assert agg["significant"] is True
+
+
+def test_aggregate_paired_none_with_single_eval(tmp_path):
+    # One eval -> no between-eval variance to exploit; paired fields stay None
+    # and significance falls back to the unpaired within-eval SE.
+    for r in (1, 2, 3):
+        _mk_run(tmp_path, 0, "with_skill", r, _grading(1.0))
+        _mk_run(tmp_path, 0, "without_skill", r, _grading(0.0))
+    agg = aggregate.aggregate(tmp_path)
+    assert agg["paired_lift"] is None
+    assert agg["paired_se"] is None
+    assert agg["significant"] is True  # unpaired fallback still fires

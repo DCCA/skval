@@ -121,10 +121,12 @@ Make a workspace dir, run these stages (each has a guide in `agents/`), then let
 - **Batch** — rank many scorecards with `scripts/batch.py:rank_scorecards([...])`.
 - **Eval-viewer** — `scripts/benchmark_export.py` emits a skill-creator-compatible
   `benchmark.json` so runs render in that project's viewer.
-- **SkillsBench-style paired evals** — when reporting D2 lift, preserve no-skill pass
-  rate, with-skill pass rate, absolute lift, and normalized gain; see
-  [`docs/references/skillsbench.md`](../../docs/references/skillsbench.md) for the
-  research note that motivates this future scorecard improvement.
+- **SkillsBench-style D2 lift** — `aggregate.py` reports absolute lift **and Hake
+  normalized gain** `g = (skill − baseline) / (1 − baseline)`, which corrects for
+  baseline headroom, and decides significance from a **paired** per-eval difference
+  (Miller 2024) — shared per-eval difficulty cancels, so a real lift clears the noise
+  with fewer trials (falls back to the unpaired SE for a single eval). See
+  [`docs/references/skillsbench.md`](../../docs/references/skillsbench.md).
 - **Calibration** — tune dimension weights against a labeled corpus with
   `scripts/calibrate.py:suggest_weights(examples)`.
 
