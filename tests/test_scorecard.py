@@ -36,6 +36,32 @@ def test_build_and_render(tmp_path):
     assert Path(m).exists()
 
 
+def test_render_d2_shows_normalized_gain():
+    sc = scorecard.build_scorecard(
+        provenance={"source": "x", "kind": "dir"},
+        scoring_result={
+            "score": 80,
+            "grade": "B",
+            "verdict": "Ship",
+            "dims": {"D2": 0.8},
+            "weights_used": {"D2": 0.30},
+        },
+        d1_checks=[],
+        safety={"safety_pass": True, "findings": []},
+        dimensions_detail={
+            "D2": {
+                "pass_rate": {"mean": 0.8, "stddev": 0.1},
+                "baseline_lift": 0.2,
+                "normalized_gain": 0.5,
+                "significant": True,
+            }
+        },
+    )
+    md = scorecard.render_markdown(sc)
+    assert "gain +0.50" in md
+    assert "lift +20%" in md
+
+
 def test_render_shows_classification():
     sc = scorecard.build_scorecard(
         provenance={"source": "x", "kind": "dir"},

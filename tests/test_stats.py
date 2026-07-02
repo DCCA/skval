@@ -48,3 +48,22 @@ def test_pass_hat_k_over_evals():
 
 def test_se_of_difference():
     assert stats.se_of_difference(0.3, 0.4) == pytest.approx(0.5)
+
+
+def test_normalized_gain():
+    # Hake gain: same +0.05 absolute lift, but far more of the headroom closed
+    # on a high baseline -> higher normalized gain.
+    assert stats.normalized_gain(0.8, 0.6) == pytest.approx(0.5)  # 0.2 / 0.4
+    assert stats.normalized_gain(0.95, 0.9) == pytest.approx(0.5)  # 0.05 / 0.1
+    # a regression gives a negative gain
+    assert stats.normalized_gain(0.3, 0.5) == pytest.approx(-0.4)  # -0.2 / 0.5
+    # no headroom (baseline already maxed) -> undefined
+    assert stats.normalized_gain(0.5, 1.0) is None
+
+
+def test_paired_diff():
+    m, se, n = stats.paired_diff([(0.8, 0.5), (0.6, 0.4), (1.0, 0.9)])
+    assert (m, n) == (pytest.approx(0.2), 3)  # diffs 0.3, 0.2, 0.1
+    assert se == pytest.approx(0.1 / math.sqrt(3))  # stddev 0.1 over sqrt(3)
+    # a single pair has no between-item variance -> se 0
+    assert stats.paired_diff([(1.0, 0.0)]) == (pytest.approx(1.0), 0.0, 1)
