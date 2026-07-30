@@ -1,0 +1,42 @@
+{
+ "evals": [
+  {
+   "id": 0,
+   "prompt": "I'm planning an MCP server for the Stripe API that we'll host remotely for our team's agents. Before I start coding: which language should I use, which transport should I pick for a remotely hosted server like this, and should I build a handful of high-level workflow tools (like 'refund-and-notify') or cover the raw API endpoints? Give concrete recommendations with reasons.",
+   "expected_output": "Recommends TypeScript, streamable HTTP with stateless JSON for the remote server (stdio for local), and prioritizing comprehensive API endpoint coverage over workflow tools when uncertain.",
+   "files": [],
+   "expectations": [
+    "Recommends TypeScript as the language (the skill's 'Recommended stack'), rather than Python or a neutral 'either works'",
+    "Recommends streamable HTTP as the transport for the remote server and specifies stateless JSON as opposed to stateful sessions/streaming responses",
+    "Distinguishes that stdio is the transport for local servers (remote = streamable HTTP, local = stdio)",
+    "States that when uncertain between workflow tools and endpoint coverage, comprehensive API coverage should be prioritized (optionally noting performance varies by client)"
+   ]
+  },
+  {
+   "id": 1,
+   "prompt": "Write the TypeScript code to register a single MCP tool on my server that lists issues for a GitHub repository (owner, repo, optional state filter), using the official MCP TypeScript SDK. Include the full tool definition \u2014 name, schema, description, and any metadata the tool should declare.",
+   "expected_output": "A tool registration named like github_list_issues with a Zod input schema (described/constrained fields), declared annotations including readOnlyHint: true, an outputSchema/structuredContent response, and pagination support.",
+   "files": [],
+   "expectations": [
+    "Defines the input schema with Zod (e.g., z.object/z.string) and includes constraints or clear descriptions on the fields",
+    "Declares tool annotations from the set readOnlyHint/destructiveHint/idempotentHint/openWorldHint, with readOnlyHint true for this list operation",
+    "Defines an outputSchema and/or returns structuredContent (alongside text content) in the tool response",
+    "Names the tool with a consistent service prefix and action-oriented form such as github_list_issues",
+    "Supports pagination for the list operation (e.g., page/per_page or cursor parameter)"
+   ]
+  },
+  {
+   "id": 2,
+   "prompt": "My MCP server for our company's Confluence wiki is finished. Now I need to create an evaluation set to test whether LLMs can actually use it effectively. What exactly should the evaluation contain, what rules must each question follow, and what file format should I produce? Show me the format.",
+   "expected_output": "A plan for 10 independent, read-only, complex, realistic, verifiable, stable questions \u2014 created via tool inspection, read-only content exploration, and self-verification \u2014 output as an XML file of <qa_pair> question/answer entries.",
+   "files": [],
+   "expectations": [
+    "Specifies creating 10 evaluation questions (the exact count the skill prescribes)",
+    "Requires each question to be independent of the others and read-only (only non-destructive operations required)",
+    "Requires each answer to be a single, clear answer verifiable by string comparison and stable over time, with questions complex enough to require multiple tool calls",
+    "Shows the XML output format with an <evaluation> root containing <qa_pair> elements with <question> and <answer> children",
+    "Describes a creation process including tool inspection, read-only content exploration, and solving each question yourself to verify the answer"
+   ]
+  }
+ ]
+}

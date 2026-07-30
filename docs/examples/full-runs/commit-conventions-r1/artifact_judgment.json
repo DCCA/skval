@@ -1,0 +1,34 @@
+{
+  "criteria": [
+    {
+      "criterion": "output_matches_type_scope_summary_structure",
+      "passed": true,
+      "evidence": "Skill mandates `type(scope): summary`. All 6 outputs follow this exactly: 'feat(auth): add jwt login endpoint' (eval 0, all 3 runs) and 'fix(profile): ...' (eval 1, all 3 runs)."
+    },
+    {
+      "criterion": "type_is_in_allowed_set",
+      "passed": true,
+      "evidence": "Skill restricts type to feat, fix, docs, refactor, test, chore, perf, build, ci. Eval 0 outputs use 'feat' (matches the JWT login endpoint addition); eval 1 outputs use 'fix' (matches the null-pointer crash fix). All 6 runs comply."
+    },
+    {
+      "criterion": "summary_is_lowercase",
+      "passed": true,
+      "evidence": "Skill requires the summary be lowercase. All summaries are fully lowercase: 'add jwt login endpoint', 'fix null-pointer crash when image is missing', 'handle missing user profile image', 'handle missing profile image' (only 'jwt' is an acronym, not a capitalized word start)."
+    },
+    {
+      "criterion": "summary_has_no_trailing_period",
+      "passed": true,
+      "evidence": "Skill explicitly requires 'no trailing period'. None of the 6 outputs end with a period, e.g. 'feat(auth): add jwt login endpoint' and 'fix(profile): handle missing profile image'."
+    },
+    {
+      "criterion": "summary_is_imperative_and_short",
+      "passed": true,
+      "evidence": "Skill requires the summary be 'short, imperative'. All summaries open with an imperative verb and stay to a single short clause: 'add jwt login endpoint', 'fix null-pointer crash when image is missing', 'handle missing user profile image', 'handle missing profile image'."
+    },
+    {
+      "criterion": "output_contains_only_the_commit_message_line",
+      "passed": true,
+      "evidence": "Skill instructs 'Output ONLY the commit message line, nothing else.' Every one of the 6 with-skill responses is a single line containing just the commit message, with no preamble, explanation, or trailing text."
+    }
+  ]
+}

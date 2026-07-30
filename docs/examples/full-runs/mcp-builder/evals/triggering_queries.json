@@ -1,0 +1,14 @@
+{
+ "should": [
+  "Help me build an MCP server that exposes the Notion API to Claude so it can create and search pages.",
+  "I want to write a Python FastMCP server that wraps our internal ticketing system's REST API as tools.",
+  "We're integrating Salesforce into our agent stack \u2014 scaffold a TypeScript MCP server with well-designed tools for it.",
+  "What's the right way to design and name the tools for the MCP server I'm building around the Slack API?"
+ ],
+ "should_not": [
+  "How do I install and configure the existing GitHub MCP server in Claude Desktop?",
+  "Build a FastAPI REST service in Python that integrates with the Stripe API for our checkout flow.",
+  "What is the Model Context Protocol and how do tools, resources, and prompts differ? I'm just explaining it in a blog post.",
+  "Write a TypeScript client SDK for our internal REST API so other teams' services can call it."
+ ]
+}

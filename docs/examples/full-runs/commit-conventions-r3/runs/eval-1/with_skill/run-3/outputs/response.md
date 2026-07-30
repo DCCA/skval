@@ -1,0 +1,1 @@
+fix(profile): prevent null pointer crash for missing profile images

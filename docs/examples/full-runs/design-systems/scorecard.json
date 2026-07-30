@@ -1,0 +1,180 @@
+{
+  "score": 93,
+  "grade": "A",
+  "verdict": "Ship",
+  "safety_pass": true,
+  "dimensions": {
+    "D1": {
+      "score": 1.0,
+      "weight": 0.15,
+      "checks": [
+        {
+          "id": "frontmatter_present",
+          "passed": true,
+          "severity": "critical",
+          "detail": ""
+        },
+        {
+          "id": "frontmatter_valid_yaml",
+          "passed": true,
+          "severity": "critical",
+          "detail": ""
+        },
+        {
+          "id": "name_present",
+          "passed": true,
+          "severity": "critical",
+          "detail": ""
+        },
+        {
+          "id": "name_kebab_case",
+          "passed": true,
+          "severity": "major",
+          "detail": ""
+        },
+        {
+          "id": "description_present",
+          "passed": true,
+          "severity": "critical",
+          "detail": ""
+        },
+        {
+          "id": "description_len",
+          "passed": true,
+          "severity": "major",
+          "detail": ""
+        },
+        {
+          "id": "description_no_angle_brackets",
+          "passed": true,
+          "severity": "major",
+          "detail": ""
+        },
+        {
+          "id": "allowed_frontmatter_keys",
+          "passed": true,
+          "severity": "minor",
+          "detail": ""
+        },
+        {
+          "id": "single_skill_md",
+          "passed": true,
+          "severity": "critical",
+          "detail": ""
+        },
+        {
+          "id": "skill_md_line_budget",
+          "passed": true,
+          "severity": "minor",
+          "detail": ""
+        },
+        {
+          "id": "token_budget",
+          "passed": true,
+          "severity": "minor",
+          "detail": ""
+        },
+        {
+          "id": "no_broken_local_refs",
+          "passed": true,
+          "severity": "major",
+          "detail": ""
+        }
+      ]
+    },
+    "D2": {
+      "score": 1.0,
+      "weight": 0.3,
+      "pass_rate": {
+        "mean": 1.0,
+        "stddev": 0.0,
+        "std_error": 0.0,
+        "min": 1.0,
+        "max": 1.0,
+        "n": 9
+      },
+      "baseline_lift": 0.0,
+      "normalized_gain": null,
+      "paired_lift": 0.0,
+      "paired_se": 0.0,
+      "significant": false
+    },
+    "D3": {
+      "score": 1.0,
+      "weight": 0.2,
+      "pass_hat_k": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0
+      }
+    },
+    "D4": {
+      "score": 0.6666666666666666,
+      "weight": 0.2,
+      "criteria": [
+        {
+          "criterion": "Components are documented with a written design rationale (per the skill's 'What Good Looks Like' bar and Component Definition Process).",
+          "passed": true,
+          "evidence": "All 3 runs of eval 1 open with 'Write a Design Rationale (Before Any Naming)' / 'Write the Design Rationale (Before Any Name)' / 'Write a Design Rationale First', each giving a 1-2 sentence rationale template and calling it 'the single source of truth'. All 3 runs of eval 2 require a 'Design Rationale' field in the proposal template (e.g. run1: 'Every proposal must start with a rationale. No rationale = not ready to review.'; run3: 'This is non-negotiable. It's the single source of truth...')."
+        },
+        {
+          "criterion": "Design-engineering (and cross-discipline) alignment on naming/conventions is enforced, not left to individual taste.",
+          "passed": true,
+          "evidence": "Eval 1 run1/run2/run3 all instruct convening designer, developer, content strategist, and maintainer before naming, and state naming 'follows naturally' from agreed purpose rather than aesthetics (run1: 'Never name from aesthetics... The rationale drives the name.'). Eval 2's review checklists in all 3 runs include a naming-convention gate (run1: 'Naming is consistent \u2014 follows the token/component naming convention'; run3: 'Proposed name aligns with your naming conventions')."
+        },
+        {
+          "criterion": "A contribution model with clear per-component ownership is prescribed (who proposes/reviews/approves, and a named owner).",
+          "passed": true,
+          "evidence": "All 3 eval 2 runs define explicit propose/review/approve roles (run1: 'Proposer... Reviewers... Approver... Maintainer'; run2: 'Who can propose... Who reviews... Who approves') and assign a named owner per component (run1's owner table; run2: 'Each component must have a named owner \u2014 not a committee'; run3: 'Assign owners to pairs (one designer, one engineer)')."
+        },
+        {
+          "criterion": "Accessibility is treated as baked into the component/design definition up front, not bolted on after the fact.",
+          "passed": false,
+          "evidence": "Accessibility appears only inconsistently and mostly as a late-stage checklist item rather than baked into the initial design rationale. Eval 2 run1 lists 'Accessibility is considered' as one bullet in a post-design review checklist; run2 lists an 'accessibility audit' as a Gate 3 (post-code) item; run3 lists it as a checklist bullet. Eval 1 (the component-definition-process eval) mentions accessibility in only 1 of 3 runs, and only as a passing 'trade-off' ('Trade-offs: Performance, accessibility, browser support concerns' in run2) \u2014 runs 1 and 3 of eval 1 omit it entirely from the do/don't, states, and variants documentation they produce. This falls short of the skill's own bar of accessibility being 'baked into component definitions (not added later)'."
+        },
+        {
+          "criterion": "Regular audits comparing the design system to production are recommended as an ongoing governance practice.",
+          "passed": true,
+          "evidence": "All 3 eval 2 runs include a dedicated recurring-audit section: run1 '## 5. Regular Audits: System vs. Production... Every quarter, do this...'; run2 '## 5. Conduct Regular Production Audits... Quarterly or biannually...'; run3 '## 5. Audit Production Against System... Once a quarter (or monthly for a fast-moving product)...', each tying deviations found back into proposing new variants."
+        },
+        {
+          "criterion": "Tokens/values are named semantically (e.g. named scales, semantic icon names) rather than left as raw, unnamed values.",
+          "passed": false,
+          "evidence": "This is only surfaced inconsistently. In eval 0 (icons), only run2 includes the skill's semantic-naming guidance ('Name semantically: use arrow-right, chevron-down, check-circle, not icon-23'); run1 and run3 omit any naming guidance entirely, covering only size/color/stroke. No eval prompt or run addresses semantic color/spacing token naming (e.g. `color.action.primary` vs. raw `#0066FF`, or a named spacing scale like `space-md`) at all, despite this being an explicit 'What Good Looks Like' bullet and a worked example in the skill body."
+        }
+      ]
+    },
+    "D5": {
+      "score": 1.0,
+      "weight": 0.15,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "tp": 4,
+      "fp": 0,
+      "fn": 0,
+      "tn": 4
+    }
+  },
+  "safety": {
+    "safety_pass": true,
+    "findings": []
+  },
+  "findings": [],
+  "provenance": {
+    "source": "/root/.claude/skills/design-systems",
+    "kind": "dir",
+    "resolved_path": "/root/.claude/skills/design-systems"
+  },
+  "metadata": {
+    "mode": "full",
+    "skill_name": "design-systems",
+    "classification": {
+      "type": "task",
+      "confidence": "medium",
+      "also": []
+    },
+    "timestamp": "2026-07-30T03:34:27Z",
+    "skipped_dimensions": []
+  }
+}
