@@ -35,24 +35,26 @@ vector *and* a single number:
 D≥50 (Revise); else F (Reject). A safety failure vetoes the score regardless of the
 rest. See [`skills/skill-validator/references/scoring-rubric.md`](skills/skill-validator/references/scoring-rubric.md).
 
-## Status
+## What's inside
 
-- **M0 — deterministic core (done):** input resolver; D1 structural checks; D6 static
-  safety gate; the statistics engine (`pass^k`, error bars); the scoring engine
-  (composite/gate/grade/verdict); scorecard generation; and a **structural-only**
-  end-to-end path that produces a real scorecard with **no model calls**.
-- **M1 — behavioral + LLM-judge (done):** behavioral aggregation (`pass^k`, baseline
-  lift, significance), dimension mapping (D2–D5), the full-validation assembler, and
-  agent prompts (`agents/`: eval generation, executor, grader, artifact judge,
-  triggering) wired into the skill. The deterministic computation is unit-tested; the
-  model-driven runs are agent-orchestrated per `SKILL.md`.
-- **M2–M3 — comparison & polish (done):** version A/B with pairwise **position-swap**
-  (`compare.py` + `agents/comparator.md`), regression **history** (`history.py`), **batch**
-  ranking (`batch.py`), **eval-viewer export** (`benchmark_export.py`), weight
-  **calibration** (`calibrate.py`), and a Claude Code **plugin manifest**
-  (`.claude-plugin/`). See the
-  [implementation plan](docs/plans/2026-06-18-skill-validator.md) and
-  [PRD](docs/prd/skill-validator-prd.md).
+- **Deterministic core** — D1 structural checks and the D6 static safety gate, plus
+  the stats/scoring engines and scorecard generation: a real 0–100 scorecard with
+  **no model calls**.
+- **Behavioral pipeline** — D2 effectiveness (pass rate, lift over a no-skill
+  baseline, and Hake **normalized gain**), D3 reliability (τ-bench-style `pass^k`
+  over repeated trials), D4 artifact quality (decomposed LLM-judge rubric), and D5
+  triggering (precision/recall/**F1**), orchestrated by the agent prompts in `agents/`.
+- **Skill-type classification** — detects whether a skill is `task`,
+  `file_transform`, `interactive`, `discipline`, or `reference`, and routes eval
+  generation and grading accordingly.
+- **Comparison & tooling** — version A/B comparison with pairwise position-swap,
+  regression history, batch leaderboard ranking, weight calibration, and export to
+  skill-creator's eval-viewer (`benchmark.json`).
+- **Cost preview** — `skval estimate` projects the token + $ cost of a full run
+  before you spend anything.
+
+See the [implementation plan](docs/plans/2026-06-18-skill-validator.md) and
+[PRD](docs/prd/skill-validator-prd.md).
 
 ## Install (as a Claude Code skill)
 
@@ -86,6 +88,26 @@ Example output (a known-good fixture):
 It writes `scorecard.json` + `scorecard.md` and exits non-zero on a Reject verdict —
 handy as a CI gate. The full six-dimension validation (D2–D5) is driven by the skill
 itself via subagents and `claude -p`, following `skills/skill-validator/SKILL.md`.
+
+## Use skval as a CI gate
+
+The repo doubles as a composite GitHub Action ([`action.yml`](action.yml)), so any
+workflow can score a skill on every push or PR:
+
+```yaml
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DCCA/skval@v0.1.0
+        with:
+          skill-source: ./my-skill   # a skill dir, SKILL.md, or .skill/.zip
+          out: skval-report          # optional, default 'skval-report'
+```
+
+The job fails on a **Reject** verdict, and the action exposes `score`, `grade`, and
+`verdict` outputs for downstream steps.
 
 ## Preview the cost before a full run
 
@@ -132,6 +154,7 @@ network calls and uses `yaml.safe_load`. See [SECURITY.md](SECURITY.md).
 
 Issues and PRs welcome — see [CONTRIBUTING.md](CONTRIBUTING.md). Please run `uv run pytest`
 and confirm the skill still self-validates (100/A) before opening a PR.
+See [CHANGELOG.md](CHANGELOG.md) for what changed in each release.
 
 ## License
 

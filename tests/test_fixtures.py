@@ -1,4 +1,11 @@
+import json
+import subprocess
+import sys
+from pathlib import Path
+
 import eval_fixtures as fixtures
+
+SCRIPT = Path(__file__).resolve().parents[1] / "skills" / "skill-validator" / "scripts"
 
 
 def test_eval_files_filters_blanks():
@@ -46,3 +53,44 @@ def test_stage_empty_is_noop(tmp_path):
     run_dir.mkdir()
     assert fixtures.stage({"id": 0, "files": []}, tmp_path, run_dir) == []
     assert not (run_dir / "inputs").exists()
+
+
+def _run_check(workspace):
+    return subprocess.run(
+        [sys.executable, str(SCRIPT / "eval_fixtures.py"), "check", str(workspace)],
+        text=True,
+        capture_output=True,
+    )
+
+
+def test_check_cli_flags_missing_fixture(tmp_path):
+    (tmp_path / "evals.json").write_text(
+        json.dumps({"evals": [{"id": 0, "files": ["fixtures/eval-0/in.csv"]}]})
+    )
+
+    result = _run_check(tmp_path)
+
+    assert result.returncode == 1
+    assert "MISSING fixtures:" in result.stdout
+    assert "eval 0: fixtures/eval-0/in.csv" in result.stdout
+
+
+def test_check_cli_passes_when_all_present(tmp_path):
+    (tmp_path / "fixtures" / "eval-0").mkdir(parents=True)
+    (tmp_path / "fixtures" / "eval-0" / "in.csv").write_text("x\n")
+    (tmp_path / "evals.json").write_text(
+        json.dumps({"evals": [{"id": 0, "files": ["fixtures/eval-0/in.csv"]}]})
+    )
+
+    result = _run_check(tmp_path)
+
+    assert result.returncode == 0
+    assert "all referenced fixtures present" in result.stdout
+
+
+def test_check_cli_passes_with_no_evals_file(tmp_path):
+    # missing evals.json is read leniently as {} -> nothing referenced, nothing missing
+    result = _run_check(tmp_path)
+
+    assert result.returncode == 0
+    assert "all referenced fixtures present" in result.stdout

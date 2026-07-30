@@ -21,6 +21,8 @@ def load_runs(bench_dir: Path) -> dict[str, list[dict]]:
     bench_dir = Path(bench_dir)
     out: dict[str, list[dict]] = {}
     for eval_dir in sorted(bench_dir.glob("eval-*")):
+        if not eval_dir.is_dir():
+            continue
         try:
             eval_id: object = int(eval_dir.name.split("-", 1)[1])
         except (ValueError, IndexError):

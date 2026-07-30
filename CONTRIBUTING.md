@@ -10,7 +10,7 @@ Requires [uv](https://docs.astral.sh/uv/).
 
 ```bash
 git clone https://github.com/DCCA/skval && cd skval
-uv run pytest            # 108 deterministic tests, no network/model calls
+uv run pytest            # deterministic, no network/model calls
 ```
 
 ## Conventions

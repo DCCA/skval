@@ -1,0 +1,62 @@
+name: skval Skill Validator
+description: >-
+  Score a Claude Code skill with skval's deterministic structural + safety checks
+  (0-100, letter grade, Ship / Revise / Reject). Fails the job on a Reject verdict.
+author: DCCA
+
+branding:
+  icon: check-circle
+  color: green
+
+inputs:
+  skill-source:
+    description: >-
+      The skill to validate: a skill directory, a SKILL.md file, or a packaged
+      .skill / .zip archive (path relative to the workspace).
+    required: true
+  out:
+    description: Directory where scorecard.json and scorecard.md are written.
+    required: false
+    default: skval-report
+
+outputs:
+  score:
+    description: Skill Score, 0-100.
+    value: ${{ steps.scorecard.outputs.score }}
+  grade:
+    description: Letter grade, A-F.
+    value: ${{ steps.scorecard.outputs.grade }}
+  verdict:
+    description: Ship, Revise, or Reject.
+    value: ${{ steps.scorecard.outputs.verdict }}
+
+runs:
+  using: composite
+  steps:
+    - name: Install skval
+      shell: bash
+      run: python3 -m pip install --quiet "${{ github.action_path }}"
+
+    - name: Validate the skill
+      # The CLI exits non-zero on a Reject verdict, failing the job.
+      shell: bash
+      run: skval structural "${{ inputs.skill-source }}" --out "${{ inputs.out }}"
+
+    - name: Expose scorecard outputs
+      id: scorecard
+      # Runs even when validation fails so downstream `if: failure()` steps can
+      # still read verdict=Reject (the CLI writes scorecard.json before exiting
+      # non-zero). No-ops silently if the scorecard was never written.
+      if: always()
+      shell: bash
+      env:
+        SKVAL_OUT: ${{ inputs.out }}
+      run: |
+        python3 - <<'PY' >> "$GITHUB_OUTPUT"
+        import json, os, pathlib
+        p = pathlib.Path(os.environ["SKVAL_OUT"], "scorecard.json")
+        if p.exists():
+            sc = json.loads(p.read_text())
+            for key in ("score", "grade", "verdict"):
+                print(f"{key}={sc[key]}")
+        PY

@@ -6,3 +6,4 @@ __pycache__/
 *.egg-info/
 skval-runs/
 .DS_Store
+build/
