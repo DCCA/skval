@@ -1,0 +1,27 @@
+{
+  "skill_name": "commit-conventions",
+  "evals": [
+    {
+      "id": 0,
+      "prompt": "Write a git commit message for this change: added a JWT-based login endpoint to the auth service.",
+      "expected_output": "Conventional commit, type feat",
+      "files": [],
+      "expectations": [
+        "Conventional Commits format",
+        "type in allowed set",
+        "summary has no trailing period"
+      ]
+    },
+    {
+      "id": 1,
+      "prompt": "Write a git commit message for this change: fixed a null-pointer crash when the user profile image is missing.",
+      "expected_output": "Conventional commit, type fix",
+      "files": [],
+      "expectations": [
+        "Conventional Commits format",
+        "type is fix",
+        "summary has no trailing period"
+      ]
+    }
+  ]
+}

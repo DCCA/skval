@@ -1,0 +1,180 @@
+{
+  "score": 100,
+  "grade": "A",
+  "verdict": "Ship",
+  "safety_pass": true,
+  "dimensions": {
+    "D1": {
+      "score": 1.0,
+      "weight": 0.15,
+      "checks": [
+        {
+          "id": "frontmatter_present",
+          "passed": true,
+          "severity": "critical",
+          "detail": ""
+        },
+        {
+          "id": "frontmatter_valid_yaml",
+          "passed": true,
+          "severity": "critical",
+          "detail": ""
+        },
+        {
+          "id": "name_present",
+          "passed": true,
+          "severity": "critical",
+          "detail": ""
+        },
+        {
+          "id": "name_kebab_case",
+          "passed": true,
+          "severity": "major",
+          "detail": ""
+        },
+        {
+          "id": "description_present",
+          "passed": true,
+          "severity": "critical",
+          "detail": ""
+        },
+        {
+          "id": "description_len",
+          "passed": true,
+          "severity": "major",
+          "detail": ""
+        },
+        {
+          "id": "description_no_angle_brackets",
+          "passed": true,
+          "severity": "major",
+          "detail": ""
+        },
+        {
+          "id": "allowed_frontmatter_keys",
+          "passed": true,
+          "severity": "minor",
+          "detail": ""
+        },
+        {
+          "id": "single_skill_md",
+          "passed": true,
+          "severity": "critical",
+          "detail": ""
+        },
+        {
+          "id": "skill_md_line_budget",
+          "passed": true,
+          "severity": "minor",
+          "detail": ""
+        },
+        {
+          "id": "token_budget",
+          "passed": true,
+          "severity": "minor",
+          "detail": ""
+        },
+        {
+          "id": "no_broken_local_refs",
+          "passed": true,
+          "severity": "major",
+          "detail": ""
+        }
+      ]
+    },
+    "D2": {
+      "score": 1.0,
+      "weight": 0.3,
+      "pass_rate": {
+        "mean": 1.0,
+        "stddev": 0.0,
+        "std_error": 0.0,
+        "min": 1.0,
+        "max": 1.0,
+        "n": 9
+      },
+      "baseline_lift": 0.0778,
+      "normalized_gain": 1.0,
+      "paired_lift": 0.0778,
+      "paired_se": 0.0484,
+      "significant": true
+    },
+    "D3": {
+      "score": 1.0,
+      "weight": 0.2,
+      "pass_hat_k": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0
+      }
+    },
+    "D4": {
+      "score": 1.0,
+      "weight": 0.2,
+      "criteria": [
+        {
+          "criterion": "When advising on architecture for a new server, output recommends the skill's stated 'Recommended stack' precisely: TypeScript as the language, and streamable HTTP with stateless JSON for remote servers vs. stdio for local servers, distinguishing the two.",
+          "passed": true,
+          "evidence": "All 3 eval-0 runs match the skill's Phase 1.3 'Recommended stack' verbatim. Run 1: 'Use TypeScript over Python... Streamable HTTP with stateless JSON... Note: If you ever build a local-only server... use stdio for local servers.' Run 2: 'For your remotely hosted server, use Streamable HTTP... For local servers... use stdio.' Run 3: 'Transport: Streamable HTTP (not stdio, which is for local servers)... Note on stdio: Use stdio transport only for local/embedded servers.'"
+        },
+        {
+          "criterion": "When choosing between high-level workflow tools and raw API endpoint coverage under uncertainty, output applies the skill's explicit tie-breaker: prioritize comprehensive API endpoint coverage, optionally noting performance varies by client.",
+          "passed": true,
+          "evidence": "Skill 1.1 states 'When uncertain, prioritize comprehensive API coverage.' Run 1: 'Prioritize comprehensive API endpoint coverage... When uncertain, comprehensive coverage gives you the most flexibility.' Run 2: 'The MCP design guidance explicitly states\u2014when uncertain between the two approaches, prioritize comprehensive API coverage' plus 'Performance varies by client.' Run 3: 'Decision: Prioritize comprehensive API endpoint coverage, especially when uncertain' plus explicit performance-varies-by-client caveat."
+        },
+        {
+          "criterion": "Generated tool input schemas use the skill's mandated pattern (Zod for TypeScript) with per-field constraints and clear `.describe()` text on each parameter, per the skill's 'Input Schema' requirement.",
+          "passed": true,
+          "evidence": "All 3 eval-1 runs define a Zod z.object with owner/repo as constrained non-empty strings, state as a constrained enum with default, and page/per_page as bounded integers (e.g. run 1: `.min(1).max(100)` on per_page), each field carrying a `.describe(...)` string."
+        },
+        {
+          "criterion": "Generated tool definitions declare the skill's Annotations set (readOnlyHint/destructiveHint/idempotentHint/openWorldHint) appropriate to a read-only list operation, and define an outputSchema and/or return structuredContent alongside text, per the skill's 'Annotations' and 'Output Schema' guidance.",
+          "passed": true,
+          "evidence": "All 3 runs set `readOnlyHint: true` for the list operation and wire an outputSchema. Run 2 declares all four annotation keys and returns `{type: 'structuredContent', data: ...}`. Run 3 declares readOnlyHint/idempotentHint/openWorldHint and also returns `type: 'structuredContent'`. Run 1 declares readOnlyHint/idempotentHint/openWorldHint and wires `outputSchema` on the tool, though its handler returns a `type: 'resource'` block instead of a literal `structuredContent` entry \u2014 a minor deviation from the SDK-feature wording, but the schema-definition half of the requirement is still met in all three."
+        },
+        {
+          "criterion": "Generated tool names follow the skill's 'Tool Naming and Discoverability' convention: a consistent, action-oriented service prefix (e.g. `service_verb_noun`).",
+          "passed": true,
+          "evidence": "All 3 eval-1 runs name the tool `github_list_issues`, matching the skill's own example pattern ('github_create_issue, github_list_repos') and action-oriented form."
+        },
+        {
+          "criterion": "The evaluation plan matches the skill's 'Evaluation Requirements' and 'Output Format' sections exactly: exactly 10 questions that are independent, read-only, complex, realistic, verifiable, and stable, output as an XML file with an `<evaluation>` root of `<qa_pair>` elements each containing `<question>` and `<answer>`.",
+          "passed": true,
+          "evidence": "All 3 eval-2 runs specify exactly 10 questions and restate all six properties (independent/read-only/complex/realistic/verifiable/stable) using the skill's own definitions (e.g. run 3: 'Verifiable: Each answer is a single, clear fact that can be verified by string comparison'), and all three reproduce the `<evaluation><qa_pair><question>/<answer></qa_pair></evaluation>` structure with a full 10-pair example, plus the four-step tool-inspection/content-exploration/question-generation/answer-verification creation process from the skill."
+        }
+      ]
+    },
+    "D5": {
+      "score": 1.0,
+      "weight": 0.15,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "tp": 4,
+      "fp": 0,
+      "fn": 0,
+      "tn": 4
+    }
+  },
+  "safety": {
+    "safety_pass": true,
+    "findings": []
+  },
+  "findings": [],
+  "provenance": {
+    "source": "/root/.claude/skills/mcp-builder",
+    "kind": "dir",
+    "resolved_path": "/root/.claude/skills/mcp-builder"
+  },
+  "metadata": {
+    "mode": "full",
+    "skill_name": "mcp-builder",
+    "classification": {
+      "type": "task",
+      "confidence": "medium",
+      "also": []
+    },
+    "timestamp": "2026-07-30T03:34:27Z",
+    "skipped_dimensions": []
+  }
+}

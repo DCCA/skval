@@ -31,11 +31,22 @@ the skill's own evals; only synthesize when they're missing.
      `user_simulator` (persona, goal, and `answers` to reveal only when asked) and a
      `max_turns`, and write **interaction expectations a one-shot answer would fail** — e.g.
      "asks at least 2 clarifying questions before delivering", "asks about budget before ordering".
-4. **Generate the triggering query set** for D5: 8–10 **should-trigger** queries (varied
+4. **Contamination guard (baseline probe).** Public and widely-circulated skills (e.g.
+   Anthropic's bundled skills, Conventional Commits) are in frontier models' training
+   data — the 2026-07 [full-run study](../../../docs/examples/full-runs/) measured
+   baselines reproducing a public skill's guidance near-verbatim with **zero skill
+   access**, saturating recall-anchored evals (baseline pass rates 0.92–1.00, lift ≈ 0).
+   So: prefer **application-under-constraint** tasks (produce code/artifacts where the
+   skill's rules must be *applied* to a novel concrete case) over **recall-of-guidance**
+   tasks ("what are the rules for X"). Before committing to an eval set, run **one cheap
+   baseline probe trial** (no skill, weakest executor model): if the baseline already
+   passes ≥ 80% of expectations, the eval does not discriminate — regenerate it harder
+   instead of spending the full trial budget on a saturated set.
+5. **Generate the triggering query set** for D5: 8–10 **should-trigger** queries (varied
    phrasings, some not naming the skill explicitly) and 8–10 **should-not-trigger**
    near-misses (share keywords but need something else). Write to
    `workspace/triggering_queries.json`.
-5. **Review gate (ON by default).** Present the generated evals and triggering queries to
+6. **Review gate (ON by default).** Present the generated evals and triggering queries to
    the user for edit/approval before any runs. Skip only if the caller passed a
    hands-free flag. Bad evals produce bad scores — this step matters.
 

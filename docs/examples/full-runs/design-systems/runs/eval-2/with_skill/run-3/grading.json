@@ -1,0 +1,7 @@
+{"summary": {"pass_rate": 1.0, "passed": 5, "failed": 0, "total": 5}, "results": [
+{"expectation": "Prescribes documenting a contribution model that specifies who can propose, who reviews, and who approves", "passed": true, "evidence": "Define a Contribution Model... Propose:... Review:... Approve & Merge:"},
+{"expectation": "Assigns each component a clear owner", "passed": true, "evidence": "Assign Component Owners... Each component in your system needs a clear owner"},
+{"expectation": "Enumerates the requirements of a self-governing contribution process: proposal format, design rationale, review checklist, and merge criteria", "passed": true, "evidence": "A. Proposal Format... B. Design Rationale... C. Review Checklist... D. Merge Criteria"},
+{"expectation": "Attributes compliance problems to ambiguous documentation and says to resolve them at the component definition stage, not after the fact", "passed": true, "evidence": "The root cause of your problem is ambiguous documentation... Resolve these **at definition time**, not after shipping."},
+{"expectation": "Recommends regular audits comparing the design system to what is actually in production", "passed": true, "evidence": "Audit Production Against System... Compare against your system — Figma files, documented specs"}
+]}

@@ -1,0 +1,7 @@
+{"summary": {"pass_rate": 1.0, "passed": 5, "failed": 0, "total": 5}, "results": [
+{"expectation": "Instructs writing a 1–2 sentence purpose statement / design rationale as the FIRST step, before choosing any name", "passed": true, "evidence": "Step 1: Write a Design Rationale First... Before choosing any name, write a 1–2 sentence purpose statement"},
+{"expectation": "States that naming (and behavior) follows naturally once the purpose is agreed — the rationale is the source of truth for naming and future evolution", "passed": true, "evidence": "This rationale is your **single source of truth**... Name and behavior follow naturally from here."},
+{"expectation": "Says semantically similar components (e.g., modal vs. prompt/popup vs. popover/tooltip) must be distinguished by documented purpose, not visual appearance", "passed": true, "evidence": "Distinguish by Documented Purpose, Not Visual Appearance... you're comparing visual traits. Instead, write one sentence for each and compare the purpose"},
+{"expectation": "Recommends involving multiple disciplines in the definition — designer, developer, and content strategist and/or maintainer", "passed": true, "evidence": "Bring together: Designer... Developer... Content strategist... Maintainer"},
+{"expectation": "Calls for usage documentation including do/don't examples plus states and variants", "passed": true, "evidence": "Do/Don't:\n- \u2713 DO use a Dialog... States & Variants: Loading... Sizes: small (400px), medium (600px), large (900px)"}
+]}

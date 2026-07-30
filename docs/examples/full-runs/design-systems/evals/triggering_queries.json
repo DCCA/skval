@@ -1,0 +1,14 @@
+{
+ "should": [
+  "What's the best way to structure our design tokens for color and spacing so our Figma files and code stay in sync?",
+  "We're building a component library for our product \u2014 how should we govern contributions from other teams?",
+  "Should our app use a 4px or 8px spacing grid, and how do I define the scale?",
+  "Our icon set is a mess \u2014 some filled, some outlined, random sizes. How do we clean it up and write rules for it?"
+ ],
+ "should_not": [
+  "My React app's token refresh logic is broken \u2014 auth tokens expire and users get logged out. Can you debug it?",
+  "Write the CSS to make this landing page hero responsive with CSS grid and center the card.",
+  "Design a logo and a poster for our conference booth.",
+  "Pick categorical colors for the bar charts in our analytics dashboard."
+ ]
+}

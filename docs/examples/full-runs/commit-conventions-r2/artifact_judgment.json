@@ -1,0 +1,34 @@
+{
+  "criteria": [
+    {
+      "criterion": "Output matches the type(scope): summary Conventional Commits format",
+      "passed": true,
+      "evidence": "All 6 outputs match the pattern exactly: eval-0 runs 1-3 all produced 'feat(auth): add jwt login endpoint'; eval-1 produced 'fix(profile): prevent null-pointer on missing image', 'fix(profile): prevent null pointer crash on missing image', and 'fix(profile): prevent crash on missing profile image'."
+    },
+    {
+      "criterion": "The type is drawn from the skill's allowed set (feat, fix, docs, refactor, test, chore, perf, build, ci)",
+      "passed": true,
+      "evidence": "eval-0 (a new JWT login endpoint) used 'feat' in all 3 runs; eval-1 (a null-pointer crash fix) used 'fix' in all 3 runs — both are members of the allowed set from SKILL.md line 10."
+    },
+    {
+      "criterion": "The summary is lowercase throughout",
+      "passed": true,
+      "evidence": "'add jwt login endpoint', 'prevent null-pointer on missing image', 'prevent null pointer crash on missing image', 'prevent crash on missing profile image' — no capitalized words in any of the 6 summaries (JWT itself is rendered lowercase as 'jwt')."
+    },
+    {
+      "criterion": "The summary has no trailing period",
+      "passed": true,
+      "evidence": "None of the 6 responses end with a period; each line ends directly on the last word (e.g. 'endpoint', 'image')."
+    },
+    {
+      "criterion": "The summary is phrased in the imperative mood (a command, not past/gerund tense)",
+      "passed": true,
+      "evidence": "All summaries open with a bare imperative verb: 'add jwt login endpoint' and all three 'prevent ...' variants — none use 'added'/'adding' or 'fixed'/'fixing'."
+    },
+    {
+      "criterion": "The response contains only the single commit message line, with no extra prose, explanation, or code fences",
+      "passed": true,
+      "evidence": "Each of the 6 response.md files consists of exactly one line of text with nothing else — no headers, no backticks, no surrounding commentary — matching SKILL.md's instruction 'Output ONLY the commit message line, nothing else.'"
+    }
+  ]
+}

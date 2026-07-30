@@ -1,0 +1,19 @@
+{
+  "tp": 4,
+  "fp": 0,
+  "fn": 0,
+  "tn": 4,
+  "precision": 1.0,
+  "recall": 1.0,
+  "f1": 1.0,
+  "per_query": [
+    {"query": "What's the best way to structure our design tokens for color and spacing so our Figma files and code stay in sync?", "should_trigger": true, "fired": true},
+    {"query": "We're building a component library for our product — how should we govern contributions from other teams?", "should_trigger": true, "fired": true},
+    {"query": "Should our app use a 4px or 8px spacing grid, and how do I define the scale?", "should_trigger": true, "fired": true},
+    {"query": "Our icon set is a mess — some filled, some outlined, random sizes. How do we clean it up and write rules for it?", "should_trigger": true, "fired": true},
+    {"query": "My React app's token refresh logic is broken — auth tokens expire and users get logged out. Can you debug it?", "should_trigger": false, "fired": false},
+    {"query": "Write the CSS to make this landing page hero responsive with CSS grid and center the card.", "should_trigger": false, "fired": false},
+    {"query": "Design a logo and a poster for our conference booth.", "should_trigger": false, "fired": false},
+    {"query": "Pick categorical colors for the bar charts in our analytics dashboard.", "should_trigger": false, "fired": false}
+  ]
+}

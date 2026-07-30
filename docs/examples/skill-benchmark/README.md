@@ -92,3 +92,7 @@ After: [`improved/bad-skill.after.md`](improved/bad-skill.after.md).
 
 The pattern both cases show is skval's core loop: **score → read the ranked findings → fix →
 re-score and confirm the gain.**
+
+For the *behavioral* dimensions (D2–D5), see the companion
+[full-run variance & separation study](../full-runs/) — five complete six-dimension runs,
+with every output, grading, and audit committed.

@@ -1,0 +1,34 @@
+{
+  "criteria": [
+    {
+      "criterion": "When advising on architecture for a new server, output recommends the skill's stated 'Recommended stack' precisely: TypeScript as the language, and streamable HTTP with stateless JSON for remote servers vs. stdio for local servers, distinguishing the two.",
+      "passed": true,
+      "evidence": "All 3 eval-0 runs match the skill's Phase 1.3 'Recommended stack' verbatim. Run 1: 'Use TypeScript over Python... Streamable HTTP with stateless JSON... Note: If you ever build a local-only server... use stdio for local servers.' Run 2: 'For your remotely hosted server, use Streamable HTTP... For local servers... use stdio.' Run 3: 'Transport: Streamable HTTP (not stdio, which is for local servers)... Note on stdio: Use stdio transport only for local/embedded servers.'"
+    },
+    {
+      "criterion": "When choosing between high-level workflow tools and raw API endpoint coverage under uncertainty, output applies the skill's explicit tie-breaker: prioritize comprehensive API endpoint coverage, optionally noting performance varies by client.",
+      "passed": true,
+      "evidence": "Skill 1.1 states 'When uncertain, prioritize comprehensive API coverage.' Run 1: 'Prioritize comprehensive API endpoint coverage... When uncertain, comprehensive coverage gives you the most flexibility.' Run 2: 'The MCP design guidance explicitly states—when uncertain between the two approaches, prioritize comprehensive API coverage' plus 'Performance varies by client.' Run 3: 'Decision: Prioritize comprehensive API endpoint coverage, especially when uncertain' plus explicit performance-varies-by-client caveat."
+    },
+    {
+      "criterion": "Generated tool input schemas use the skill's mandated pattern (Zod for TypeScript) with per-field constraints and clear `.describe()` text on each parameter, per the skill's 'Input Schema' requirement.",
+      "passed": true,
+      "evidence": "All 3 eval-1 runs define a Zod z.object with owner/repo as constrained non-empty strings, state as a constrained enum with default, and page/per_page as bounded integers (e.g. run 1: `.min(1).max(100)` on per_page), each field carrying a `.describe(...)` string."
+    },
+    {
+      "criterion": "Generated tool definitions declare the skill's Annotations set (readOnlyHint/destructiveHint/idempotentHint/openWorldHint) appropriate to a read-only list operation, and define an outputSchema and/or return structuredContent alongside text, per the skill's 'Annotations' and 'Output Schema' guidance.",
+      "passed": true,
+      "evidence": "All 3 runs set `readOnlyHint: true` for the list operation and wire an outputSchema. Run 2 declares all four annotation keys and returns `{type: 'structuredContent', data: ...}`. Run 3 declares readOnlyHint/idempotentHint/openWorldHint and also returns `type: 'structuredContent'`. Run 1 declares readOnlyHint/idempotentHint/openWorldHint and wires `outputSchema` on the tool, though its handler returns a `type: 'resource'` block instead of a literal `structuredContent` entry — a minor deviation from the SDK-feature wording, but the schema-definition half of the requirement is still met in all three."
+    },
+    {
+      "criterion": "Generated tool names follow the skill's 'Tool Naming and Discoverability' convention: a consistent, action-oriented service prefix (e.g. `service_verb_noun`).",
+      "passed": true,
+      "evidence": "All 3 eval-1 runs name the tool `github_list_issues`, matching the skill's own example pattern ('github_create_issue, github_list_repos') and action-oriented form."
+    },
+    {
+      "criterion": "The evaluation plan matches the skill's 'Evaluation Requirements' and 'Output Format' sections exactly: exactly 10 questions that are independent, read-only, complex, realistic, verifiable, and stable, output as an XML file with an `<evaluation>` root of `<qa_pair>` elements each containing `<question>` and `<answer>`.",
+      "passed": true,
+      "evidence": "All 3 eval-2 runs specify exactly 10 questions and restate all six properties (independent/read-only/complex/realistic/verifiable/stable) using the skill's own definitions (e.g. run 3: 'Verifiable: Each answer is a single, clear fact that can be verified by string comparison'), and all three reproduce the `<evaluation><qa_pair><question>/<answer></qa_pair></evaluation>` structure with a full 10-pair example, plus the four-step tool-inspection/content-exploration/question-generation/answer-verification creation process from the skill."
+    }
+  ]
+}

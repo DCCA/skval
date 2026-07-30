@@ -52,6 +52,10 @@ rest. See [`skills/skill-validator/references/scoring-rubric.md`](skills/skill-v
   skill-creator's eval-viewer (`benchmark.json`).
 - **Cost preview** — `skval estimate` projects the token + $ cost of a full run
   before you spend anything.
+- **Measured, not just promised** — the full pipeline is validated by a committed
+  [variance & separation study](docs/examples/full-runs/): five end-to-end behavioral
+  runs, zero score variance across three identical-protocol repeats, real per-dimension
+  separation, and an audited training-contamination finding that now shapes eval design.
 
 See the [implementation plan](docs/plans/2026-06-18-skill-validator.md) and
 [PRD](docs/prd/skill-validator-prd.md).

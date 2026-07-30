@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Full-run variance & separation study** (`docs/examples/full-runs/`): five complete
+  six-dimension behavioral runs — commit-conventions ×3 (score variance **0** across
+  identical-protocol repeats), design-systems (93/A via a real D4 gap), and mcp-builder
+  (+7.8 pp significant paired lift) — with every output, grading, judgment, and audit
+  committed.
+- **Contamination guard** in `agents/eval-generator.md`: the study showed baselines
+  reproduce public skills' guidance from training data (audited: zero skill reads), so
+  eval generation now prefers application-under-constraint tasks and runs a one-trial
+  baseline probe before spending the full budget on a saturated eval set.
+
 ## [0.1.0] - 2026-07-30
 
 Initial release.
