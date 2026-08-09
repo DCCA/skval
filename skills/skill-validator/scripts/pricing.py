@@ -12,6 +12,10 @@ from __future__ import annotations
 PRICES: dict[str, tuple[float, float]] = {
     "claude-fable-5": (10.0, 50.0),
     "claude-mythos-5": (10.0, 50.0),
+    "claude-opus-5": (5.0, 25.0),
+    # Sonnet 5 carries a lower introductory rate ($2/$10) through 2026-08-31.
+    # Priced at the standard rate so an estimate never reads low once it lapses.
+    "claude-sonnet-5": (3.0, 15.0),
     "claude-opus-4-8": (5.0, 25.0),
     "claude-opus-4-7": (5.0, 25.0),
     "claude-opus-4-6": (5.0, 25.0),
